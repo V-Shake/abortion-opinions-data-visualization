@@ -1,4 +1,4 @@
-export function renderChart(data) {
+export function renderChart(radarData1, radarData0) {
     // Dimensions and SVG setup
     let width = 600;
     let height = 600;
@@ -18,37 +18,16 @@ export function renderChart(data) {
     // Draw the gridlines (circles) centered in the SVG
     svg.selectAll("circle")
         .data(ticks)
-        .join(
-            enter => enter.append("circle")
-                .attr("cx", width / 2)
-                .attr("cy", height / 2)
-                .attr("fill", "none")
-                .attr("stroke", "gray")
-                .attr("r", d => radialScale(d))  // Radial distance based on tick value
-        );
+        .join("circle")
+        .attr("cx", width / 2)
+        .attr("cy", height / 2)
+        .attr("fill", "none")
+        .attr("stroke", "gray")
+        .attr("r", d => radialScale(d));  // Radial distance based on tick value
 
-    // Add tick labels for each circle (gridline)
-    svg.selectAll(".ticklabel")
-        .data(ticks)
-        .join(
-            enter => enter.append("text")
-                .attr("class", "ticklabel")
-                .attr("x", width / 2 + 5)  // Offset x slightly to avoid overlap with axis
-                .attr("y", d => height / 2 - radialScale(d))  // Adjust for SVG's coordinate system
-                .attr("font-size", "10px")
-                .attr("fill", "gray")
-                .text(d => d.toString())  // The tick value (e.g., 2, 4, 6, 8, 10)
-        );
-
-    // Define the 14 subcategories (Sex, Age, Education, Party)
-    const subcategories = [
-        "Female", "Male",  // Sex
-        "18-30", "31-60", "61-89",  // Age
-        "0-5", "6-10", "11-15", "16-20",  // Education
-        "Democrat", "Republican", "Independent", "Other"  // Party
-    ];
-
-    let numAxes = subcategories.length;  // 14 axes
+    // Define the subcategories based on the unified radar data
+    const subcategories = radarData1.map(d => d.category);
+    let numAxes = subcategories.length;  // 6 axes (3 for age, 3 for gender)
     let angleSlice = (Math.PI * 2) / numAxes;  // Angle between each axis
 
     // Draw axes from the center
@@ -83,48 +62,38 @@ export function renderChart(data) {
         return { x: x, y: y };
     }
 
-    // Define colors for supporters and opposers
-    let colors = ["darkgreen", "darkred"]; // Green for support, Red for opposition
+    // Prepare path coordinates for the blue blob
+    let coordinates1 = radarData1.map((d, i) => {
+        let angle = angleSlice * i - Math.PI / 2;
+        return angleToCoord(angle, d.value);
+    });
 
-    // Define the line generator for the paths
+    // Prepare path coordinates for the red blob
+    let coordinates0 = radarData0.map((d, i) => {
+        let angle = angleSlice * i - Math.PI / 2;
+        return angleToCoord(angle, d.value);
+    });
+
+    // Create a line generator with smooth edges using d3.curveCardinal
     let line = d3.line()
+        .curve(d3.curveCardinal)  // Use Cardinal curve for smoothing
         .x(d => d.x)
         .y(d => d.y);
 
-    // Function to get path coordinates
-    function getPathCoordinates(data_point) {
-        let coordinates = [];
-        for (var i = 0; i < subcategories.length; i++) {
-            let ft_name = subcategories[i];
-            let angle = (Math.PI / 2) + (2 * Math.PI * i / subcategories.length);
-            
-            // Get the value for the current feature
-            let value = data_point[ft_name];
+        svg.append("path")
+        .datum(coordinates0)
+        .attr("d", line)
+        .attr("stroke", "red")
+        .attr("stroke-width", 2)
+        .attr("fill", "red")
+        .attr("opacity", 0.5);
 
-            // Handle numeric values and NA
-            if (value === 10) { // Support
-                coordinates.push(angleToCoord(angle, 10)); // Full support
-            } else if (value === 0) { // Opposition
-                coordinates.push(angleToCoord(angle, 0)); // Full opposition
-            } else {
-                coordinates.push(angleToCoord(angle, 0)); // Default for 'NA' or invalid data
-            }
-        }
-        return coordinates;
+        svg.append("path")
+        .datum(coordinates1)
+        .attr("d", line)
+        .attr("stroke", "blue")
+        .attr("stroke-width", 2)
+        .attr("fill", "blue")
+        .attr("opacity", 0.5);
+
     }
-
-
-    // Plotting the data
-    svg.selectAll("path")
-        .data(data) // 'data' should contain your processed data for supporters and opposers
-        .join(
-            enter => enter.append("path")
-                .datum(d => getPathCoordinates(d)) // Get coordinates for each data point
-                .attr("d", line)
-                .attr("stroke-width", 3)
-                .attr("stroke", (_, i) => colors[i]) // Use the defined colors for each data point
-                .attr("fill", "none") // Changed to "none" to not fill the area (only outline)
-                .attr("stroke-opacity", 1)
-                .attr("opacity", 0.5)
-        );
-}
