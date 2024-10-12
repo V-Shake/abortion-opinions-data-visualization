@@ -1,17 +1,11 @@
 import { data } from './data.js';  // Import the data directly
 import { renderChart } from './chart.js';  // Function for rendering radar chart
-// import { initIntroAnimation } from './introAnimation.js';
 
-
-function preprocessData(data, abanyValue) {
-    // Filter and count individuals based on the specified abany value
-    const filteredData = data.filter(person => person.year === 2018 && person.abany === abanyValue);
-
-    // Log the count of individuals with the specified abany value
-    console.log(`Count of individuals with abany = ${abanyValue}:`, filteredData.length);
+function preprocessDataForYear(data, year, abanyValue) {
+    // Filter data based on the selected year and count individuals with specific 'abany' value
+    const filteredData = data.filter(person => person.year === year && person.abany === abanyValue);
 
     return filteredData.map(person => {
-        // Grouping people by age categories
         let ageGroup;
         if (person.age >= 18 && person.age <= 30) {
             ageGroup = '18-30';
@@ -21,17 +15,9 @@ function preprocessData(data, abanyValue) {
             ageGroup = '61-89';
         }
 
-        // Grouping people by gender
-        let genderGroup;
-        if (person.sex === 'Female') {
-            genderGroup = 'Female';
-        } else if (person.sex === 'Male') {
-            genderGroup = 'Male';
-        }
-
-        // Grouping people by education level based on the 'educ' field
+        let genderGroup = person.sex === 'Female' ? 'Female' : 'Male';
         let educationGroup;
-        const educ = parseInt(person.educ, 10); // Convert educ string to an integer
+        const educ = parseInt(person.educ, 10);
         if (educ >= 0 && educ <= 9) {
             educationGroup = '0-9';
         } else if (educ >= 10 && educ <= 18) {
@@ -44,7 +30,7 @@ function preprocessData(data, abanyValue) {
             ...person,
             ageGroup,
             genderGroup,
-            educationGroup  // Add the education group to the returned object
+            educationGroup
         };
     });
 }
@@ -70,7 +56,7 @@ function groupByAge(processedData) {
 function groupByGender(processedData) {
     const genderCounts = {
         'Female': 0,
-        'Male': 0 // Removed "Other" category
+        'Male': 0
     };
 
     processedData.forEach(person => {
@@ -88,7 +74,7 @@ function groupByParty(processedData) {
         'Republican': 0,
         'Democrat': 0,
         'Independent': 0,
-        'Other': 0 // Keep "Other" for political parties
+        'Other': 0
     };
 
     processedData.forEach(person => {
@@ -100,10 +86,10 @@ function groupByParty(processedData) {
             } else if (person.partyid.includes("Independent")) {
                 partyCounts['Independent']++;
             } else {
-                partyCounts['Other']++; // Count all other parties as "Other"
+                partyCounts['Other']++;
             }
         } else {
-            partyCounts['Other']++; // If there's no partyid, count as "Other"
+            partyCounts['Other']++;
         }
     });
 
@@ -129,16 +115,14 @@ function groupByEducation(processedData) {
 
 // Normalize counts to fit the radar chart's ticks (2-10)
 function normalizeCounts(counts) {
-    const maxCount = Math.max(...Object.values(counts));  // Get the maximum count
+    const maxCount = Math.max(...Object.values(counts));
     const minTick = 2;
     const maxTick = 10;
 
-    // If maxCount is 0 (in case of no data for any group), return minimum values
     if (maxCount === 0) {
         return Object.fromEntries(Object.keys(counts).map(key => [key, minTick]));
     }
 
-    // Normalize the counts to fit between tick 2 and tick 10
     return Object.fromEntries(
         Object.entries(counts).map(([key, value]) => [
             key, (value / maxCount) * (maxTick - minTick) + minTick
@@ -146,114 +130,64 @@ function normalizeCounts(counts) {
     );
 }
 
-async function initializeApp() {
-    // Preprocess data for abany = "1"
-    const processedData1 = preprocessData(data, "1");
+// Function to update the chart based on the selected year
+function updateChart(year) {
+    // Preprocess data for abany = "1" for the selected year
+    const processedData1 = preprocessDataForYear(data, year, "1");
+    const processedData0 = preprocessDataForYear(data, year, "0");
 
-    // Preprocess data for abany = "0"
-    const processedData0 = preprocessData(data, "0");
+    // Group and normalize the data
+    const ageCounts1 = normalizeCounts(groupByAge(processedData1));
+    const ageCounts0 = normalizeCounts(groupByAge(processedData0));
+    const genderCounts1 = normalizeCounts(groupByGender(processedData1));
+    const genderCounts0 = normalizeCounts(groupByGender(processedData0));
+    const partyCounts1 = normalizeCounts(groupByParty(processedData1));
+    const partyCounts0 = normalizeCounts(groupByParty(processedData0));
+    const educationCounts1 = normalizeCounts(groupByEducation(processedData1));
+    const educationCounts0 = normalizeCounts(groupByEducation(processedData0));
 
-    // Group and normalize the data by age for both groups
-    const ageCounts1 = groupByAge(processedData1);
-    const normalizedAgeCounts1 = normalizeCounts(ageCounts1);
-    const ageCounts0 = groupByAge(processedData0);
-    const normalizedAgeCounts0 = normalizeCounts(ageCounts0);
-
-    // Group and normalize the data by gender for both groups
-    const genderCounts1 = groupByGender(processedData1);
-    const normalizedGenderCounts1 = normalizeCounts(genderCounts1);
-    const genderCounts0 = groupByGender(processedData0);
-    const normalizedGenderCounts0 = normalizeCounts(genderCounts0);
-
-    // Group and normalize the data by political party for both groups
-    const partyCounts1 = groupByParty(processedData1);
-    const normalizedPartyCounts1 = normalizeCounts(partyCounts1);
-    const partyCounts0 = groupByParty(processedData0);
-    const normalizedPartyCounts0 = normalizeCounts(partyCounts0);
-
-    // Group and normalize the data by education for both groups
-    const educationCounts1 = groupByEducation(processedData1);
-    const normalizedEducationCounts1 = normalizeCounts(educationCounts1);
-    const educationCounts0 = groupByEducation(processedData0);
-    const normalizedEducationCounts0 = normalizeCounts(educationCounts0);
-
-    // Log counts to the console for both groups
-    console.log("Counts of Political Parties (abany = 1):");
-    console.log("Republican:", partyCounts1.Republican);
-    console.log("Democrat:", partyCounts1.Democrat);
-    console.log("Independent:", partyCounts1.Independent);
-    console.log("Other:", partyCounts1.Other);
-
-    console.log("Counts of Political Parties (abany = 0):");
-    console.log("Republican:", partyCounts0.Republican);
-    console.log("Democrat:", partyCounts0.Democrat);
-    console.log("Independent:", partyCounts0.Independent);
-    console.log("Other:", partyCounts0.Other);
-
-    console.log("Counts of Genders (abany = 1):");
-    console.log("Female:", genderCounts1.Female);
-    console.log("Male:", genderCounts1.Male);
-
-    console.log("Counts of Genders (abany = 0):");
-    console.log("Female:", genderCounts0.Female);
-    console.log("Male:", genderCounts0.Male);
-
-    console.log("Counts of Age Categories (abany = 1):");
-    console.log("18-30:", ageCounts1['18-30']);
-    console.log("31-60:", ageCounts1['31-60']);
-    console.log("61-89:", ageCounts1['61-89']);
-
-    console.log("Counts of Age Categories (abany = 0):");
-    console.log("18-30:", ageCounts0['18-30']);
-    console.log("31-60:", ageCounts0['31-60']);
-    console.log("61-89:", ageCounts0['61-89']);
-
-    console.log("Counts of Education Categories (abany = 1):");
-    console.log("0-9:", educationCounts1['0-9']);
-    console.log("10-18:", educationCounts1['10-18']);
-    console.log("18+:", educationCounts1['18+']);
-
-    console.log("Counts of Education Categories (abany = 0):");
-    console.log("0-9:", educationCounts0['0-9']);
-    console.log("10-18:", educationCounts0['10-18']);
-    console.log("18+:", educationCounts0['18+']);
-
-    // Prepare unified data for rendering radar chart
+    // Prepare radar data
     const radarData1 = [
-        { category: '18-30', value: normalizedAgeCounts1['18-30'] },
-        { category: '31-60', value: normalizedAgeCounts1['31-60'] },
-        { category: '61-89', value: normalizedAgeCounts1['61-89'] },
-        { category: 'Female', value: normalizedGenderCounts1['Female'] },
-        { category: 'Male', value: normalizedGenderCounts1['Male'] },
-        { category: 'Republican', value: normalizedPartyCounts1['Republican'] },
-        { category: 'Democrat', value: normalizedPartyCounts1['Democrat'] },
-        { category: 'Independent', value: normalizedPartyCounts1['Independent'] },
-        { category: 'Other (Political)', value: normalizedPartyCounts1['Other'] },
-        { category: '0-9', value: normalizedEducationCounts1['0-9'] },
-        { category: '10-18', value: normalizedEducationCounts1['10-18'] },
-        { category: '18+', value: normalizedEducationCounts1['18+'] }
+        { category: '18-30', value: ageCounts1['18-30'] },
+        { category: '31-60', value: ageCounts1['31-60'] },
+        { category: '61-89', value: ageCounts1['61-89'] },
+        { category: 'Female', value: genderCounts1['Female'] },
+        { category: 'Male', value: genderCounts1['Male'] },
+        { category: 'Republican', value: partyCounts1['Republican'] },
+        { category: 'Democrat', value: partyCounts1['Democrat'] },
+        { category: 'Independent', value: partyCounts1['Independent'] },
+        { category: 'Other (Political)', value: partyCounts1['Other'] },
+        { category: '0-9', value: educationCounts1['0-9'] },
+        { category: '10-18', value: educationCounts1['10-18'] },
+        { category: '18+', value: educationCounts1['18+'] }
     ];
 
     const radarData0 = [
-        { category: '18-30', value: normalizedAgeCounts0['18-30'] },
-        { category: '31-60', value: normalizedAgeCounts0['31-60'] },
-        { category: '61-89', value: normalizedAgeCounts0['61-89'] },
-        { category: 'Female', value: normalizedGenderCounts0['Female'] },
-        { category: 'Male', value: normalizedGenderCounts0['Male'] },
-        { category: 'Republican', value: normalizedPartyCounts0['Republican'] },
-        { category: 'Democrat', value: normalizedPartyCounts0['Democrat'] },
-        { category: 'Independent', value: normalizedPartyCounts0['Independent'] },
-        { category: 'Other (Political)', value: normalizedPartyCounts0['Other'] },
-        { category: '0-9', value: normalizedEducationCounts0['0-9'] },
-        { category: '10-18', value: normalizedEducationCounts0['10-18'] },
-        { category: '18+', value: normalizedEducationCounts0['18+'] }
+        { category: '18-30', value: ageCounts0['18-30'] },
+        { category: '31-60', value: ageCounts0['31-60'] },
+        { category: '61-89', value: ageCounts0['61-89'] },
+        { category: 'Female', value: genderCounts0['Female'] },
+        { category: 'Male', value: genderCounts0['Male'] },
+        { category: 'Republican', value: partyCounts0['Republican'] },
+        { category: 'Democrat', value: partyCounts0['Democrat'] },
+        { category: 'Independent', value: partyCounts0['Independent'] },
+        { category: 'Other (Political)', value: partyCounts0['Other'] },
+        { category: '0-9', value: educationCounts0['0-9'] },
+        { category: '10-18', value: educationCounts0['10-18'] },
+        { category: '18+', value: educationCounts0['18+'] }
     ];
 
-    // Combine radar data and call renderChart with the combined data
+    // Render the updated chart
+    d3.select("#renderer").select("svg").remove(); // Clear previous chart
     renderChart(radarData1, radarData0);
 }
 
 // Initialize the application
-initializeApp();
+updateChart(2018); // Start with the year 2018
 
-initIntroAnimation();
+// Event listener for the year slider to update the chart
+document.getElementById('year-slider').addEventListener('input', function (e) {
+    const selectedYear = parseInt(e.target.value);
+    document.getElementById('selected-year').innerText = selectedYear;
+    updateChart(selectedYear); // Update the chart based on the selected year
+});
