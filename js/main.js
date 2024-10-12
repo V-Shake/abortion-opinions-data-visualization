@@ -1,5 +1,7 @@
 import { data } from './data.js';  // Import the data directly
 import { renderChart } from './chart.js';  // Function for rendering radar chart
+// import { initIntroAnimation } from './introAnimation.js';
+
 
 function preprocessData(data, abanyValue) {
     // Filter and count individuals based on the specified abany value
@@ -253,3 +255,5 @@ async function initializeApp() {
 
 // Initialize the application
 initializeApp();
+
+initIntroAnimation();

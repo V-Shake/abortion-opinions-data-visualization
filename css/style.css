@@ -1,0 +1,35 @@
+html, body {
+    margin: 0;           /* Remove default margin */
+    padding: 0;          /* Remove default padding */
+    height: 100%;        /* Ensure full height */
+    overflow: hidden;    /* Prevent scrolling */
+}
+
+#renderer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    margin: auto;
+    /* border: 1px solid black; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dot {
+    position: absolute;
+    border-radius: 50%;
+    background-color: black;
+}
+
+#center-dot {
+    width: 20px;
+    height: 20px;
+}
+
+.small-dot {
+    width: 3px;
+    height: 3px;
+}
+
