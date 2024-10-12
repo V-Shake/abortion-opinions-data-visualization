@@ -6,7 +6,7 @@ import { renderChart } from './chart.js';  // Function for rendering radar chart
 function preprocessData(data, abanyValue) {
     // Filter and count individuals based on the specified abany value
     const filteredData = data.filter(person => person.year === 2018 && person.abany === abanyValue);
-    
+
     // Log the count of individuals with the specified abany value
     console.log(`Count of individuals with abany = ${abanyValue}:`, filteredData.length);
 
@@ -149,7 +149,7 @@ function normalizeCounts(counts) {
 async function initializeApp() {
     // Preprocess data for abany = "1"
     const processedData1 = preprocessData(data, "1");
-    
+
     // Preprocess data for abany = "0"
     const processedData0 = preprocessData(data, "0");
 
@@ -183,17 +183,17 @@ async function initializeApp() {
     console.log("Democrat:", partyCounts1.Democrat);
     console.log("Independent:", partyCounts1.Independent);
     console.log("Other:", partyCounts1.Other);
-    
+
     console.log("Counts of Political Parties (abany = 0):");
     console.log("Republican:", partyCounts0.Republican);
     console.log("Democrat:", partyCounts0.Democrat);
     console.log("Independent:", partyCounts0.Independent);
     console.log("Other:", partyCounts0.Other);
-    
+
     console.log("Counts of Genders (abany = 1):");
     console.log("Female:", genderCounts1.Female);
     console.log("Male:", genderCounts1.Male);
-    
+
     console.log("Counts of Genders (abany = 0):");
     console.log("Female:", genderCounts0.Female);
     console.log("Male:", genderCounts0.Male);

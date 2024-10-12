@@ -33,3 +33,10 @@ html, body {
     height: 3px;
 }
 
+#slider-container {
+    margin: 20px;
+}
+
+#year-slider {
+    width: 300px;
+}

@@ -4,28 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>abortion opinions</title>
+    <title>Abortion Opinions</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <!-- <input type="checkbox" id="introToggle"> Toggle Intro Animation -->
+    <div id="slider-container">
+        <label for="year-slider">Year: <span id="selected-year">2018</span></label>
+        <input type="range" id="year-slider" min="1972" max="2018" step="1" value="2018">
+    </div>
+
     <div id="renderer" class="m-5"></div>
 
     <!-- Place all library scripts here before your custom scripts -->
-    <!-- GSAP (for animations) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    
-    <!-- D3.js (for visualization, optional) -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    
-    <!-- jQuery (for DOM manipulation, optional) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Vue.js (if using, optional) -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    
-    <!-- Your custom data and main scripts -->
+
     <script type="module" src="js/main.js"></script>
 </body>
 
