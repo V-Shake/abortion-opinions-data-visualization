@@ -202,10 +202,10 @@ function updateChart(year) {
     ];
 
     // Clear previous chart after ... seconds and render the updated chart
-    setTimeout(() => {
+  /*  setTimeout(() => {
         d3.select("#renderer").select("svg").remove(); // Clear previous chart
         renderChart(radarData1, radarData0, year); // Pass the new year to chart.js
-    }, 8);
+    }, 8);*/
 
      d3.select("#renderer").select("svg").remove(); // Clear previous chart
      renderChart(radarData1, radarData0);
