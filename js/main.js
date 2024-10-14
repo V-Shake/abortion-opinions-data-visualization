@@ -1,6 +1,6 @@
 import { data } from './data.js';  // Ensure this is only declared once
 import { renderChart } from './chart.js';  // Function for rendering radar chart
-import { initIntroAnimation } from './introAnimation.js';
+//import { initIntroAnimation } from './introAnimation.js';
 
 function preprocessDataForYear(data, year, abanyValue) {
     // Filter data based on the selected year and count individuals with specific 'abany' value
@@ -133,10 +133,8 @@ function normalizeCounts(counts1, counts0) {
 }
 
 
-// Function to update the chart based on the selected year
-// Function to update the chart based on the selected year
 function updateChart(year) {
-    // Preprocess data for abany = "1" for the selected year
+    // Preprocess data for both `abany = "1"` and `abany = "0"` for the selected year
     const processedData1 = preprocessDataForYear(data, year, "1");
     const processedData0 = preprocessDataForYear(data, year, "0");
 
@@ -205,27 +203,25 @@ function updateChart(year) {
     // Clear previous chart after ... seconds and render the updated chart
     setTimeout(() => {
         d3.select("#renderer").select("svg").remove(); // Clear previous chart
-        renderChart(radarData1, radarData0); // Render the chart
-    }, 8000); // Delay of ... milliseconds (... seconds)
-
+        renderChart(radarData1, radarData0, year); // Pass the new year to chart.js
+    }, 80);
+}
     // d3.select("#renderer").select("svg").remove(); // Clear previous chart
     // renderChart(radarData1, radarData0);
-}
+
 
 updateChart(2018); // Start with the year 2018
 
-document.addEventListener('DOMContentLoaded', () => {
+/*document.addEventListener('DOMContentLoaded', () => {
     initIntroAnimation(600, 200, () => {
         // updateChart(2018);
     });
-});
+});*/
 
 
 // Event listener for the year slider to update the chart
 document.getElementById('year-slider').addEventListener('input', function (e) {
     const selectedYear = parseInt(e.target.value);
-    document.getElementById('selected-year').innerText = selectedYear;
-    updateChart(selectedYear); // Update the chart based on the selected year
-    
+    document.getElementById('selected-year').innerText = selectedYear; // Update display
+    updateChart(selectedYear); // Pass the selected year to updateChart
 });
-
