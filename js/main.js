@@ -191,7 +191,7 @@ function updateChart(year) {
 updateChart(2018); // Start with the year 2018
 
 document.addEventListener('DOMContentLoaded', () => {
-    initIntroAnimation(600, 200, () => {
+    initIntroAnimation(750, 200, () => {
         // updateChart(2018);
     });
 });
