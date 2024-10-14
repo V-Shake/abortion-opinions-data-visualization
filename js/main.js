@@ -1,6 +1,7 @@
 import { data } from './data.js';  // Ensure this is only declared once
 import { renderChart } from './chart.js';  // Function for rendering radar chart
-//import { initIntroAnimation } from './introAnimation.js';
+import { initIntroAnimation } from './introAnimation.js';
+import { initializePlayButton } from './playButton.js';  // Import the play button logic
 
 function preprocessDataForYear(data, year, abanyValue) {
     // Filter data based on the selected year and count individuals with specific 'abany' value
@@ -204,11 +205,11 @@ function updateChart(year) {
     setTimeout(() => {
         d3.select("#renderer").select("svg").remove(); // Clear previous chart
         renderChart(radarData1, radarData0, year); // Pass the new year to chart.js
-    }, 80);
-}
-    // d3.select("#renderer").select("svg").remove(); // Clear previous chart
-    // renderChart(radarData1, radarData0);
+    }, 8);
 
+     d3.select("#renderer").select("svg").remove(); // Clear previous chart
+     renderChart(radarData1, radarData0);
+    }
 
 updateChart(2018); // Start with the year 2018
 
@@ -216,8 +217,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initIntroAnimation(750, 200, () => {
         // updateChart(2018);
     });
-});*/
 
+    // Initialize play button with slider ID and the updateChart function
+    initializePlayButton('year-slider', updateChart);
+});
 
 // Event listener for the year slider to update the chart
 document.getElementById('year-slider').addEventListener('input', function (e) {

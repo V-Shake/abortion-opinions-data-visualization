@@ -17,6 +17,7 @@ html, body {
     align-items: center;
 }
 
+
 .dot {
     position: absolute;
     border-radius: 50%;
@@ -34,7 +35,7 @@ html, body {
 }
 
 #slider-container {
-    margin: 8px;
+    margin: 2px;
 }
 
 #year-slider {
