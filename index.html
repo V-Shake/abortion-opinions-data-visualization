@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="de">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Abortion Opinions</title>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abortion Opinions</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+	<body>
+		<div id="slider-container">
+			<label for="year-slider"
+				>Year: <span id="selected-year">2018</span></label
+			>
+			<input
+				type="range"
+				id="year-slider"
+				min="1972"
+				max="2018"
+				step="1"
+				value="2018"
+			/>
+			<button id="play-button">Play</button>
+			<!-- Play button added here -->
+			<div id="dropdown-container"></div>
+			<!-- Container for the dropdown menu -->
+			<div id="overlay"></div>
+			<!-- Overlay -->
+			<div id="renderer" class="m-5"></div>
+		</div>
 
-<body>
-    <div id="slider-container">
-        <label for="year-slider">Year: <span id="selected-year">2018</span></label>
-        <input type="range" id="year-slider" min="1972" max="2018" step="1" value="2018">
-        <button id="play-button">Play</button> <!-- Play button added here -->
-        <div id="overlay"></div> <!-- Overlay -->
-<div id="renderer" class="m-5"></div>
+		<div id="renderer" class="m-5"></div>
 
-    </div>
+		<!-- Place all library scripts here before your custom scripts -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+		<script src="https://d3js.org/d3.v7.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 
-    <div id="renderer" class="m-5"></div>
-
-    <!-- Place all library scripts here before your custom scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-
-    <script type="module" src="js/main.js"></script>
-</body>
-
+		<script type="module" src="js/main.js"></script>
+	</body>
 </html>
