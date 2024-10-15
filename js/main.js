@@ -1,6 +1,8 @@
 import { data } from './data.js';  // Ensure this is only declared once
 import { renderChart } from './chart.js';  // Function for rendering radar chart
-//import { initIntroAnimation } from './introAnimation.js';
+import { initIntroAnimation } from './introAnimation.js';
+import { createAndDesignSlider } from './slider.js';
+
 
 function preprocessDataForYear(data, year, abanyValue) {
     // Filter data based on the selected year and count individuals with specific 'abany' value
@@ -216,11 +218,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initIntroAnimation(750, 200, () => {
         // updateChart(2018);
     });
-});*/
+});
 
+
+// Call the function to create and design the slider
+const slider = createAndDesignSlider();
 
 // Event listener for the year slider to update the chart
-document.getElementById('year-slider').addEventListener('input', function (e) {
+slider.addEventListener('input', function (e) {
     const selectedYear = parseInt(e.target.value);
     document.getElementById('selected-year').innerText = selectedYear; // Update display
     updateChart(selectedYear); // Pass the selected year to updateChart
