@@ -1,36 +1,37 @@
-html, body {
-    margin: 0;           /* Remove default margin */
-    padding: 0;          /* Remove default padding */
-    height: 100%;        /* Ensure full height */
-    overflow: hidden;    /* Prevent scrolling */
+html,
+body {
+	margin: 0; /*Remove default margin */
+	padding: 0; /*Remove default padding */
+	height: 100%; /* Ensure full height */
+	overflow: hidden; /* Prevent scrolling */
 }
 
 #renderer {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background-color: white;
-    margin: auto;
-    /* border: 1px solid black; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	background-color: white;
+	margin: auto;
+	/* border: 1px solid black; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .dot {
-    position: absolute;
-    border-radius: 50%;
-    background-color: black;
+	position: absolute;
+	border-radius: 50%;
+	background-color: black;
 }
 
 #center-dot {
-    width: 20px;
-    height: 20px;
+	width: 20px;
+	height: 20px;
 }
 
 .small-dot {
-    width: 3px;
-    height: 3px;
+	width: 3px;
+	height: 3px;
 }
 
 /* #slider-container {
@@ -84,4 +85,56 @@ input[type='range'] {
     border-radius: 5px; /* Rounded track edges */
     margin-top: 1em; /* Space above the slider */
     outline: none; /* Remove outline */
+}
+
+/* Dropdown Container 
+#dropdown-container {
+	/* Positionierung relativ zum nächsten positionierten Vorfahren */
+/* Verschiebung um 100px von oben, wende margin-top an*/
+/* Verschiebung um 50px von links, wende margin-left an */
+/*}
+
+
+/* Dropdown Container */
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+/* Dropdown Button */
+.dropdown-button {
+	background-color: #4caf50;
+	color: white;
+	padding: 16px;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+}
+
+/* Dropdown Content (hidden by default) */
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+	background-color: #f1f1f1;
+}
+
+/* Show the dropdown menu when the button is clicked */
+.show {
+	display: block;
 }
