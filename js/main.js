@@ -208,7 +208,7 @@ function updateChart(year) {
 			value: normalizedPartyCounts1["Independent"],
 		},
 		{
-			category: "Other (Political)",
+			category: "Other",
 			value: normalizedPartyCounts1["Other"],
 		},
 		{ category: "0-9", value: normalizedEducationCounts1["0-9"] },
@@ -229,7 +229,7 @@ function updateChart(year) {
 			value: normalizedPartyCounts0["Independent"],
 		},
 		{
-			category: "Other (Political)",
+			category: "Other",
 			value: normalizedPartyCounts0["Other"],
 		},
 		{ category: "0-9", value: normalizedEducationCounts0["0-9"] },
@@ -265,14 +265,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Event listener for support and against elements
-document.querySelector(".support").addEventListener("click", () => {
-	currentFilterOption = "support";
+document.querySelector(".against").addEventListener("click", () => {
+	currentFilterOption = "against";
 	const selectedYear = parseInt(document.getElementById("year-slider").value);
 	updateChart(selectedYear, currentFilterOption);
 });
 
-document.querySelector(".against").addEventListener("click", () => {
-	currentFilterOption = "against";
+document.querySelector(".support").addEventListener("click", () => {
+	currentFilterOption = "support";
 	const selectedYear = parseInt(document.getElementById("year-slider").value);
 	updateChart(selectedYear, currentFilterOption);
 });
