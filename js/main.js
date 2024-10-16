@@ -265,14 +265,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Event listener for support and against elements
-document.querySelector(".support").addEventListener("click", () => {
-	currentFilterOption = "support";
+document.querySelector(".against").addEventListener("click", () => {
+	currentFilterOption = "against";
 	const selectedYear = parseInt(document.getElementById("year-slider").value);
 	updateChart(selectedYear, currentFilterOption);
 });
 
-document.querySelector(".against").addEventListener("click", () => {
-	currentFilterOption = "against";
+document.querySelector(".support").addEventListener("click", () => {
+	currentFilterOption = "support";
 	const selectedYear = parseInt(document.getElementById("year-slider").value);
 	updateChart(selectedYear, currentFilterOption);
 });
