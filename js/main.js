@@ -208,7 +208,7 @@ function updateChart(year) {
 			value: normalizedPartyCounts1["Independent"],
 		},
 		{
-			category: "Other (Political)",
+			category: "Other",
 			value: normalizedPartyCounts1["Other"],
 		},
 		{ category: "0-9", value: normalizedEducationCounts1["0-9"] },
@@ -229,7 +229,7 @@ function updateChart(year) {
 			value: normalizedPartyCounts0["Independent"],
 		},
 		{
-			category: "Other (Political)",
+			category: "Other",
 			value: normalizedPartyCounts0["Other"],
 		},
 		{ category: "0-9", value: normalizedEducationCounts0["0-9"] },

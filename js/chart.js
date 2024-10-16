@@ -1,6 +1,6 @@
 export function renderChart(radarData1, radarData0) {
-    const width = 600;
-    const height = 600;
+    const width = 900;
+    const height = 900;
     const centerX = width / 2;
     const centerY = height / 2;
     const maxRadius = 250; // Maximum radius for the chart
@@ -98,7 +98,7 @@ export function renderChart(radarData1, radarData0) {
             .attr("stroke-width", 1);
 
         // Create the labels
-        const labelCoord = angleToCoord(angle, maxValue + 0.5);  // Move the label outside the circle
+        const labelCoord = angleToCoord(angle, maxValue + 2);  // Increase the offset for labels
         svg.append("text")
             .attr("x", labelCoord.x)
             .attr("y", labelCoord.y)

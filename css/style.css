@@ -228,3 +228,27 @@ input[type="range"] {
 .blue {
 	background-color: #00ddff; /* Light blue */
 }
+
+/* Style for the labels' background boxes */
+.hoverable-label-box {
+    fill: grey; /* Box background color */
+    stroke: none; /* Remove border */
+    transition: fill 0.3s ease; /* Smooth transition for background color */
+}
+
+/* Style for the label text */
+.hoverable-label {
+    fill: white; /* Text color */
+    pointer-events: none; /* Prevent mouse events on text itself */
+}
+
+/* Hover effect on label group (both text and box) */
+.label-group:hover .hoverable-label-box {
+    fill: #00ddff; /* Change background color on hover */
+}
+
+/* Optionally scale the whole group on hover */
+.label-group:hover {
+    transform: scale(1.1); /* Slightly enlarge the label box on hover */
+    cursor: pointer; /* Change cursor to pointer */
+}
