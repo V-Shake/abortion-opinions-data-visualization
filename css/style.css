@@ -81,9 +81,9 @@ body {
 
 #play-button {
     position: absolute;
-    top: 10px;      /* Distance from the top of the page */
-    right: 10px;    /* Distance from the right side of the page */
-    padding: 10px 20px;
+    top: 560px;      /* Distance from the top of the page */
+    right: 70px;    /* Distance from the right side of the page */
+    padding: 8px 10px;
     background-color: #353738;
     color: white;
     border: none;
@@ -94,7 +94,7 @@ body {
 }
 
 #play-button:hover {
-    background-color: #0056b3;
+    background-color: rgb(122, 122, 122);
 }
 
 
