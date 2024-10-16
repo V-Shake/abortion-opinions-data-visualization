@@ -113,10 +113,12 @@ body {
 input[type="range"]::-webkit-slider-thumb {
 	appearance: none; /* Remove default styling */
 	width: 0.3vw; /* Thumb width */
-	height: 0.7vh; /* Thumb height */
+	height: 0.5vh; /* Thumb height */
 	background: #ffffff; /* Thumb color */
 	cursor: pointer; /* Change cursor to pointer */
 	border-radius: 5px; /* Rounded edges */
+	align-items: center;
+	transform: translateY(-50%); /* Center the thumb vertically */
 }
 
 /* Firefox */
