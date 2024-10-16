@@ -58,18 +58,15 @@ body {
 /* #slider-container {
     margin: 8px;
 }
-
-#year-slider {
-    width: 300px;
-} */
+	*/
 
 .years-container {
 	display: flex;
 	justify-content: space-between; /* Space out the year labels */
 	position: absolute;
-	width: 100%; /* Match the slider width */
+	width: 50%; /* Match the slider width */
 	top: 2.5em; /* Position above the slider */
-	padding: 0 5%; /* Add horizontal padding */
+	padding: 0 10%; /* Add horizontal padding */
 }
 
 .years-container span {
@@ -79,35 +76,38 @@ body {
 	cursor: pointer; /* Change cursor to pointer for interactivity */
 }
 
-#play-button {
-    position: absolute;
-    top: 560px;      /* Distance from the top of the page */
-    right: 70px;    /* Distance from the right side of the page */
-    padding: 8px 10px;
-    background-color: #353738;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 1000;  /* Ensure the button appears above other elements */
+/* #year-slider {
+	width: 50%;
+	margin: 0 auto;
+} */
 
+#play-button {
+	position: absolute;
+	top: 560px; /* Distance from the top of the page */
+	right: 70px; /* Distance from the right side of the page */
+	padding: 8px 10px;
+	background-color: #353738;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	z-index: 1000; /* Ensure the button appears above other elements */
 }
 
 #play-button:hover {
-    background-color: rgb(122, 122, 122);
+	background-color: rgb(122, 122, 122);
 }
-
 
 #dropdown-container {
 	position: absolute;
-    top: 200px;      /* Distance from the top of the page */
-    left: 10px;    /* Distance from the right side of the page */
-    padding: 10px 20px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 1000;  /* Ensure the button appears above other elements */
+	top: 200px; /* Distance from the top of the page */
+	left: 10px; /* Distance from the right side of the page */
+	padding: 10px 20px;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	z-index: 1000; /* Ensure the button appears above other elements */
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -155,7 +155,6 @@ input[type="range"] {
 /* Dropdown Button */
 .dropdown-button {
 	background-color: #353738;
-	;
 	color: white;
 	padding: 16px;
 	font-size: 16px;
