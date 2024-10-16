@@ -80,32 +80,34 @@ body {
 }
 
 #play-button {
-	position: absolute;
-	top: 10px; /* Distance from the top of the page */
-	right: 10px; /* Distance from the right side of the page */
-	padding: 10px 20px;
-	background-color: #007bff;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	z-index: 1000; /* Ensure the button appears above other elements */
+    position: absolute;
+    top: 10px;      /* Distance from the top of the page */
+    right: 10px;    /* Distance from the right side of the page */
+    padding: 10px 20px;
+    background-color: #353738;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;  /* Ensure the button appears above other elements */
+
 }
 
 #play-button:hover {
-	background-color: #0056b3;
+    background-color: #0056b3;
 }
+
 
 #dropdown-container {
 	position: absolute;
-	top: 50px; /* Distance from the top of the page */
-	right: 30px; /* Distance from the right side of the page */
-	padding: 10px 20px;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	z-index: 1000; /* Ensure the button appears above other elements */
+    top: 200px;      /* Distance from the top of the page */
+    left: 10px;    /* Distance from the right side of the page */
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;  /* Ensure the button appears above other elements */
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -152,7 +154,8 @@ input[type="range"] {
 
 /* Dropdown Button */
 .dropdown-button {
-	background-color: #4caf50;
+	background-color: #353738;
+	;
 	color: white;
 	padding: 16px;
 	font-size: 16px;
