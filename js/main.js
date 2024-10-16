@@ -1,9 +1,9 @@
-import { data } from './data.js';  // Ensure this is only declared once
-import { renderChart } from './chart.js';  // Function for rendering radar chart
-import { initIntroAnimation } from './introAnimation.js'; 
+import { data } from "./data.js"; // Ensure this is only declared once
+import { renderChart } from "./chart.js"; // Function for rendering radar chart
+import { initIntroAnimation } from "./introAnimation.js";
 import { initializePlayButton } from "./playButton.js"; // Import the play button logic
 import { createDropdownMenu } from "./menu.js"; // Import the dropdown menu function
-import { createAndDesignSlider } from './slider.js';
+import { createAndDesignSlider } from "./slider.js";
 
 function preprocessDataForYear(data, year, abanyValue) {
 	// Filter data based on the selected year and count individuals with specific 'abany' value
@@ -252,26 +252,39 @@ updateChart(2018); // Start with the year 2018
 document.addEventListener("DOMContentLoaded", () => {
 	// Initialisiere die Animation
 	initIntroAnimation(750, 200, () => {
-	  const renderChart = document.getElementById("renderChart");
-	  renderChart.style.opacity = "1"; // Mache den renderChart sichtbar
-	  renderChart.style.display = "flex"; // Stelle sicher, dass es im Flex-Container bleibt
-  
-	  // Optional: Chart aktualisieren
-	  updateChart(2018);
+		const renderChart = document.getElementById("renderChart");
+		renderChart.style.opacity = "1"; // Mache den renderChart sichtbar
+		renderChart.style.display = "flex"; // Stelle sicher, dass es im Flex-Container bleibt
+
+		// Optional: Chart aktualisieren
+		updateChart(2018);
 	});
-  
+
 	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
 	initializePlayButton("year-slider", updateChart);
-  });
+});
+
+// Event listener for support and against elements
+document.querySelector(".support").addEventListener("click", () => {
+	currentFilterOption = "support";
+	const selectedYear = parseInt(document.getElementById("year-slider").value);
+	updateChart(selectedYear, currentFilterOption);
+});
+
+document.querySelector(".against").addEventListener("click", () => {
+	currentFilterOption = "against";
+	const selectedYear = parseInt(document.getElementById("year-slider").value);
+	updateChart(selectedYear, currentFilterOption);
+});
 
 // Call the function to create and design the slider
 const slider = createAndDesignSlider();
 
 // Event listener for the year slider to update the chart
-slider.addEventListener('input', function (e) {
-    const selectedYear = parseInt(e.target.value);
-    document.getElementById('selected-year').innerText = selectedYear; // Update display
-    updateChart(selectedYear); // Pass the selected year to updateChart
+slider.addEventListener("input", function (e) {
+	const selectedYear = parseInt(e.target.value);
+	document.getElementById("selected-year").innerText = selectedYear; // Update display
+	updateChart(selectedYear); // Pass the selected year to updateChart
 });
 
 // Create the dropdown menu
