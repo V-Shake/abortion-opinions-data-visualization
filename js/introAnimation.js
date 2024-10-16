@@ -167,7 +167,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
     // Wait for a bit before starting the upward movement
     const moveUpDelay = 0.5; // Delay before moving up in seconds
     setTimeout(() => {
-      const moveUpDistance = renderer.clientHeight * 0.65; // 65% of the renderer height
+      const moveUpDistance = renderer.clientHeight * 0.6; // 65% of the renderer height
 
       const centerX = renderer.clientWidth / 2;
       const centerY = renderer.clientHeight / 2;

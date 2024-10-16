@@ -1,6 +1,6 @@
 import { data } from './data.js';  // Ensure this is only declared once
 import { renderChart } from './chart.js';  // Function for rendering radar chart
-import { initIntroAnimation } from './introAnimation.js';
+import { initIntroAnimation } from './introAnimation.js'; 
 import { initializePlayButton } from "./playButton.js"; // Import the play button logic
 import { createDropdownMenu } from "./menu.js"; // Import the dropdown menu function
 import { createAndDesignSlider } from './slider.js';
