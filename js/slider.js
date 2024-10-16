@@ -61,6 +61,7 @@ export function createAndDesignSlider() {
         yearLabel.style.cursor = 'pointer'; // Change cursor to pointer for interactivity
         yearLabel.style.fontWeight = (year === 2018) ? 'bold' : 'normal'; // Set initial weight
         yearLabel.style.color = "white";
+        yearLabel.style.fontFamily = 'LTUnivers 330 BasicLight', 'sans-serif'; // Set font family to Univers Light
 
         // Calculate position as a percentage and adjust for rotation
         const positionPercent = ((year - minYear) / (maxYear - minYear)) * 100;

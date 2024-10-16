@@ -61,7 +61,7 @@ export function renderChart(radarData1, radarData0) {
         .attr("id", "whiteGlow")
         .append("feGaussianBlur")
         .attr("in", "SourceGraphic")
-        .attr("stdDeviation", 90) // Adjust the blur radius for the glow effect
+        .attr("stdDeviation", 30) // Adjust the blur radius for the glow effect
         .attr("result", "blur");
 
     const radialScale = d3
@@ -152,7 +152,7 @@ export function renderChart(radarData1, radarData0) {
         .attr("r", maxRadius) // Radius for the glow
         .attr("fill", "white") // Color of the glow
         .attr("filter", "url(#whiteGlow)") // Apply the glow filter
-        .attr("opacity", 0.02); // Adjust opacity of the glow
+        .attr("opacity", 0.01); // Adjust opacity of the glow
 
     // Draw the radar chart area for the first dataset with glow effect
     svg.append("path")

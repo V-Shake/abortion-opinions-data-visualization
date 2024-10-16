@@ -4,6 +4,7 @@ body {
 	padding: 0; /*Remove default padding */
 	height: 100%; /* Ensure full height */
 	overflow: hidden; /* Prevent scrolling */
+	font-family: 'LTUnivers 430 BasicReg', sans-serif;
 }
 
 #renderer {
@@ -37,6 +38,16 @@ body {
 	align-items: center;
 	opacity: 0; /* Standardmäßig unsichtbar */
 	transition: opacity 0.5s ease; /* Sanfte Übergangseffekte */
+}
+
+h1 {
+	position: absolute;
+	margin-top: 20px; 
+	left: 10px; 
+	font-size: 16px;
+	padding: 10px;
+	color: white;
+	z-index:1000;
 }
 
 .dot {
