@@ -250,12 +250,19 @@ function updateChart(year) {
 updateChart(2018); // Start with the year 2018
 
 document.addEventListener("DOMContentLoaded", () => {
+	// Initialisiere die Animation
 	initIntroAnimation(750, 200, () => {
-		// updateChart(2018);
+	  const renderChart = document.getElementById("renderChart");
+	  renderChart.style.opacity = "1"; // Mache den renderChart sichtbar
+	  renderChart.style.display = "flex"; // Stelle sicher, dass es im Flex-Container bleibt
+  
+	  // Optional: Chart aktualisieren
+	  updateChart(2018);
 	});
-	// Initialize play button with slider ID and the updateChart function
+  
+	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
 	initializePlayButton("year-slider", updateChart);
-});
+  });
 
 // Call the function to create and design the slider
 const slider = createAndDesignSlider();

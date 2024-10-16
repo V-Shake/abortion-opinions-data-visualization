@@ -15,7 +15,7 @@ export function createAndDesignSlider() {
     const label = document.createElement('label');
     const selectedYearSpan = document.createElement('span');
     selectedYearSpan.id = 'selected-year';
-    selectedYearSpan.style.display = 'none'
+    selectedYearSpan.style.display = 'none';
     selectedYearSpan.style.fontWeight = 'bold';
     selectedYearSpan.innerText = '2018'; // Initialize selected year
     label.innerHTML = ``;
@@ -35,6 +35,7 @@ export function createAndDesignSlider() {
     slider.style.height = '5px'; // Set the height of the slider
     slider.style.borderRadius = '5px'; // Round the edges
     slider.style.outline = 'none'; // Remove the outline
+    slider.style.background = 'transparent';
 
     // Append the label and slider to the sliderWrapper
     sliderWrapper.appendChild(label);
@@ -59,6 +60,7 @@ export function createAndDesignSlider() {
         yearLabel.style.transformOrigin = 'left bottom'; // Set origin for rotation
         yearLabel.style.cursor = 'pointer'; // Change cursor to pointer for interactivity
         yearLabel.style.fontWeight = (year === 2018) ? 'bold' : 'normal'; // Set initial weight
+        yearLabel.style.color = "white";
 
         // Calculate position as a percentage and adjust for rotation
         const positionPercent = ((year - minYear) / (maxYear - minYear)) * 100;
@@ -72,7 +74,7 @@ export function createAndDesignSlider() {
             selectedYearSpan.innerText = year; // Update selected year display
             slider.value = year; // Set the slider value
             updateYearLabels(year); // Update bold label
-            yearLabel.style.fontWeight = 'bold';
+            slider.dispatchEvent(new Event('input')); // Trigger slider's input event
         });
 
         yearsContainer.appendChild(yearLabel);
@@ -89,6 +91,8 @@ export function createAndDesignSlider() {
         const selectedYear = slider.value;
         selectedYearSpan.innerText = selectedYear; // Update the display
         updateYearLabels(selectedYear); // Update bold label
+        // Call the chart update function here to update the chart plot
+        updateChart(selectedYear); // You need to implement this function in your chart logic
     });
 
     // Function to update year labels
