@@ -13,12 +13,12 @@ function preprocessDataForYear(data, year, abanyValue) {
 
 	return filteredData.map((person) => {
 		let ageGroup;
-		if (person.age >= 18 && person.age <= 30) {
-			ageGroup = "18-30";
-		} else if (person.age >= 31 && person.age <= 60) {
-			ageGroup = "31-60";
-		} else if (person.age >= 61 && person.age <= 89) {
-			ageGroup = "61-89";
+		if (person.age >= 18 && person.age <= 29) {
+			ageGroup = "18-29";
+		} else if (person.age >= 30 && person.age <= 59) {
+			ageGroup = "30-59";
+		} else if (person.age >= 60 && person.age <= 89) {
+			ageGroup = "60-89";
 		}
 
 		let genderGroup = person.sex === "Female" ? "Female" : "Male";
@@ -44,9 +44,9 @@ function preprocessDataForYear(data, year, abanyValue) {
 // Group the data by age categories
 function groupByAge(processedData) {
 	const ageCounts = {
-		"18-30": 0,
-		"31-60": 0,
-		"61-89": 0,
+		"18-29": 0,
+		"30-59": 0,
+		"60-89": 0,
 	};
 
 	processedData.forEach((person) => {
@@ -123,6 +123,7 @@ function groupByEducation(processedData) {
 function normalizeCounts(counts1, counts0) {
 	const allCounts = Object.values(counts1).concat(Object.values(counts0));
 	const maxCount = Math.max(...allCounts);
+
 	const minTick = 2;
 	const maxTick = 10;
 
@@ -139,9 +140,8 @@ function normalizeCounts(counts1, counts0) {
 		])
 	);
 }
-
 function updateChart(year) {
-	// Preprocess data for both `abany = "1"` and `abany = "0"` for the selected year
+	// Preprocess data for both abany = "1" and abany = "0" for the selected year
 	const processedData1 = preprocessDataForYear(data, year, "1");
 	const processedData0 = preprocessDataForYear(data, year, "0");
 
@@ -196,9 +196,9 @@ function updateChart(year) {
 
 	// Prepare radar data
 	const radarData1 = [
-		{ category: "18-30", value: normalizedAgeCounts1["18-30"] },
-		{ category: "31-60", value: normalizedAgeCounts1["31-60"] },
-		{ category: "61-89", value: normalizedAgeCounts1["61-89"] },
+		{ category: "18-29", value: normalizedAgeCounts1["18-29"] },
+		{ category: "30-59", value: normalizedAgeCounts1["30-59"] },
+		{ category: "60-89", value: normalizedAgeCounts1["60-89"] },
 		{ category: "Female", value: normalizedGenderCounts1["Female"] },
 		{ category: "Male", value: normalizedGenderCounts1["Male"] },
 		{ category: "Republican", value: normalizedPartyCounts1["Republican"] },
@@ -217,9 +217,9 @@ function updateChart(year) {
 	];
 
 	const radarData0 = [
-		{ category: "18-30", value: normalizedAgeCounts0["18-30"] },
-		{ category: "31-60", value: normalizedAgeCounts0["31-60"] },
-		{ category: "61-89", value: normalizedAgeCounts0["61-89"] },
+		{ category: "18-29", value: normalizedAgeCounts0["18-29"] },
+		{ category: "30-59", value: normalizedAgeCounts0["30-59"] },
+		{ category: "60-89", value: normalizedAgeCounts0["60-89"] },
 		{ category: "Female", value: normalizedGenderCounts0["Female"] },
 		{ category: "Male", value: normalizedGenderCounts0["Male"] },
 		{ category: "Republican", value: normalizedPartyCounts0["Republican"] },

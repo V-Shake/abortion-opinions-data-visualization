@@ -65,7 +65,7 @@ export function renderChart(radarData1, radarData0) {
         .attr("id", "whiteGlow")
         .append("feGaussianBlur")
         .attr("in", "SourceGraphic")
-        .attr("stdDeviation", 90) // Adjust the blur radius for the glow effect
+        .attr("stdDeviation", 30) // Adjust the blur radius for the glow effect
         .attr("result", "blur");
 
     const radialScale = d3
@@ -164,10 +164,27 @@ export function renderChart(radarData1, radarData0) {
     const coordinates1 = getCoordinates(radarData1);
 
     const line = d3
-        .line()
-        .curve(d3.curveCardinalClosed) // Smooth lines with closing curve
-        .x(d => d.x)
-        .y(d => d.y);
+    .line()
+    .curve(d3.curveCardinalClosed) // Smooth lines with closing curve
+    .x((d) => d.x)
+    .y((d) => d.y);
+
+     // Define group boundaries
+     const groups = {
+        "Age": [0, 2],      // 18-30, 31-60, 61-89
+        "Gender": [3, 4],   // Female, Male
+        "Party": [5, 8],    // Republican, Democrat, Independent, Other
+        "Education": [9, 11] // 0-9, 10-15, 16+
+    };
+
+    // Draw the glow circle in the background
+    svg.append("circle")
+        .attr("cx", centerX)
+        .attr("cy", centerY)
+        .attr("r", maxRadius) // Radius for the glow
+        .attr("fill", "white") // Color of the glow
+        .attr("filter", "url(#whiteGlow)") // Apply the glow filter
+        .attr("opacity", 0.01); // Adjust opacity of the glow
 
     // Draw the radar chart area for the second dataset
     svg.append("path")
