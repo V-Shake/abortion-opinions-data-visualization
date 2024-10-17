@@ -264,3 +264,16 @@ input[type="range"] {
     transform: scale(1.1); /* Slightly enlarge the label box on hover */
     cursor: pointer; /* Change cursor to pointer */
 }
+
+.main-category-label{
+	position:relative;
+	display:inline-block;
+	margin:0 auto;
+	font-size:14px
+}
+.main-category-label span{
+	min-width:0.5em;
+	text-align:center;
+	padding:30px;
+	margin:0px;
+}
