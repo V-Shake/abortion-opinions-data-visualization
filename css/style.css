@@ -4,7 +4,7 @@ body {
 	padding: 0; /*Remove default padding */
 	height: 100%; /* Ensure full height */
 	overflow: hidden; /* Prevent scrolling */
-	font-family: 'LTUnivers 430 BasicReg', sans-serif;
+	font-family: 'LTUnivers 430 BasicReg', Helvetica;
 }
 
 #renderer {
@@ -29,6 +29,16 @@ body {
 	opacity: 1;
 }
 
+h1 {
+	position: absolute;
+	margin-top: 20px; 
+	left: 10px; 
+	font-size: 16px;
+	padding: 10px;
+	color: white;
+	z-index:1000;
+}
+
 #renderChart {
 	position: absolute;
 	width: 100%;
@@ -38,16 +48,6 @@ body {
 	align-items: center;
 	opacity: 0; /* Standardmäßig unsichtbar */
 	transition: opacity 0.5s ease; /* Sanfte Übergangseffekte */
-}
-
-h1 {
-	position: absolute;
-	margin-top: 20px; 
-	left: 10px; 
-	font-size: 16px;
-	padding: 10px;
-	color: white;
-	z-index:1000;
 }
 
 .dot {
@@ -170,9 +170,10 @@ input[type="range"] {
 	background-color: #353738;
 	color: white;
 	padding: 16px;
-	font-size: 16px;
+	font-size: 11px;
 	border: none;
 	cursor: pointer;
+	font-family: 'LTUnivers 430 BasicReg', Helvetica;
 }
 
 /* Dropdown Content (hidden by default) */
@@ -181,6 +182,8 @@ input[type="range"] {
 	position: absolute;
 	background-color: #f9f9f9;
 	min-width: 160px;
+	font-size: 11px;
+	font-family: 'LTUnivers 430 BasicReg', Helvetica;
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 	z-index: 1;
 }

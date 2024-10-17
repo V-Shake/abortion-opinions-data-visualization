@@ -5,19 +5,19 @@ export function createDropdownMenu(setGlobalOption) {
 
 	const dropdownButton = document.createElement("button");
 	dropdownButton.className = "dropdown-button";
-	dropdownButton.innerHTML = 'any <span class="arrow">&#9662;</span>'; // Unicode-Pfeil hinzufügen
+	dropdownButton.innerHTML = 'Any Reason <span class="arrow">&#9662;</span>'; // Unicode-Pfeil hinzufügen
 
 	const dropdownContent = document.createElement("div");
 	dropdownContent.className = "dropdown-content";
 
 	const options = [
-		"any",
-		"rape",
-		"defect embryo",
-		"no more children",
-		"health",
-		"poverty",
-		"single",
+		"Any Reason",
+		"Rape",
+		"Defect Embryo",
+		"No More Children",
+		"Health",
+		"Poverty",
+		"Single Woman",
 	];
 
 	options.forEach((element) => {
@@ -28,25 +28,25 @@ export function createDropdownMenu(setGlobalOption) {
 			e.preventDefault();
 			let selectedOption; // Renamed from 'option' to 'selectedOption'
 			switch (element) {
-				case "any":
+				case "Any Reason":
 					selectedOption = "abany";
 					break;
-				case "rape":
+				case "Rape":
 					selectedOption = "abrape";
 					break;
-				case "defect embryo":
+				case "Defect Embryo":
 					selectedOption = "abdefect";
 					break;
-				case "no more children":
+				case "No More Children":
 					selectedOption = "abnomore";
 					break;
-				case "health":
+				case "Health":
 					selectedOption = "abhlth";
 					break;
-				case "poverty":
+				case "Poverty":
 					selectedOption = "abpoor";
 					break;
-				case "single":
+				case "Single Woman":
 					selectedOption = "absingle";
 					break;
 				default:
@@ -54,8 +54,8 @@ export function createDropdownMenu(setGlobalOption) {
 			}
 			// Update the global option and the dropdown button display
 			setGlobalOption(selectedOption);
-			dropdownButton.innerHTML = `${selectedOption} <span class="arrow">&#9662;</span>`; // Update button display
-			updateChart(2018, selectedOption); // Call updateChart with the new selected option
+			dropdownButton.innerHTML = `${element} <span class="arrow">&#9662;</span>`; // Update button display
+			updateChart(2018, option); // Call updateChart with the new selected option
 		});
 		dropdownContent.appendChild(optionElement);
 	});

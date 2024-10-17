@@ -207,7 +207,7 @@ export function renderChart(radarData1, radarData0) {
     const radius = 255; // Midpoint between the inner and outer radius of the purple band
 
     // Calculate the angular gap for 15 pixels
-    const angularGap = (15 / (2 * Math.PI * radius)) * 2 * Math.PI;
+    const angularGap = (50 / (2 * Math.PI * radius)) * 2 * Math.PI;
 
     // Define the angles for the categories
     const angleFemale = angleSlice * 3; // Angle for "Female"
@@ -221,46 +221,46 @@ export function renderChart(radarData1, radarData0) {
 
     // Define the arcs for the purple band with gaps
     const purpleArcForGender = d3.arc()
-        .innerRadius(250) // Inner radius of the purple band
-        .outerRadius(255) // Outer radius of the purple band
+        .innerRadius(260) // Inner radius of the purple band
+        .outerRadius(263) // Outer radius of the purple band
         .startAngle(angleFemale - angularGap) // Start angle for "Female"
         .endAngle(angleMale + angularGap); // End angle for "Male"
 
     const purpleArcForParty = d3.arc()
-        .innerRadius(250) // Inner radius of the purple band
-        .outerRadius(255) // Outer radius of the purple band
+        .innerRadius(260) // Inner radius of the purple band
+        .outerRadius(263) // Outer radius of the purple band
         .startAngle(angleRepublican - angularGap) // Start angle for "Republican"
         .endAngle(angleOther + angularGap); // End angle for "Democrat"
 
 const purpleArcForEducation = d3.arc()
-        .innerRadius(250) // Inner radius of the purple band
-        .outerRadius(255) // Outer radius of the purple band
+        .innerRadius(260) // Inner radius of the purple band
+        .outerRadius(263) // Outer radius of the purple band
         .startAngle(angle0_9 - angularGap) // Start angle for "Republican"
         .endAngle(angle16 + angularGap); // End angle for "Democrat"    svg.append("path")
  const purpleArcForAge = d3.arc()
-        .innerRadius(250) // Inner radius of the purple band
-        .outerRadius(255) // Outer radius of the purple band
+        .innerRadius(260) // Inner radius of the purple band
+        .outerRadius(263) // Outer radius of the purple band
         .startAngle(angle18_30 - angularGap) // Start angle for "Republican"
         .endAngle(angle61_89 + angularGap); // End angle for "Democrat"    svg.append("path")
 
     svg.append("path")
         .attr("d", purpleArcForGender())
-        .attr("fill", "purple")
+        .attr("fill", "white")
         .attr("transform", `translate(${centerX}, ${centerY})`); // Move the arc to the center
 
     svg.append("path")
         .attr("d", purpleArcForParty())
-        .attr("fill", "purple")
+        .attr("fill", "white")
         .attr("transform", `translate(${centerX}, ${centerY})`); // Move the arc to the center
         
      svg.append("path")
         .attr("d", purpleArcForEducation())
-        .attr("fill", "purple")
+        .attr("fill", "white")
         .attr("transform", `translate(${centerX}, ${centerY})`); // Move the arc to the center
 
         svg.append("path")
         .attr("d", purpleArcForAge())
-        .attr("fill", "purple")
+        .attr("fill", "white")
         .attr("transform", `translate(${centerX}, ${centerY})`); // Move the arc to the center
 
     const genderLabelCoord = angleToCoord((angleFemale + angleMale) / 2, maxValue + 4); // Midpoint for Gender arc
