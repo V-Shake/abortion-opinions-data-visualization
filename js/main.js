@@ -5,11 +5,60 @@ import { initializePlayButton } from "./playButton.js"; // Import the play butto
 import { createDropdownMenu } from "./menu.js"; // Import the dropdown menu function
 import { createAndDesignSlider } from "./slider.js";
 
-function preprocessDataForYear(data, year, abanyValue) {
+let option = "abany";
+
+// Function to set global option
+function setGlobalOption(selectedOption) {
+	option = selectedOption; // Update the global option variable
+	updateChart(2018, option); // Call updateChart to update the chart immediately
+}
+
+function preprocessDataForYear(data, year, optionValue, option) {
 	// Filter data based on the selected year and count individuals with specific 'abany' value
-	const filteredData = data.filter(
-		(person) => person.year === year && person.abany === abanyValue
-	);
+
+	let filteredData;
+
+	switch (option) {
+		case "abany":
+			filteredData = data.filter(
+				(person) => person.year === year && person.abany === optionValue
+			);
+			break;
+		case "abdefect":
+			filteredData = data.filter(
+				(person) => person.year === year && person.abdefect === optionValue
+			);
+			break;
+		case "abnomore":
+			filteredData = data.filter(
+				(person) => person.year === year && person.abnomore === optionValue
+			);
+			break;
+		case "abhlth":
+			filteredData = data.filter(
+				(person) => person.year === year && person.abhlth === optionValue
+			);
+			break;
+		case "abpoor":
+			filteredData = data.filter(
+				(person) => person.year === year && person.abpoor === optionValue
+			);
+			break;
+		case "abrape":
+			filteredData = data.filter(
+				(person) => person.year === year && person.abrape === optionValue
+			);
+			break;
+		case "absingle":
+			filteredData = data.filter(
+				(person) => person.year === year && person.absingle === optionValue
+			);
+			break;
+		default:
+			break;
+	}
+
+
 
 	return filteredData.map((person) => {
 		let ageGroup;
@@ -140,10 +189,10 @@ function normalizeCounts(counts1, counts0) {
 		])
 	);
 }
-function updateChart(year) {
+function updateChart(year, option) {
 	// Preprocess data for both abany = "1" and abany = "0" for the selected year
-	const processedData1 = preprocessDataForYear(data, year, "1");
-	const processedData0 = preprocessDataForYear(data, year, "0");
+	const processedData1 = preprocessDataForYear(data, year, "1", option);
+	const processedData0 = preprocessDataForYear(data, year, "0", option);
 
 	// Group the data
 	const ageCounts1 = groupByAge(processedData1);
@@ -239,15 +288,15 @@ function updateChart(year) {
 
 	// Clear previous chart after ... seconds and render the updated chart
 	/*  setTimeout(() => {
-        d3.select("#renderer").select("svg").remove(); // Clear previous chart
-        renderChart(radarData1, radarData0, year); // Pass the new year to chart.js
-    }, 8);*/
+		d3.select("#renderer").select("svg").remove(); // Clear previous chart
+		renderChart(radarData1, radarData0, year); // Pass the new year to chart.js
+	}, 8);*/
 
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
 	renderChart(radarData1, radarData0);
 }
 
-updateChart(2018); // Start with the year 2018
+updateChart(2018, option); // Start with the year 2018
 
 document.addEventListener("DOMContentLoaded", () => {
 	// Initialisiere die Animation
@@ -256,12 +305,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		renderChart.style.opacity = "1"; // Mache den renderChart sichtbar
 		renderChart.style.display = "flex"; // Stelle sicher, dass es im Flex-Container bleibt
 
+		// Create the dropdown menu and pass the setGlobalOption function
+		createDropdownMenu(setGlobalOption);
+
 		// Optional: Chart aktualisieren
-		updateChart(2018);
+		updateChart(2018, option);
 	});
 
 	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
-	initializePlayButton("year-slider", updateChart);
+	initializePlayButton("year-slider", (year) => updateChart(year, option));
+
 });
 
 // Event listener for support and against elements
@@ -284,8 +337,6 @@ const slider = createAndDesignSlider();
 slider.addEventListener("input", function (e) {
 	const selectedYear = parseInt(e.target.value);
 	document.getElementById("selected-year").innerText = selectedYear; // Update display
-	updateChart(selectedYear); // Pass the selected year to updateChart
+	updateChart(selectedYear, option); // Pass the selected year to updateChart
 });
 
-// Create the dropdown menu
-createDropdownMenu();

@@ -1,5 +1,5 @@
-// Funktion zum Erstellen des Dropdown-Menüs
-export function createDropdownMenu() {
+// menu.js
+export function createDropdownMenu(setGlobalOption) {
 	const dropdownContainer = document.createElement("div");
 	dropdownContainer.className = "dropdown";
 
@@ -20,15 +20,42 @@ export function createDropdownMenu() {
 		"single",
 	];
 
-	options.forEach((option) => {
+	options.forEach((element) => {
 		const optionElement = document.createElement("a");
 		optionElement.href = "#";
-		optionElement.innerText = option;
+		optionElement.innerText = element; // Display the option text
 		optionElement.addEventListener("click", (e) => {
 			e.preventDefault();
-			dropdownButton.innerHTML = `${option} <span class="arrow">&#9662;</span>`; // Unicode-Pfeil beibehalten
-			// Hier können Sie eine Funktion aufrufen, um das Diagramm basierend auf der ausgewählten Option zu aktualisieren
-			updateChartWithOption(option);
+			let selectedOption; // Renamed from 'option' to 'selectedOption'
+			switch (element) {
+				case "any":
+					selectedOption = "abany";
+					break;
+				case "rape":
+					selectedOption = "abrape";
+					break;
+				case "defect embryo":
+					selectedOption = "abdefect";
+					break;
+				case "no more children":
+					selectedOption = "abnomore";
+					break;
+				case "health":
+					selectedOption = "abhlth";
+					break;
+				case "poverty":
+					selectedOption = "abpoor";
+					break;
+				case "single":
+					selectedOption = "absingle";
+					break;
+				default:
+					break;
+			}
+			// Update the global option and the dropdown button display
+			setGlobalOption(selectedOption);
+			dropdownButton.innerHTML = `${selectedOption} <span class="arrow">&#9662;</span>`; // Update button display
+			updateChart(2018, selectedOption); // Call updateChart with the new selected option
 		});
 		dropdownContent.appendChild(optionElement);
 	});
@@ -44,10 +71,4 @@ export function createDropdownMenu() {
 	dropdownButton.addEventListener("click", () => {
 		dropdownContent.classList.toggle("show");
 	});
-}
-
-// Funktion zum Aktualisieren des Diagramms basierend auf der ausgewählten Option
-function updateChartWithOption(option) {
-	// Hier können Sie die Logik zum Aktualisieren des Diagramms basierend auf der ausgewählten Option hinzufügen
-	console.log(`Selected option: ${option}`);
 }

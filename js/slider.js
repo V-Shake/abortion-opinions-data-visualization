@@ -93,7 +93,7 @@ export function createAndDesignSlider() {
 		selectedYearSpan.innerText = selectedYear; // Update the display
 		updateYearLabels(selectedYear); // Update bold label
 		// Call the chart update function here to update the chart plot
-		updateChart(selectedYear); // You need to implement this function in your chart logic
+		updateChart(selectedYear, option); // You need to implement this function in your chart logic
 	});
 
 	// Function to update year labels
