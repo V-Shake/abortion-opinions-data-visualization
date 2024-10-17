@@ -48,20 +48,28 @@ export function createAndDesignSlider() {
 	yearsContainer.style.height = "30px"; // Give it a fixed height
 	yearsContainer.style.marginTop = "1%"; // Space above the labels
 
+	// List of years with no data
+	const noDataYears = [1979, 1981, 1986, 1992, 1995, 1997, 1999, 2001, 2003, 2005, 2007, 2009, 2011, 2013, 2015, 2017];
+
 	// Calculate the width and create year labels
 	const minYear = 1977;
 	const maxYear = 2018;
 	for (let year = minYear; year <= maxYear; year++) {
 		const yearLabel = document.createElement("span");
 		yearLabel.innerText = year;
-		yearLabel.style.fontSize = "9px";
+		yearLabel.style.fontSize = "10px";
+		yearLabel.style.fontFamily = 'LTUnivers 330 BasicLight', 'Helvetica'; 
 		yearLabel.style.position = "absolute"; // Position absolutely inside the container
 		yearLabel.style.transform = "rotate(-90deg)"; // Rotate counterclockwise
 		yearLabel.style.transformOrigin = "left bottom"; // Set origin for rotation
 		yearLabel.style.cursor = "pointer"; // Change cursor to pointer for interactivity
 		yearLabel.style.fontWeight = year === 2018 ? "bold" : "normal"; // Set initial weight
 		yearLabel.style.color = "white";
-        yearLabel.style.fontFamily = 'LTUnivers 330 BasicLight', 'Helvetica'; // Set font family to Univers Light
+
+		// Check if the year is in the no data list
+		if (noDataYears.includes(year)) {
+			yearLabel.style.opacity = "0.2"; // Set opacity for years without data
+		}
 
 		// Calculate position as a percentage and adjust for rotation
 		const positionPercent = ((year - minYear) / (maxYear - minYear)) * 100;
