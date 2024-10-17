@@ -169,13 +169,6 @@ export function renderChart(radarData1, radarData0) {
     .x((d) => d.x)
     .y((d) => d.y);
 
-     // Define group boundaries
-     const groups = {
-        "Age": [0, 2],      // 18-30, 31-60, 61-89
-        "Gender": [3, 4],   // Female, Male
-        "Party": [5, 8],    // Republican, Democrat, Independent, Other
-        "Education": [9, 11] // 0-9, 10-15, 16+
-    };
 
     // Draw the glow circle in the background
     svg.append("circle")
@@ -186,22 +179,38 @@ export function renderChart(radarData1, radarData0) {
         .attr("filter", "url(#whiteGlow)") // Apply the glow filter
         .attr("opacity", 0.01); // Adjust opacity of the glow
 
-    // Draw the radar chart area for the second dataset
+ // Draw the radar chart area for the datasets based on their lengths
+if (radarData0.length < radarData1.length) {
+    // Draw first dataset on top (radarData1)
     svg.append("path")
         .datum(coordinates0)
         .attr("d", line)
         .attr("stroke", colors.glowDataset0) // Glow stroke
         .attr("fill", "url(#gradientDataset0)") // Fill with gradient
         .attr("opacity", 0.6); // Set opacity for transparency
-        
+
     svg.append("path")
         .datum(coordinates1)
         .attr("d", line)
         .attr("stroke", colors.glowDataset1) // Glow stroke
         .attr("fill", "url(#gradientDataset1)") // Fill with gradient
         .attr("opacity", 0.6); // Set opacity for transparency
+} else {
+    // Draw second dataset on top (radarData0)
+    svg.append("path")
+        .datum(coordinates1)
+        .attr("d", line)
+        .attr("stroke", colors.glowDataset1) // Glow stroke
+        .attr("fill", "url(#gradientDataset1)") // Fill with gradient
+        .attr("opacity", 0.6); // Set opacity to 1 for the top dataset
 
-
+    svg.append("path")
+        .datum(coordinates0)
+        .attr("d", line)
+        .attr("stroke", colors.glowDataset0) // Glow stroke
+        .attr("fill", "url(#gradientDataset0)") // Fill with gradient
+        .attr("opacity", 0.6); // Set opacity for transparency
+}
 
     // Define the radius for calculating pixel-to-radian conversion
     const radius = 255; // Midpoint between the inner and outer radius of the purple band
