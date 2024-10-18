@@ -1,7 +1,7 @@
 // Select the renderer
 const renderer = document.getElementById("renderDots");
 
-// Function to create a black dot
+// Function to create a dot with a specific class and size at given coordinates
 function createDot(className, size, x, y) {
   const dot = document.createElement("div");
   dot.classList.add("dot", className);
@@ -9,6 +9,7 @@ function createDot(className, size, x, y) {
   dot.style.height = `${size}px`;
   dot.style.left = `${x}px`;
   dot.style.top = `${y}px`;
+  dot.style.position = "absolute"; // Ensure the dots are positioned absolutely
   return dot;
 }
 
@@ -20,13 +21,7 @@ function getCircularPosition(centerX, centerY, radius, angle) {
 }
 
 // Animation for continuous circular motion
-function startCircularMotion(
-  smallDots,
-  innerGroupCount,
-  outerGroupCount,
-  centerX,
-  centerY
-) {
+function startCircularMotion(smallDots, innerGroupCount, outerGroupCount, centerX, centerY) {
   // Store initial angles and radii for each dot
   const angles = smallDots.map(() => Math.random() * Math.PI * 2);
 
@@ -43,12 +38,7 @@ function startCircularMotion(
   const animateDots = () => {
     smallDots.forEach((dot, index) => {
       const radius = radii[index]; // Get the defined radius for this dot
-      const { x, y } = getCircularPosition(
-        centerX,
-        centerY,
-        radius,
-        angles[index]
-      );
+      const { x, y } = getCircularPosition(centerX, centerY, radius, angles[index]);
 
       // Update position and angle for the next iteration
       angles[index] += angleIncrements[index]; // Increment the angle with the dot-specific speed
@@ -68,6 +58,7 @@ function startCircularMotion(
   animateDots(); // Start the animation
 }
 
+// Main function to initialize the intro animation
 export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
   // Create the central dot
   const centerDot = createDot(
@@ -77,6 +68,14 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
     renderer.clientHeight / 2 - 10
   );
   renderer.appendChild(centerDot);
+
+  // Create two smaller dots (red and blue) that will fall from the top
+  const centerX = renderer.clientWidth / 2; // Calculate the center X position
+  const centerY = renderer.clientHeight / 2; // Calculate the center Y position
+  const redDot = createDot("red-dot", 3, centerX - 1.5, -30); // Set to size 3
+  const blueDot = createDot("blue-dot", 3, centerX - 1.5, -30); // Set to size 3
+  renderer.appendChild(redDot);
+  renderer.appendChild(blueDot);
 
   // Array to hold all small dots
   const smallDots = [];
@@ -137,11 +136,13 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
     renderer.appendChild(smallDot);
   }
 
+  // Set lower opacity for the first 400 small dots
+  smallDots.slice(0, 400).forEach(dot => {
+    dot.style.opacity = 0.2; // Set lower opacity (adjust as needed)
+  });
+
   // Move small dots to surround the center dot initially
   gsap.delayedCall(2, () => {
-    const centerX = renderer.clientWidth / 2;
-    const centerY = renderer.clientHeight / 2;
-
     smallDots.forEach((dot, index) => {
       const angle = Math.random() * Math.PI * 2;
 
@@ -163,14 +164,11 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
     });
   });
 
+  // Set a delay before moving up the center dot and small dots
   setTimeout(() => {
-    // Wait for a bit before starting the upward movement
     const moveUpDelay = 0.5; // Delay before moving up in seconds
     setTimeout(() => {
-      const moveUpDistance = renderer.clientHeight * 0.6; // 65% of the renderer height
-
-      const centerX = renderer.clientWidth / 2;
-      const centerY = renderer.clientHeight / 2;
+      const moveUpDistance = renderer.clientHeight * 0.6; // 60% of the renderer height
 
       // Animate all dots and the center dot moving upwards
       smallDots.concat(centerDot).forEach((dot, index) => {
@@ -180,7 +178,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
 
         gsap.to(dot, {
           x: `+=${randomXOffset}`, // Apply random x offset
-          y: `-=${moveUpDistance}`, // Move up by 65% of renderer height
+          y: `-=${moveUpDistance}`, // Move up by 60% of renderer height
           rotation: randomRotationSpeed, // Apply random rotation
           duration: dotMoveUpDuration, // Vary the duration of the upward movement
           ease: "power2.out", // Easing for smoother transition
@@ -190,22 +188,49 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
 
             // Start the circular motion at the new center
             if (dot === centerDot) {
-              startCircularMotion(
-                smallDots,
-                innerGroupCount,
-                outerGroupCount,
-                centerX,
-                newCenterY
-              );
+              startCircularMotion(smallDots, innerGroupCount, outerGroupCount, centerX, newCenterY);
+              
+              // Animate the red dot falling first
+              const redFallDuration = 4; // Adjusted duration for a slower fall
+              gsap.to(redDot, {
+                y: centerY + 20, // Move to the center + 20 pixels vertically
+                duration: redFallDuration, // Duration of the fall
+                ease: "power2.out",
+                onComplete: () => {
+                  // After the red dot finishes its fall, fade it out
+                  gsap.to(redDot, {
+                    opacity: 0,
+                    duration: 1,
+                  });
+                },
+              });
 
-              // Hier rufst du den Callback auf, um das renderChart sichtbar zu machen
-              if (callback) {
-                callback(); // rufe den Callback auf, wenn die Animation der centerDot abgeschlossen ist
-              }
+              // Animate the blue dot falling 0.5 seconds after the red dot
+              const blueFallDuration = 4; // Adjusted duration for a slower fall
+              gsap.delayedCall(0.7, () => {
+                gsap.to(blueDot, {
+                  y: centerY + 20, // Move to the center + 20 pixels vertically
+                  duration: blueFallDuration, // Duration of the fall
+                  ease: "power2.out",
+                  onComplete: () => {
+                    // After the blue dot finishes its fall, fade it out
+                    gsap.to(blueDot, {
+                      opacity: 0,
+                      duration: 1,
+                      onComplete: () => {
+                        // Call the callback function after both dots have faded out
+                        if (callback) {
+                          callback();
+                        }
+                      },
+                    });
+                  },
+                });
+              });
             }
           },
         });
       });
     }, moveUpDelay * 800); // Convert to milliseconds for setTimeout
-  }, 5000); // Total animation duration (initial animation + delay before move up)
+  }, 5000); // Total animation duration (initial animation + delay before move)
 }
