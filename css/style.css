@@ -47,7 +47,7 @@ h1 {
 	justify-content: center;
 	align-items: center;
 	opacity: 0; /* Standardmäßig unsichtbar */
-	transition: opacity 0.5s ease; /* Sanfte Übergangseffekte */
+	transition: opacity 0.4s ease; /* Sanfte Übergangseffekte */
 }
 
 .dot {
@@ -280,3 +280,27 @@ input[type="range"] {
 	padding:30px;
 	margin:0px;
 }
+.dot {
+	position: absolute;
+	border-radius: 50%;
+  }
+  
+  .red-dot {
+	background-color: red;
+	opacity: 0.7; /* Higher opacity for better blending */
+	/* Enhanced glow effect */
+	box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), 0 0 80px rgba(255, 0, 0, 0.5);
+  }
+  
+  .blue-dot {
+	background-color: #00DDFF;
+	opacity: 0.7; /* Higher opacity for better blending */
+	/* Enhanced glow effect */
+	box-shadow: 0 0 40px rgba(0, 221, 255, 0.8), 0 0 80px rgba(0, 221, 255, 0.5);
+  }
+  
+  
+  .center-dot {
+	background-color: white;
+  }
+  
