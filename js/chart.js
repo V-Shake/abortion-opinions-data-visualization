@@ -179,38 +179,43 @@ export function renderChart(radarData1, radarData0) {
         .attr("filter", "url(#whiteGlow)") // Apply the glow filter
         .attr("opacity", 0.01); // Adjust opacity of the glow
 
- // Draw the radar chart area for the datasets based on their lengths
-if (radarData0.length < radarData1.length) {
-    // Draw first dataset on top (radarData1)
-    svg.append("path")
-        .datum(coordinates0)
-        .attr("d", line)
-        .attr("stroke", colors.glowDataset0) // Glow stroke
-        .attr("fill", "url(#gradientDataset0)") // Fill with gradient
-        .attr("opacity", 0.6); // Set opacity for transparency
+ // Calculate total values for radarData0 and radarData1
+ const totalValue0 = radarData0.reduce((acc, d) => acc + d.value, 0);
+ const totalValue1 = radarData1.reduce((acc, d) => acc + d.value, 0);
 
-    svg.append("path")
-        .datum(coordinates1)
-        .attr("d", line)
-        .attr("stroke", colors.glowDataset1) // Glow stroke
-        .attr("fill", "url(#gradientDataset1)") // Fill with gradient
-        .attr("opacity", 0.6); // Set opacity for transparency
-} else {
-    // Draw second dataset on top (radarData0)
-    svg.append("path")
-        .datum(coordinates1)
-        .attr("d", line)
-        .attr("stroke", colors.glowDataset1) // Glow stroke
-        .attr("fill", "url(#gradientDataset1)") // Fill with gradient
-        .attr("opacity", 0.6); // Set opacity to 1 for the top dataset
+ // Draw the radar chart area for the datasets based on their total values
+ if (totalValue0 < totalValue1) {
+     // radarData0 is smaller, so draw it on top
+     svg.append("path")
+         .datum(coordinates1)
+         .attr("d", line)
+         .attr("stroke", colors.glowDataset1) // Glow stroke
+         .attr("fill", "url(#gradientDataset1)") // Fill with gradient
+         .attr("opacity", 0.6); // Set opacity for transparency
 
-    svg.append("path")
-        .datum(coordinates0)
-        .attr("d", line)
-        .attr("stroke", colors.glowDataset0) // Glow stroke
-        .attr("fill", "url(#gradientDataset0)") // Fill with gradient
-        .attr("opacity", 0.6); // Set opacity for transparency
-}
+     svg.append("path")
+         .datum(coordinates0)
+         .attr("d", line)
+         .attr("stroke", colors.glowDataset0) // Glow stroke
+         .attr("fill", "url(#gradientDataset0)") // Fill with gradient
+         .attr("opacity", 0.6); // Set opacity to 1 for the top dataset
+ } else {
+     // radarData1 is smaller, so draw it on top
+     svg.append("path")
+         .datum(coordinates0)
+         .attr("d", line)
+         .attr("stroke", colors.glowDataset0) // Glow stroke
+         .attr("fill", "url(#gradientDataset0)") // Fill with gradient
+         .attr("opacity", 0.6); // Set opacity for transparency
+
+     svg.append("path")
+         .datum(coordinates1)
+         .attr("d", line)
+         .attr("stroke", colors.glowDataset1) // Glow stroke
+         .attr("fill", "url(#gradientDataset1)") // Fill with gradient
+         .attr("opacity", 0.6); // Set opacity to 1 for the top dataset
+ }
+
 
     // Define the radius for calculating pixel-to-radian conversion
     const radius = 255; // Midpoint between the inner and outer radius of the purple band
