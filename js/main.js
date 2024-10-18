@@ -168,6 +168,35 @@ function groupByEducation(processedData) {
 	return educationCounts;
 }
 
+function normalizeCountsAlt(countsList) {
+	// Flatten all count values from the list of count objects into one array
+	const allCounts = countsList.flatMap(counts => Object.values(counts));
+	const maxCount = Math.max(...allCounts);
+
+	const minTick = 2;
+	const maxTick = 10;
+
+	if (maxCount === 0) {
+		// If maxCount is 0, return minTick for all keys in each counts object
+		return countsList.map(counts => 
+			Object.fromEntries(
+				Object.keys(counts).map((key) => [key, minTick])
+			)
+		);
+	}
+
+	// Normalize each counts object based on the maxCount
+	return countsList.map(counts => 
+		Object.fromEntries(
+			Object.entries(counts).map(([key, value]) => [
+				key,
+				(value / maxCount) * (maxTick - minTick) + minTick,
+			])
+		)
+	);
+}
+
+
 // Normalize counts to fit the radar chart's ticks (2-10)
 function normalizeCounts(counts1, counts0) {
 	const allCounts = Object.values(counts1).concat(Object.values(counts0));
@@ -189,6 +218,86 @@ function normalizeCounts(counts1, counts0) {
 		])
 	);
 }
+
+function updateChartByCategory(year, opinion) {
+	// List of categories to process
+	const categories = [
+		"abany",
+		"abdefect",
+		"abnomore",
+		"abhlth",
+		"abpoor",
+		"abrape",
+		"absingle",
+	];
+	// Prepare radar data for each category
+	const dataList = [];
+	const radarDataList = [];
+	const normalizedAgeCountsList = [];
+	const normalizedGenderCountsList = [];
+	const normalizedPartyCountsList = [];
+	const normalizedEducationCountsList = [];
+	// Iterate through each category
+	categories.forEach((category) => {
+		// Preprocess data for both category = "1" and category = "0" for the selected year
+		let processedData;
+		if (opinion == "support") {
+			processedData = preprocessDataForYear(data, year, "1", category);
+		} else {
+			processedData = preprocessDataForYear(data, year, "0", category);
+		}
+		dataList.push(processedData);
+		// Group the data
+		const ageCounts = groupByAge(processedData);
+		console.log(ageCounts);
+		const genderCounts = groupByGender(processedData);
+		const partyCounts = groupByParty(processedData);
+		const educationCounts = groupByEducation(processedData);
+
+		// Log the actual counts for both categories
+		console.log(`Age counts (${category} 0) for year ${year}:`, ageCounts);
+		console.log(`Gender counts (${category} 0) for year ${year}:`, genderCounts);
+		console.log(`Party counts (${category} 0) for year ${year}:`, partyCounts);
+		console.log(`Education counts (${category} 0) for year ${year}:`, educationCounts);
+
+		normalizedAgeCountsList.push(ageCounts);
+		normalizedGenderCountsList.push(genderCounts);
+		normalizedPartyCountsList.push(partyCounts);
+		normalizedEducationCountsList.push(educationCounts);
+	});
+	// Normalize the counts for radar chart
+	const normalizedAgeCounts = normalizeCountsAlt(normalizedAgeCountsList);
+	const normalizedGenderCounts = normalizeCountsAlt(normalizedGenderCountsList);
+	const normalizedPartyCounts = normalizeCountsAlt(normalizedPartyCountsList);
+	const normalizedEducationCounts = normalizeCountsAlt(normalizedEducationCountsList);
+	for (let i=0;i<dataList.length;i++) {
+		// Prepare radar data for this category (0)
+		console.log(normalizedAgeCounts);
+		const radarData = [
+			{ category: "18-29", value: normalizedAgeCounts[i]["18-29"] },
+			{ category: "30-59", value: normalizedAgeCounts[i]["30-59"] },
+			{ category: "60-89", value: normalizedAgeCounts[i]["60-89"] },
+			{ category: "Female", value: normalizedGenderCounts[i]["Female"] },
+			{ category: "Male", value: normalizedGenderCounts[i]["Male"] },
+			{ category: "Republican", value: normalizedPartyCounts[i]["Republican"] },
+			{ category: "Democrat", value: normalizedPartyCounts[i]["Democrat"] },
+			{ category: "Independent", value: normalizedPartyCounts[i]["Independent"] },
+			{ category: "Other", value: normalizedPartyCounts[i]["Other"] },
+			{ category: "0-9", value: normalizedEducationCounts[i]["0-9"] },
+			{ category: "10-15", value: normalizedEducationCounts[i]["10-15"] },
+			{ category: "16+", value: normalizedEducationCounts[i]["16+"] },
+		];
+
+		// Push both 1 and 0 data for each category
+		radarDataList.push(radarData);
+	}
+
+	// Clear previous chart and render the updated chart with all category data
+	d3.select("#renderer").select("svg").remove(); // Clear previous chart
+	renderChart(radarDataList,1,opinion); // Pass the radar data list to render function
+}
+
+
 function updateChart(year, option) {
 	// Preprocess data for both abany = "1" and abany = "0" for the selected year
 	const processedData1 = preprocessDataForYear(data, year, "1", option);
@@ -293,7 +402,9 @@ function updateChart(year, option) {
 	}, 8);*/
 
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
-	renderChart(radarData1, radarData0);
+	const radarDataList = [];
+	radarDataList.push(radarData1, radarData0);
+	renderChart(radarDataList,0,null);
 }
 
 updateChart(2018, option); // Start with the year 2018
@@ -319,15 +430,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Event listener for support and against elements
 document.querySelector(".against").addEventListener("click", () => {
-	currentFilterOption = "against";
+	const currentFilterOption = "against";
 	const selectedYear = parseInt(document.getElementById("year-slider").value);
-	updateChart(selectedYear, currentFilterOption);
+	updateChartByCategory(selectedYear, currentFilterOption);
 });
 
 document.querySelector(".support").addEventListener("click", () => {
-	currentFilterOption = "support";
+	const currentFilterOption = "support";
 	const selectedYear = parseInt(document.getElementById("year-slider").value);
-	updateChart(selectedYear, currentFilterOption);
+	updateChartByCategory(selectedYear, currentFilterOption);
 });
 
 // Call the function to create and design the slider

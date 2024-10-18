@@ -1,5 +1,5 @@
 // Function to render the radar chart
-export function renderChart(radarData1, radarData0) {
+export function renderChart(radarDataList,colorMode,opinion) {
     const width = 900;
     const height = 900;
     const centerX = width / 2;
@@ -83,7 +83,7 @@ export function renderChart(radarData1, radarData0) {
         .attr("stroke", "#2A2A2A") // Grey
         .attr("r", d => radialScale(d));  // Map tick values to radial distance
 
-    const subcategories = radarData1.map(d => d.category);
+    const subcategories = radarDataList[0].map(d => d.category);
     const numAxes = subcategories.length;
     const angleSlice = (Math.PI * 2) / numAxes;
 
@@ -160,9 +160,13 @@ export function renderChart(radarData1, radarData0) {
             return angleToCoord(angle, value);
         });
 
-    const coordinates0 = getCoordinates(radarData0);
-    const coordinates1 = getCoordinates(radarData1);
-
+    const coordinatesList = []; 
+    for (let i = 0; i < radarDataList.length; i++) {
+        const radarData = radarDataList[i];
+        const coordinates = getCoordinates(radarData);
+        coordinatesList.push(coordinates);  // Push the coordinates to the list
+    }
+    
     const line = d3
     .line()
     .curve(d3.curveCardinalClosed) // Smooth lines with closing curve
@@ -179,37 +183,38 @@ export function renderChart(radarData1, radarData0) {
         .attr("filter", "url(#whiteGlow)") // Apply the glow filter
         .attr("opacity", 0.01); // Adjust opacity of the glow
 
- // Draw the radar chart area for the datasets based on their lengths
-if (radarData0.length < radarData1.length) {
-    // Draw first dataset on top (radarData1)
+if (colorMode == 0){
+    console.log("use color mode 1");
     svg.append("path")
-        .datum(coordinates0)
+        .datum(coordinatesList[1])
         .attr("d", line)
         .attr("stroke", colors.glowDataset0) // Glow stroke
         .attr("fill", "url(#gradientDataset0)") // Fill with gradient
-        .attr("opacity", 0.6); // Set opacity for transparency
-
+        .attr("opacity", 0.5); // Set opacity for transparency
     svg.append("path")
-        .datum(coordinates1)
+        .datum(coordinatesList[0])
         .attr("d", line)
         .attr("stroke", colors.glowDataset1) // Glow stroke
         .attr("fill", "url(#gradientDataset1)") // Fill with gradient
-        .attr("opacity", 0.6); // Set opacity for transparency
+        .attr("opacity", 0.5); // Set opacity for transparency   
 } else {
-    // Draw second dataset on top (radarData0)
-    svg.append("path")
-        .datum(coordinates1)
-        .attr("d", line)
-        .attr("stroke", colors.glowDataset1) // Glow stroke
-        .attr("fill", "url(#gradientDataset1)") // Fill with gradient
-        .attr("opacity", 0.6); // Set opacity to 1 for the top dataset
-
-    svg.append("path")
-        .datum(coordinates0)
-        .attr("d", line)
-        .attr("stroke", colors.glowDataset0) // Glow stroke
-        .attr("fill", "url(#gradientDataset0)") // Fill with gradient
-        .attr("opacity", 0.6); // Set opacity for transparency
+    for (let i = 0; i < coordinatesList.length; i++) {
+        if (opinion == "support") {
+            svg.append("path")
+            .datum(coordinatesList[i])
+            .attr("d", line)
+            .attr("stroke", colors.glowDataset1) // Glow stroke
+            .attr("fill", "url(#gradientDataset1)") // Fill with gradient
+            .attr("opacity", 0.15); // Set opacity for transparency
+        } else {
+            svg.append("path")
+                .datum(coordinatesList[i])
+                .attr("d", line)
+                .attr("stroke", colors.glowDataset0) // Glow stroke
+                .attr("fill", "url(#gradientDataset0)") // Fill with gradient
+                .attr("opacity", 0.15); // Set opacity for transparency
+        }
+    }
 }
 
     // Define the radius for calculating pixel-to-radian conversion
