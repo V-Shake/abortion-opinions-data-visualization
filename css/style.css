@@ -326,6 +326,8 @@ input[type="range"] {
 	left: 0;
 	background-color: black; /* Optional: Add a background color */
 	z-index: 1000; /* Ensure it appears above other elements */
+	animation: background-fade-out 3s ease 6s forwards,
+		remove-background 3s ease 9s forwards; /* Fade out the background and then remove it */
 }
 
 .at-item {
@@ -363,6 +365,26 @@ input[type="range"] {
 	}
 	100% {
 		opacity: 0;
+	}
+}
+
+@keyframes background-fade-out {
+	0% {
+		background-color: black;
+		opacity: 1;
+	}
+	100% {
+		background-color: transparent;
+		opacity: 0;
+	}
+}
+
+@keyframes remove-background {
+	0% {
+		background-color: transparent;
+	}
+	100% {
+		background-color: transparent;
 	}
 }
 
