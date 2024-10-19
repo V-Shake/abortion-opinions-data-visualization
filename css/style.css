@@ -281,26 +281,30 @@ input[type="range"] {
 	margin:0px;
 }
 .dot {
-	position: absolute;
-	border-radius: 50%;
-  }
-  
-  .red-dot {
-	background-color: red;
-	opacity: 0.7; /* Higher opacity for better blending */
-	/* Enhanced glow effect */
-	box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), 0 0 80px rgba(255, 0, 0, 0.5);
-  }
-  
-  .blue-dot {
-	background-color: #00DDFF;
-	opacity: 0.7; /* Higher opacity for better blending */
-	/* Enhanced glow effect */
-	box-shadow: 0 0 40px rgba(0, 221, 255, 0.8), 0 0 80px rgba(0, 221, 255, 0.5);
-  }
-  
-  
-  .center-dot {
-	background-color: white;
-  }
-  
+  position: absolute;
+  border-radius: 50%;
+}
+
+.red-dot {
+  background-color: red;
+  opacity: 1; /* Higher opacity for better blending */
+  /* Intense glow effect with more outer glow */
+  box-shadow: 0px 0px 0.5rem 0.5px rgba(255, 0, 0, 1),
+    /* Inner glow */ 0px 0px 1rem 1px rgba(255, 0, 0, 0.7),
+    /* Middle glow */ 0px 0px 2rem 1px rgba(255, 0, 0, 0.5),
+    /* Increased outer glow */ 0px 0px 3rem 1px rgba(255, 0, 0, 0.3); /* Additional outer glow */
+}
+
+.blue-dot {
+  background-color: #00ddff;
+  opacity: 1; /* Higher opacity for better blending */
+  /* Intense glow effect with more outer glow */
+  box-shadow: 0px 0px 0.5rem 0.5px rgba(0, 221, 255, 1),
+    /* Inner glow */ 0px 0px 1rem 1px rgba(0, 221, 255, 0.7),
+    /* Middle glow */ 0px 0px 2rem 1px rgba(0, 221, 255, 0.5),
+    /* Increased outer glow */ 0px 0px 3rem 1px rgba(0, 221, 255, 0.3); /* Additional outer glow */
+}
+
+.center-dot {
+  background-color: white;
+}

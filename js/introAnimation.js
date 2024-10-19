@@ -21,7 +21,13 @@ function getCircularPosition(centerX, centerY, radius, angle) {
 }
 
 // Animation for continuous circular motion
-function startCircularMotion(smallDots, innerGroupCount, outerGroupCount, centerX, centerY) {
+function startCircularMotion(
+  smallDots,
+  innerGroupCount,
+  outerGroupCount,
+  centerX,
+  centerY
+) {
   // Store initial angles and radii for each dot
   const angles = smallDots.map(() => Math.random() * Math.PI * 2);
 
@@ -38,18 +44,30 @@ function startCircularMotion(smallDots, innerGroupCount, outerGroupCount, center
   const animateDots = () => {
     smallDots.forEach((dot, index) => {
       const radius = radii[index]; // Get the defined radius for this dot
-      const { x, y } = getCircularPosition(centerX, centerY, radius, angles[index]);
+      const { x, y } = getCircularPosition(
+        centerX,
+        centerY,
+        radius,
+        angles[index]
+      );
 
       // Update position and angle for the next iteration
       angles[index] += angleIncrements[index]; // Increment the angle with the dot-specific speed
 
-      // Update the dot's position
+      // Get current position of the dot
+      const currentX = parseFloat(dot.style.left);
+      const currentY = parseFloat(dot.style.top);
+
+      // Use GSAP for smooth position update
       gsap.to(dot, {
-        x: x - parseFloat(dot.style.left),
-        y: y - parseFloat(dot.style.top),
-        duration: 0.1,
-        ease: "none",
-      }); // Smoothly update the dot position
+        x: x - currentX,
+        y: y - currentY,
+        duration: 0.25, // Shortened duration for quicker response
+        ease: "power2.inOut", // Smooth easing function for natural movement
+        onUpdate: () => {
+          // Optional: additional adjustments can be done here
+        },
+      });
     });
 
     requestAnimationFrame(animateDots); // Call the animation function recursively
@@ -137,7 +155,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
   }
 
   // Set lower opacity for the first 400 small dots
-  smallDots.slice(0, 400).forEach(dot => {
+  smallDots.slice(0, 400).forEach((dot) => {
     dot.style.opacity = 0.2; // Set lower opacity (adjust as needed)
   });
 
