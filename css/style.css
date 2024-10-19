@@ -314,3 +314,21 @@ input[type="range"] {
 .center-dot {
 	background-color: white;
 }
+
+.scale-up {
+	transform-origin: center center; /* Scale from the center */
+	animation: scale-up-center 1s ease; /* Use 'forwards' to retain the final state */
+}
+
+@keyframes scale-up-center {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.gridline {
+    transition: opacity 1s linear; /* Smooth opacity transition */
+}
