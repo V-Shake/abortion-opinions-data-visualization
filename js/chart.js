@@ -229,39 +229,62 @@ const getCoordinates = (data) =>
         .attr("filter", "url(#whiteGlow)") // Apply the glow filter
         .attr("opacity", 0.01); // Adjust opacity of the glow
 
-if (colorMode == 0){
-    console.log("use color mode 1");
-    svg.append("path")
-        .datum(coordinatesList[1])
-        .attr("d", line)
-        .attr("stroke", colors.glowDataset0) // Glow stroke
-        .attr("fill", "url(#gradientDataset0)") // Fill with gradient
-        .attr("opacity", 0.5); // Set opacity for transparency
-    svg.append("path")
-        .datum(coordinatesList[0])
-        .attr("d", line)
-        .attr("stroke", colors.glowDataset1) // Glow stroke
-        .attr("fill", "url(#gradientDataset1)") // Fill with gradient
-        .attr("opacity", 0.5); // Set opacity for transparency   
-} else {
-    for (let i = 0; i < coordinatesList.length; i++) {
-        if (opinion == "support") {
-            svg.append("path")
-            .datum(coordinatesList[i])
-            .attr("d", line)
-            .attr("stroke", colors.glowDataset1) // Glow stroke
-            .attr("fill", "url(#gradientDataset1)") // Fill with gradient
-            .attr("opacity", 0.15); // Set opacity for transparency
-        } else {
-            svg.append("path")
-                .datum(coordinatesList[i])
-                .attr("d", line)
-                .attr("stroke", colors.glowDataset0) // Glow stroke
-                .attr("fill", "url(#gradientDataset0)") // Fill with gradient
-                .attr("opacity", 0.15); // Set opacity for transparency
-        }
-    }
-}
+            // Calculate the area of a radar polygon
+            function calculateArea(coordinates) {
+                let area = 0;
+                const n = coordinates.length;
+                for (let i = 0; i < n; i++) {
+                    const j = (i + 1) % n;
+                    area += coordinates[i].x * coordinates[j].y;
+                    area -= coordinates[j].x * coordinates[i].y;
+                }
+                return Math.abs(area) / 2;
+            }
+        
+            // Get coordinates for the radar chart
+         
+        
+            // Calculate areas and store with original index
+            const coordinatesWithAreas = radarDataList.map((radarData, index) => {
+                const coordinates = getCoordinates(radarData);
+                const area = calculateArea(coordinates);
+                return { index, coordinates, area };
+            });
+        
+            // Sort by area in descending order (largest first)
+            coordinatesWithAreas.sort((a, b) => b.area - a.area);
+        
+            // Render the paths in order from largest to smallest
+            if (colorMode == 0) {
+                // Render the two blobs
+                coordinatesWithAreas.forEach((item) => {
+                    const isDataset1 = item.index === 0;
+                    const color = isDataset1 ? colors.dataset1 : colors.dataset0;
+                    const glowColor = isDataset1 ? colors.glowDataset1 : colors.glowDataset0;
+                    const gradientId = isDataset1 ? "gradientDataset1" : "gradientDataset0";
+        
+                    svg.append("path")
+                        .datum(item.coordinates)
+                        .attr("d", line)
+                        .attr("stroke", glowColor)
+                        .attr("fill", `url(#${gradientId})`)
+                        .attr("opacity", 0.5);
+                });
+            } else {
+                // Render all categories
+                coordinatesWithAreas.forEach((item) => {
+                    const color = opinion === "support" ? colors.dataset1 : colors.dataset0;
+                    const glowColor = opinion === "support" ? colors.glowDataset1 : colors.glowDataset0;
+                    const gradientId = opinion === "support" ? "gradientDataset1" : "gradientDataset0";
+        
+                    svg.append("path")
+                        .datum(item.coordinates)
+                        .attr("d", line)
+                        .attr("stroke", glowColor)
+                        .attr("fill", `url(#${gradientId})`)
+                        .attr("opacity", 0.15);
+                });
+            }
 
     // Define the radius for calculating pixel-to-radian conversion
     const radius = 255; // Midpoint between the inner and outer radius of the purple band
@@ -306,6 +329,7 @@ if (colorMode == 0){
         .outerRadius(outerRadius) // Use the new outer radius
         .startAngle(angle18_30 - angularGap) // Start angle for "18-30"
         .endAngle(angle61_89 + angularGap); // End angle for "61-89"
+        
     svg.append("path")
         .attr("d", purpleArcForGender())
         .attr("fill", "white")
