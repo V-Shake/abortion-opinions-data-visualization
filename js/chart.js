@@ -105,59 +105,82 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         'Education': [9, 10, 11] // 0-9, 10-15, 16+
     };
 
-    // Create axes and subcategory labels
-    subcategories.forEach((subcat, i) => {
-        const angle = angleSlice * i - Math.PI / 2;
-        const lineCoord = angleToCoord(angle, maxValue);  // Full length of the axis to maxValue
+// Create the tooltip element (grey label)
+const tooltip = d3.select("body").append("div")
+    .style("position", "absolute")
+    .style("background-color", "grey")
+    .style("color", "white")
+    .style("padding", "5px")
+    .style("border-radius", "5px")
+    .style("font-size", "12px")
+    .style("visibility", "hidden");  // Initially hidden
 
-        // Create the axis lines
-        svg.append("line")
-            .attr("x1", centerX)
-            .attr("y1", centerY)
-            .attr("x2", lineCoord.x)
-            .attr("y2", lineCoord.y)
-            .attr("stroke", "#2A2A2A") // Grey
-            .attr("stroke-width", 1);
+// Create axes and subcategory labels
+subcategories.forEach((subcat, i) => {
+    const angle = angleSlice * i - Math.PI / 2;
+    const lineCoord = angleToCoord(angle, maxValue);  // Full length of the axis to maxValue
 
-        // Create the labels for subcategories
-        let labelOffset;
-        if (['0-9', '10-15', '16+', '18-29', '30-59', '60-89'].includes(subcat)) {
-            // Bring these specific categories closer to the graph
-            labelOffset = maxValue + 0.6;  // Closer offset for upper categories
-        } else {
-            // For other categories, use a standard offset
-            labelOffset = maxValue + 0.8;  // Further offset for other categories
-        }
+    // Create the axis lines
+    svg.append("line")
+        .attr("x1", centerX)
+        .attr("y1", centerY)
+        .attr("x2", lineCoord.x)
+        .attr("y2", lineCoord.y)
+        .attr("stroke", "#2A2A2A") // Grey
+        .attr("stroke-width", 1);
 
-        const labelCoord = angleToCoord(angle, labelOffset);  // Adjusted the offset based on the category
+    // Create the labels for subcategories
+    let labelOffset;
+    if (['0-9', '10-15', '16+', '18-29', '30-59', '60-89'].includes(subcat)) {
+        // Bring these specific categories closer to the graph
+        labelOffset = maxValue + 0.6;  // Closer offset for upper categories
+    } else {
+        // For other categories, use a standard offset
+        labelOffset = maxValue + 0.8;  // Further offset for other categories
+    }
 
-        // Adjust rotation based on category
-        let rotationAngle;
-        switch (subcat) {
-            case '0-9':
-            case '10-15':
-            case '16+':
-            case '18-29':
-            case '30-59':
-            case '60-89':
-                // These categories should be upright
-                rotationAngle = (angle * 180 / Math.PI) + 90;  // Standard rotation
-                break;
-            default:
-                // Default rotation for other categories
-                rotationAngle = (angle * 180 / Math.PI) + 90 + 180;  // Flip for other categories
-        }
+    const labelCoord = angleToCoord(angle, labelOffset);  // Adjusted the offset based on the category
 
-        // Create the text element with the appropriate rotation
-        svg.append("text")
-            .attr("x", labelCoord.x)
-            .attr("y", labelCoord.y)
-            .attr("text-anchor", "middle")
-            .attr("font-size", "10px")
-            .attr("fill", colors.subcategoryText) // Set color to grey
-            .attr("transform", `rotate(${rotationAngle}, ${labelCoord.x}, ${labelCoord.y})`) // Apply rotation
-            .text(subcat);
-    });
+    // Adjust rotation based on category
+    let rotationAngle;
+    switch (subcat) {
+        case '0-9':
+        case '10-15':
+        case '16+':
+        case '18-29':
+        case '30-59':
+        case '60-89':
+            // These categories should be upright
+            rotationAngle = (angle * 180 / Math.PI) + 90;  // Standard rotation
+            break;
+        default:
+            // Default rotation for other categories
+            rotationAngle = (angle * 180 / Math.PI) + 90 + 180;  // Flip for other categories
+    }
+
+    // Create the text element with hover functionality
+    svg.append("text")
+        .attr("x", labelCoord.x)
+        .attr("y", labelCoord.y)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "10px")
+        .attr("fill", colors.subcategoryText) // Set color to grey
+        .attr("transform", `rotate(${rotationAngle}, ${labelCoord.x}, ${labelCoord.y})`) // Apply rotation
+        .text(subcat)
+        .style("cursor", "default")  // Set the cursor to pointer
+        .on("mouseover", () => {
+            tooltip.style("visibility", "visible").text(subcat);  // Show tooltip with subcategory name
+        })
+        .on("mousemove", (event) => {
+            tooltip.style("top", (event.pageY + 10) + "px")  // Offset from mouse Y position
+                .style("left", (event.pageX + 10) + "px");   // Offset from mouse X position
+        })
+        .on("mouseout", () => {
+            tooltip.style("visibility", "hidden");  // Hide tooltip when not hovering
+        });
+});
+
+
 
     // Add main category labels
     Object.keys(mainCategoryPositions).forEach(category => {
