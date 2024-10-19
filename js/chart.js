@@ -1,5 +1,5 @@
 // Function to render the radar chart
-export function renderChart(radarDataList, colorMode, opinion) {
+export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = true) {
     const width = 900;
     const height = 900;
     const centerX = width / 2;
@@ -74,7 +74,7 @@ export function renderChart(radarDataList, colorMode, opinion) {
         .range([0, maxRadius]);
 
     // Draw the gridlines (circles) with animation
-    svg.selectAll("circle.gridline")
+    const gridlines = svg.selectAll("circle.gridline")
         .data(ticks)
         .join("circle")
         .attr("class", "gridline") // Add class for potential styling
@@ -83,12 +83,15 @@ export function renderChart(radarDataList, colorMode, opinion) {
         .attr("fill", "none")
         .attr("stroke", "#2A2A2A") // Grey
         .attr("r", d => radialScale(d))  // Map tick values to radial distance
-        .attr("opacity", 0) // Start hidden
-        .transition()
-        .duration(1000) // Animation duration
-        .delay((d, i) => i * 200) // Stagger the animation for each circle
-        .attr("opacity", 1); // Fade in
+        .attr("opacity", shouldAnimate ? 0 : 1); // Start hidden if animating
 
+    if (shouldAnimate) {
+        gridlines.transition()
+            .duration(1000) // Animation duration
+            .delay((d, i) => i * 200) // Stagger the animation for each circle
+            .attr("opacity", 1); // Fade in
+    }
+    
     const subcategories = radarDataList[0].map(d => d.category);
     const numAxes = subcategories.length;
     const angleSlice = (Math.PI * 2) / numAxes;
@@ -257,16 +260,8 @@ export function renderChart(radarDataList, colorMode, opinion) {
     // Sort by area in descending order (largest first)
     coordinatesWithAreas.sort((a, b) => b.area - a.area);
 
-    // // Define the scale-up animation function
-    // function scaleUpAnimation(startingCoordinates, targetCoordinates) {
-    //     const interpolate = d3.interpolate(startingCoordinates, targetCoordinates);
-    //     return function (t) {
-    //         return line(interpolate(t));
-    //     }
-    // }
-
-    // Render the paths in order from largest to smallest with animation
-    if (colorMode == 0) {
+     // Render the paths in order from largest to smallest with animation
+     if (colorMode == 0) {
         // Render the two blobs
         coordinatesWithAreas.forEach((item) => {
             const isDataset1 = item.index === 0;
@@ -280,10 +275,10 @@ export function renderChart(radarDataList, colorMode, opinion) {
                 .attr("stroke", glowColor)
                 .attr("fill", `url(#${gradientId})`)
                 .attr("opacity", 0.5)
-                .attr("class", "scale-up") // Add CSS class for scaling
+                .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
                 .transition()
-                .delay(1000)
-                .duration(2000) // Animation duration in milliseconds
+                .delay(shouldAnimate ? 1000 : 0)
+                .duration(shouldAnimate ? 2000 : 0) // Animation duration in milliseconds
                 .attrTween("d", function () {
                     return function (t) {
                         const interpolatedCoordinates = item.coordinates.map(coord => ({
@@ -307,10 +302,10 @@ export function renderChart(radarDataList, colorMode, opinion) {
                 .attr("stroke", glowColor)
                 .attr("fill", `url(#${gradientId})`)
                 .attr("opacity", 0.15)
-                .attr("class", "scale-up") // Add CSS class for scaling
+                .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
                 .transition()
-                .delay(1000)
-                .duration(2000) // Animation duration in milliseconds
+                .delay(shouldAnimate ? 1000 : 0)
+                .duration(shouldAnimate ? 2000 : 0) // Animation duration in milliseconds
                 .attrTween("d", function () {
                     return function (t) {
                         const interpolatedCoordinates = item.coordinates.map(coord => ({

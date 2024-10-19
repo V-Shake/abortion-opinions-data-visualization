@@ -43,7 +43,7 @@ export function initializePlayButton(
 					yearSlider.value = currentYear; // Update the slider value
 					document.getElementById("selected-year").innerText =
 						currentYear; // Update the displayed year
-					updateChartFunction(currentYear); // Call the updateChart function with the current year
+					updateChartFunction(currentYear, false); // Call the updateChart function with the current year and no animation
 				}
 				currentYear =
 					availableYears.find((year) => year > currentYear) ||
