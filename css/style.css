@@ -314,3 +314,42 @@ input[type="range"] {
 .center-dot {
 	background-color: white;
 }
+
+.at-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh; /* Full viewport height */
+	width: 100vw; /* Full viewport width */
+	position: fixed; /* Fix the position to cover the entire screen */
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.8); /* Optional: Add a background color */
+	z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.at-item {
+	color: #3079ed;
+	font-weight: bold;
+	font-size: 3em;
+	opacity: 0; /* Start with opacity 0 */
+	filter: blur(10px); /* Start with blur */
+	animation-name: focus-in-contract;
+	animation-duration: 1s;
+	animation-timing-function: linear;
+	animation-delay: 0s;
+	animation-iteration-count: 1;
+	animation-direction: normal;
+	animation-fill-mode: forwards; /* Keep the final state */
+}
+
+@keyframes focus-in-contract {
+	0% {
+		filter: blur(10px);
+		opacity: 0;
+	}
+	100% {
+		filter: blur(0);
+		opacity: 1;
+	}
+}

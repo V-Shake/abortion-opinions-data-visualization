@@ -4,6 +4,7 @@ import { initIntroAnimation } from "./introAnimation.js";
 import { initializePlayButton } from "./playButton.js"; // Import the play button logic
 import { createDropdownMenu } from "./menu.js"; // Import the dropdown menu function
 import { createAndDesignSlider } from "./slider.js";
+import { startIntroAnimation } from "./Intro.js"; // Import the intro animation function
 
 let option = "abany";
 
@@ -26,39 +27,43 @@ function preprocessDataForYear(data, year, optionValue, option) {
 			break;
 		case "abdefect":
 			filteredData = data.filter(
-				(person) => person.year === year && person.abdefect === optionValue
+				(person) =>
+					person.year === year && person.abdefect === optionValue
 			);
 			break;
 		case "abnomore":
 			filteredData = data.filter(
-				(person) => person.year === year && person.abnomore === optionValue
+				(person) =>
+					person.year === year && person.abnomore === optionValue
 			);
 			break;
 		case "abhlth":
 			filteredData = data.filter(
-				(person) => person.year === year && person.abhlth === optionValue
+				(person) =>
+					person.year === year && person.abhlth === optionValue
 			);
 			break;
 		case "abpoor":
 			filteredData = data.filter(
-				(person) => person.year === year && person.abpoor === optionValue
+				(person) =>
+					person.year === year && person.abpoor === optionValue
 			);
 			break;
 		case "abrape":
 			filteredData = data.filter(
-				(person) => person.year === year && person.abrape === optionValue
+				(person) =>
+					person.year === year && person.abrape === optionValue
 			);
 			break;
 		case "absingle":
 			filteredData = data.filter(
-				(person) => person.year === year && person.absingle === optionValue
+				(person) =>
+					person.year === year && person.absingle === optionValue
 			);
 			break;
 		default:
 			break;
 	}
-
-
 
 	return filteredData.map((person) => {
 		let ageGroup;
@@ -170,7 +175,7 @@ function groupByEducation(processedData) {
 
 function normalizeCountsAlt(countsList) {
 	// Flatten all count values from the list of count objects into one array
-	const allCounts = countsList.flatMap(counts => Object.values(counts));
+	const allCounts = countsList.flatMap((counts) => Object.values(counts));
 	const maxCount = Math.max(...allCounts);
 
 	const minTick = 2;
@@ -178,15 +183,13 @@ function normalizeCountsAlt(countsList) {
 
 	if (maxCount === 0) {
 		// If maxCount is 0, return minTick for all keys in each counts object
-		return countsList.map(counts => 
-			Object.fromEntries(
-				Object.keys(counts).map((key) => [key, minTick])
-			)
+		return countsList.map((counts) =>
+			Object.fromEntries(Object.keys(counts).map((key) => [key, minTick]))
 		);
 	}
 
 	// Normalize each counts object based on the maxCount
-	return countsList.map(counts => 
+	return countsList.map((counts) =>
 		Object.fromEntries(
 			Object.entries(counts).map(([key, value]) => [
 				key,
@@ -195,7 +198,6 @@ function normalizeCountsAlt(countsList) {
 		)
 	);
 }
-
 
 // Normalize counts to fit the radar chart's ticks (2-10)
 function normalizeCounts(counts1, counts0) {
@@ -256,9 +258,18 @@ function updateChartByCategory(year, opinion) {
 
 		// Log the actual counts for both categories
 		console.log(`Age counts (${category} 0) for year ${year}:`, ageCounts);
-		console.log(`Gender counts (${category} 0) for year ${year}:`, genderCounts);
-		console.log(`Party counts (${category} 0) for year ${year}:`, partyCounts);
-		console.log(`Education counts (${category} 0) for year ${year}:`, educationCounts);
+		console.log(
+			`Gender counts (${category} 0) for year ${year}:`,
+			genderCounts
+		);
+		console.log(
+			`Party counts (${category} 0) for year ${year}:`,
+			partyCounts
+		);
+		console.log(
+			`Education counts (${category} 0) for year ${year}:`,
+			educationCounts
+		);
 
 		normalizedAgeCountsList.push(ageCounts);
 		normalizedGenderCountsList.push(genderCounts);
@@ -267,10 +278,14 @@ function updateChartByCategory(year, opinion) {
 	});
 	// Normalize the counts for radar chart
 	const normalizedAgeCounts = normalizeCountsAlt(normalizedAgeCountsList);
-	const normalizedGenderCounts = normalizeCountsAlt(normalizedGenderCountsList);
+	const normalizedGenderCounts = normalizeCountsAlt(
+		normalizedGenderCountsList
+	);
 	const normalizedPartyCounts = normalizeCountsAlt(normalizedPartyCountsList);
-	const normalizedEducationCounts = normalizeCountsAlt(normalizedEducationCountsList);
-	for (let i=0;i<dataList.length;i++) {
+	const normalizedEducationCounts = normalizeCountsAlt(
+		normalizedEducationCountsList
+	);
+	for (let i = 0; i < dataList.length; i++) {
 		// Prepare radar data for this category (0)
 		console.log(normalizedAgeCounts);
 		const radarData = [
@@ -279,9 +294,18 @@ function updateChartByCategory(year, opinion) {
 			{ category: "60-89", value: normalizedAgeCounts[i]["60-89"] },
 			{ category: "Female", value: normalizedGenderCounts[i]["Female"] },
 			{ category: "Male", value: normalizedGenderCounts[i]["Male"] },
-			{ category: "Republican", value: normalizedPartyCounts[i]["Republican"] },
-			{ category: "Democrat", value: normalizedPartyCounts[i]["Democrat"] },
-			{ category: "Independent", value: normalizedPartyCounts[i]["Independent"] },
+			{
+				category: "Republican",
+				value: normalizedPartyCounts[i]["Republican"],
+			},
+			{
+				category: "Democrat",
+				value: normalizedPartyCounts[i]["Democrat"],
+			},
+			{
+				category: "Independent",
+				value: normalizedPartyCounts[i]["Independent"],
+			},
 			{ category: "Other", value: normalizedPartyCounts[i]["Other"] },
 			{ category: "0-9", value: normalizedEducationCounts[i]["0-9"] },
 			{ category: "10-15", value: normalizedEducationCounts[i]["10-15"] },
@@ -294,9 +318,8 @@ function updateChartByCategory(year, opinion) {
 
 	// Clear previous chart and render the updated chart with all category data
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
-	renderChart(radarDataList,1,opinion); // Pass the radar data list to render function
+	renderChart(radarDataList, 1, opinion); // Pass the radar data list to render function
 }
-
 
 function updateChart(year, option) {
 	// Preprocess data for both abany = "1" and abany = "0" for the selected year
@@ -404,12 +427,13 @@ function updateChart(year, option) {
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
 	const radarDataList = [];
 	radarDataList.push(radarData1, radarData0);
-	renderChart(radarDataList,0,null);
+	renderChart(radarDataList, 0, null);
 }
 
 updateChart(2018, option); // Start with the year 2018
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+	await startIntroAnimation(); // Start the intro animation
 	// Initialisiere die Animation
 	initIntroAnimation(750, 200, () => {
 		const renderChart = document.getElementById("renderChart");
@@ -425,7 +449,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
 	initializePlayButton("year-slider", (year) => updateChart(year, option));
-
 });
 
 // Event listener for support and against elements
@@ -450,4 +473,3 @@ slider.addEventListener("input", function (e) {
 	document.getElementById("selected-year").innerText = selectedYear; // Update display
 	updateChart(selectedYear, option); // Pass the selected year to updateChart
 });
-
