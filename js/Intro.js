@@ -17,6 +17,6 @@ export function startIntroAnimation() {
 		setTimeout(() => {
 			document.body.removeChild(container);
 			resolve();
-		}, 4000); // 1 second for animation + 3 seconds wait time
+		}, 6000); // 1 second for animation + 3 seconds wait time
 	});
 }

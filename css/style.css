@@ -324,7 +324,7 @@ input[type="range"] {
 	position: fixed; /* Fix the position to cover the entire screen */
 	top: 0;
 	left: 0;
-	background-color: rgba(0, 0, 0, 0.8); /* Optional: Add a background color */
+	background-color: black; /* Optional: Add a background color */
 	z-index: 1000; /* Ensure it appears above other elements */
 }
 
@@ -335,12 +335,15 @@ input[type="range"] {
 	opacity: 0; /* Start with opacity 0 */
 	filter: blur(10px); /* Start with blur */
 	animation-name: focus-in-contract;
-	animation-duration: 1s;
+	animation-duration: 3s;
 	animation-timing-function: linear;
 	animation-delay: 0s;
 	animation-iteration-count: 1;
 	animation-direction: normal;
 	animation-fill-mode: forwards; /* Keep the final state */
+	animation: focus-in-contract 3s linear 0s 1 forwards,
+		fade-out 3s ease 3s 1 forwards;
+	/* First animation: focus-in-contract (3s), then fade-out (3s) */
 }
 
 @keyframes focus-in-contract {
@@ -351,6 +354,15 @@ input[type="range"] {
 	100% {
 		filter: blur(0);
 		opacity: 1;
+	}
+}
+
+@keyframes fade-out {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
 	}
 }
 
