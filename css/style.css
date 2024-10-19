@@ -405,3 +405,23 @@ input[type="range"] {
 .gridline {
 	transition: opacity 1s linear; /* Smooth opacity transition */
 }
+
+#toggle-view-mode {
+	position: absolute;
+    cursor: pointer;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    background-color: #353738;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: "LTUnivers 430 BasicReg", Helvetica;
+	z-index: 1000;
+}
+
+#toggle-view-mode:hover {
+    background-color: rgb(122, 122, 122);
+}

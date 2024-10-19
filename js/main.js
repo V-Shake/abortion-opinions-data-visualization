@@ -433,6 +433,21 @@ function updateChart(year, option, shouldAnimate = true) {
 updateChart(2018, option); // Start with the year 2018
 
 document.addEventListener("DOMContentLoaded", async () => {
+
+	const toggleViewModeButton = document.createElement("button");
+	toggleViewModeButton.id = "toggle-view-mode";
+	toggleViewModeButton.innerText = "view support vs. against";
+	document.body.insertBefore(toggleViewModeButton, document.body.firstChild);
+
+	let viewMode = "view support vs. against"; // Initial view mode
+
+	toggleViewModeButton.addEventListener("click", () => {
+		viewMode = "view support vs. against";
+		option = "abany"; // Set the option to "abany"
+		document.getElementById("dropdown-container").style.display = "block";
+		updateChart(2018, option); // Update the chart with the default option
+	});
+
 	await startIntroAnimation(); // Start the intro animation
 	// Initialisiere die Animation
 	initIntroAnimation(750, 200, () => {
@@ -440,12 +455,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 		renderChart.style.opacity = "1"; // Mache den renderChart sichtbar
 		renderChart.style.display = "flex"; // Stelle sicher, dass es im Flex-Container bleibt
 
-		// Create the dropdown menu and pass the setGlobalOption function
-		createDropdownMenu(setGlobalOption);
-
 		// Optional: Chart aktualisieren
 		updateChart(2018, option);
 	});
+
+	// Create the dropdown menu and pass the setGlobalOption function
+	createDropdownMenu(setGlobalOption);
 
 	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
 	initializePlayButton("year-slider", (year) => updateChart(year, option, false));
@@ -453,15 +468,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Event listener for support and against elements
 document.querySelector(".against").addEventListener("click", () => {
-	const currentFilterOption = "against";
-	const selectedYear = parseInt(document.getElementById("year-slider").value);
-	updateChartByCategory(selectedYear, currentFilterOption);
+    const currentFilterOption = "against";
+    const selectedYear = parseInt(document.getElementById("year-slider").value);
+    updateChartByCategory(selectedYear, currentFilterOption);
+    document.getElementById("dropdown-container").style.display = "none";
 });
 
 document.querySelector(".support").addEventListener("click", () => {
-	const currentFilterOption = "support";
-	const selectedYear = parseInt(document.getElementById("year-slider").value);
-	updateChartByCategory(selectedYear, currentFilterOption);
+    const currentFilterOption = "support";
+    const selectedYear = parseInt(document.getElementById("year-slider").value);
+    updateChartByCategory(selectedYear, currentFilterOption);
+    document.getElementById("dropdown-container").style.display = "none";
 });
 
 // // Call the function to create and design the slider
