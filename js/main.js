@@ -464,12 +464,12 @@ document.querySelector(".support").addEventListener("click", () => {
 	updateChartByCategory(selectedYear, currentFilterOption);
 });
 
-// Call the function to create and design the slider
+// // Call the function to create and design the slider
 const slider = createAndDesignSlider();
 
 // Event listener for the year slider to update the chart
 slider.addEventListener("input", function (e) {
 	const selectedYear = parseInt(e.target.value);
 	document.getElementById("selected-year").innerText = selectedYear; // Update display
-	updateChart(selectedYear, option); // Pass the selected year to updateChart
+	updateChart(selectedYear, option, false); // Pass the selected year to updateChart
 });

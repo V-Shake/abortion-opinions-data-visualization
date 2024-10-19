@@ -55,7 +55,7 @@ export function createDropdownMenu(setGlobalOption) {
 			// Update the global option and the dropdown button display
 			setGlobalOption(selectedOption);
 			dropdownButton.innerHTML = `${element} <span class="arrow">&#9662;</span>`; // Update button display
-			updateChart(2018, option); // Call updateChart with the new selected option
+			updateChart(2018, selectedOption); // Call updateChart with the new selected option
 		});
 		dropdownContent.appendChild(optionElement);
 	});
