@@ -221,7 +221,7 @@ function normalizeCounts(counts1, counts0) {
 	);
 }
 
-function updateChartByCategory(year, opinion) {
+function updateChartByCategory(year, opinion, shouldAnimate = true) {
 	// List of categories to process
 	const categories = [
 		"abany",
@@ -318,10 +318,10 @@ function updateChartByCategory(year, opinion) {
 
 	// Clear previous chart and render the updated chart with all category data
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
-	renderChart(radarDataList, 1, opinion); // Pass the radar data list to render function
+	renderChart(radarDataList, 1, opinion, shouldAnimate); // Pass the radar data list to render function
 }
 
-function updateChart(year, option) {
+function updateChart(year, option, shouldAnimate = true) {
 	// Preprocess data for both abany = "1" and abany = "0" for the selected year
 	const processedData1 = preprocessDataForYear(data, year, "1", option);
 	const processedData0 = preprocessDataForYear(data, year, "0", option);
@@ -427,7 +427,7 @@ function updateChart(year, option) {
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
 	const radarDataList = [];
 	radarDataList.push(radarData1, radarData0);
-	renderChart(radarDataList, 0, null);
+	renderChart(radarDataList, 0, null, shouldAnimate);
 }
 
 updateChart(2018, option); // Start with the year 2018
@@ -448,7 +448,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
-	initializePlayButton("year-slider", (year) => updateChart(year, option));
+	initializePlayButton("year-slider", (year) => updateChart(year, option, false));
 });
 
 // Event listener for support and against elements
