@@ -94,15 +94,21 @@ h1 {
 
 #play-button {
 	position: absolute;
-	bottom: 20px; /* Distance from the top of the page */
+	bottom: 23px; /* Distance from the top of the page */
 	left: 190px; /* Distance from the right side of the page */
-	padding: 8px 10px;
 	background-color: #353738;
 	color: white;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+	font-size: 15px;
+	font-weight: bold;
 	z-index: 1000; /* Ensure the button appears above other elements */
+	width: 27px;
+	height: 27px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #play-button:hover {
