@@ -402,39 +402,57 @@ function updateChart(year, option, shouldAnimate = true) {
 updateChart(2018, option); // Start with the year 2018
 
 document.addEventListener("DOMContentLoaded", async () => {
-	const toggleViewModeButton = document.createElement("toggle-view-mode");
-	toggleViewModeButton.id = "toggle-view-mode";
-	toggleViewModeButton.innerText = "support vs. against";
-	document.body.insertBefore(toggleViewModeButton, document.body.firstChild);
+	const buttonViewModeButton = document.createElement("button-view-mode");
+	buttonViewModeButton.id = "button-view-mode";
+	buttonViewModeButton.innerText = "support vs. against";
 	// Add the active class to the button
-	toggleViewModeButton.classList.add("active");
+	buttonViewModeButton.classList.add("button-common", "active");
+	document.body.insertBefore(buttonViewModeButton, document.body.firstChild);
 
 	let viewMode = "view support vs. against"; // Initial view mode
 
-	toggleViewModeButton.addEventListener("click", () => {
+	buttonViewModeButton.addEventListener("click", () => {
 		viewMode = "view support vs. against";
 		option = "abany"; // Set the option to "abany"
 		document.getElementById("dropdown-container").style.display = "block";
 		updateChart(2018, option); // Update the chart with the default option
 
-		toggleViewModeButton.classList.add("active");
+		buttonViewModeButton.classList.add("active");
+		supportButton.classList.remove("active");
+        againstButton.classList.remove("active");
+
 	});
 
+	// Create support and against buttons
+    const supportButton = document.createElement("div");
+    supportButton.classList.add("button-common", "button-support");
+    supportButton.innerText = "support";
+    document.body.appendChild(supportButton);
+
+    const againstButton = document.createElement("div");
+    againstButton.classList.add("button-common", "button-against");
+    againstButton.innerText = "against";
+    document.body.appendChild(againstButton);
+	
 	// Event listener for support and against elements
-	document.querySelector(".against").addEventListener("click", () => {
-		const currentFilterOption = "against";
+	againstButton.addEventListener("click", () => {
+        const currentFilterOption = "against";
 		const selectedYear = parseInt(document.getElementById("year-slider").value);
 		updateChartByCategory(selectedYear, currentFilterOption);
 		document.getElementById("dropdown-container").style.display = "none";
-		toggleViewModeButton.classList.remove("active"); // Remove the active state from the toggle button
+		buttonViewModeButton.classList.remove("active"); // Remove the active state from the button
+		supportButton.classList.remove("active");
+        againstButton.classList.add("active");
 	});
 
-	document.querySelector(".support").addEventListener("click", () => {
-		const currentFilterOption = "support";
+	supportButton.addEventListener("click", () => {
+        const currentFilterOption = "support";
 		const selectedYear = parseInt(document.getElementById("year-slider").value);
 		updateChartByCategory(selectedYear, currentFilterOption);
 		document.getElementById("dropdown-container").style.display = "none";
-		toggleViewModeButton.classList.remove("active"); // Remove the active state from the toggle button
+		buttonViewModeButton.classList.remove("active"); // Remove the active state from the button 
+		againstButton.classList.remove("active");
+        supportButton.classList.add("active");
 	});
 
 	await startIntroAnimation(); // Start the intro animation

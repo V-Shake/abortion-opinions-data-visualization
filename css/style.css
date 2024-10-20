@@ -212,26 +212,7 @@ input[type="range"] {
 	display: block;
 }
 
-/* Support and Against Container */
-#support-against-container {
-	position: absolute;
-	top: 50px; /* Distance from the top of the page */
-	left: 30px; /* Distance from the right side of the page */
-	padding: 10px 20px;
-	display: flex;
-	flex-direction: column;
-	color: white; /* Textfarbe weiß */
-	z-index: 1000; /* Ensure the button appears above other elements */
-}
 
-/* Support and Against Elements */
-.support,
-.against {
-	cursor: pointer;
-	margin: 5px 0;
-	display: flex;
-	align-items: center;
-}
 
 /* Dots */
 .dot {
