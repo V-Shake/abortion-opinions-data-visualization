@@ -1,4 +1,4 @@
-// Function to render the radar chart
+import { collectSubcategoryValues } from './main.js'; // Ensure this import is correct
 export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = true) {
     const width = 900;
     const height = 900;
@@ -91,11 +91,10 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
             .delay((d, i) => i * 200) // Stagger the animation for each circle
             .attr("opacity", 1); // Fade in
     }
-    
     const subcategories = radarDataList[0].map(d => d.category);
     const numAxes = subcategories.length;
     const angleSlice = (Math.PI * 2) / numAxes;
-
+    
     // Define main categories and their positions
     const mainCategories = ['Age', 'Gender', 'Party', 'Education'];
     const mainCategoryPositions = {
@@ -105,10 +104,9 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         'Education': [9, 10, 11] // 0-9, 10-15, 16+
     };
 
-// Create the tooltip element (grey label)
-const tooltip = d3.select("body").append("div")
+    const tooltip = d3.select("body").append("div")
     .style("position", "absolute")
-    .style("background-color", "grey")
+    .style("background-color", "rgba(128, 128, 128, 0.8)") // Slightly transparent grey
     .style("color", "white")
     .style("padding", "5px")
     .style("border-radius", "5px")
@@ -117,8 +115,8 @@ const tooltip = d3.select("body").append("div")
 
 // Create axes and subcategory labels
 subcategories.forEach((subcat, i) => {
-    const angle = angleSlice * i - Math.PI / 2;
-    const lineCoord = angleToCoord(angle, maxValue);  // Full length of the axis to maxValue
+    const angle = angleSlice * i - Math.PI / 2; // Calculate angle for the axis
+    const lineCoord = angleToCoord(angle, maxValue); // Full length of the axis to maxValue
 
     // Create the axis lines
     svg.append("line")
@@ -126,37 +124,17 @@ subcategories.forEach((subcat, i) => {
         .attr("y1", centerY)
         .attr("x2", lineCoord.x)
         .attr("y2", lineCoord.y)
-        .attr("stroke", "#2A2A2A") // Grey
+        .attr("stroke", "#2A2A2A") // Grey color for the lines
         .attr("stroke-width", 1);
 
-    // Create the labels for subcategories
-    let labelOffset;
-    if (['0-9', '10-15', '16+', '18-29', '30-59', '60-89'].includes(subcat)) {
-        // Bring these specific categories closer to the graph
-        labelOffset = maxValue + 0.6;  // Closer offset for upper categories
-    } else {
-        // For other categories, use a standard offset
-        labelOffset = maxValue + 0.8;  // Further offset for other categories
-    }
+        const labelOffset = ['0-9', '10-15', '16+', '18-29', '30-59', '60-89'].includes(subcat) 
+        ? maxValue + 0.6  // Closer offset for upper categories
+        : maxValue + 0.8; // Further offset for other categories
 
-    const labelCoord = angleToCoord(angle, labelOffset);  // Adjusted the offset based on the category
+    const labelCoord = angleToCoord(angle, labelOffset); // Adjusted label coordinates
 
-    // Adjust rotation based on category
-    let rotationAngle;
-    switch (subcat) {
-        case '0-9':
-        case '10-15':
-        case '16+':
-        case '18-29':
-        case '30-59':
-        case '60-89':
-            // These categories should be upright
-            rotationAngle = (angle * 180 / Math.PI) + 90;  // Standard rotation
-            break;
-        default:
-            // Default rotation for other categories
-            rotationAngle = (angle * 180 / Math.PI) + 90 + 180;  // Flip for other categories
-    }
+    // Calculate rotation angle
+    const rotationAngle = (angle * 180 / Math.PI) + 90; // Standard rotation for text
 
     // Create the text element with hover functionality
     svg.append("text")
@@ -164,16 +142,21 @@ subcategories.forEach((subcat, i) => {
         .attr("y", labelCoord.y)
         .attr("text-anchor", "middle")
         .attr("font-size", "10px")
-        .attr("fill", colors.subcategoryText) // Set color to grey
+        .attr("fill", colors.subcategoryText) // Set color for the text
         .attr("transform", `rotate(${rotationAngle}, ${labelCoord.x}, ${labelCoord.y})`) // Apply rotation
         .text(subcat)
-        .style("cursor", "default")  // Set the cursor to pointer
+        .style("cursor", "default") // Set cursor style
         .on("mouseover", () => {
-            tooltip.style("visibility", "visible").text(subcat);  // Show tooltip with subcategory name
+            // Fetch actual counts for both datasets
+            const valueDataset1 = radarDataList[0][i].value; // Actual count for dataset1
+            const valueDataset0 = radarDataList[1][i].value; // Actual count for dataset0
+            // Display tooltip with actual counts from both datasets
+            tooltip.style("visibility", "visible")
+                .text(`${subcat}: ${valueDataset1} people (1), ${valueDataset0} people (0)`); // Display actual counts
         })
         .on("mousemove", (event) => {
-            tooltip.style("top", (event.pageY + 10) + "px")  // Offset from mouse Y position
-                .style("left", (event.pageX + 10) + "px");   // Offset from mouse X position
+            tooltip.style("top", (event.pageY + 10) + "px")  // Offset tooltip position from mouse Y
+                   .style("left", (event.pageX + 10) + "px"); // Offset tooltip position from mouse X
         })
         .on("mouseout", () => {
             tooltip.style("visibility", "hidden");  // Hide tooltip when not hovering
