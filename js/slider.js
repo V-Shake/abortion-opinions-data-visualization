@@ -84,7 +84,7 @@ export function createAndDesignSlider() {
 			slider.value = year; // Set the slider value
 			updateYearLabels(year); // Update bold label
 			slider.dispatchEvent(new Event("input")); // Trigger slider's input event
-			updateChart(year, option, false); // Pass false for shouldAnimate
+			updateChart(year, currentFilterOption, false); // Pass false for shouldAnimate
 		});
 
         yearsContainer.appendChild(yearLabel);

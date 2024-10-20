@@ -415,7 +415,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentFilterOption = "abany"; // Set the current filter option to "support vs. against"
         currentViewMode = "support vs. against"; // Update the current view mode
         const selectedYear = parseInt(document.getElementById("year-slider").value);
-        updateChart(selectedYear, currentFilterOption, false); // Update the chart with the selected year and option
+        updateChart(selectedYear, currentFilterOption); // Update the chart with the selected year and option
     
         buttonViewModeButton.classList.add("active");
         supportButton.classList.remove("active");
@@ -472,7 +472,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
-	initializePlayButton("year-slider", (year) => updateChart(year, currentFilterOption, false));
+	console.log("Initializing play button");
+    initializePlayButton("year-slider", (year) => updateChart(year, currentFilterOption, false));
+
+
 });
 
 
