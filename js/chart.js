@@ -1,4 +1,5 @@
 import { collectSubcategoryValues } from './main.js'; // Ensure this import is correct
+
 export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = true) {
     const width = 900;
     const height = 900;
@@ -91,6 +92,7 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
             .delay((d, i) => i * 200) // Stagger the animation for each circle
             .attr("opacity", 1); // Fade in
     }
+
     const subcategories = radarDataList[0].map(d => d.category);
     const numAxes = subcategories.length;
     const angleSlice = (Math.PI * 2) / numAxes;
@@ -113,56 +115,55 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
     .style("font-size", "12px")
     .style("visibility", "hidden");  // Initially hidden
 
-// Create axes and subcategory labels
-subcategories.forEach((subcat, i) => {
-    const angle = angleSlice * i - Math.PI / 2; // Calculate angle for the axis
-    const lineCoord = angleToCoord(angle, maxValue); // Full length of the axis to maxValue
+    // Create axes and subcategory labels
+    subcategories.forEach((subcat, i) => {
+        const angle = angleSlice * i - Math.PI / 2; // Calculate angle for the axis
+        const lineCoord = angleToCoord(angle, maxValue); // Full length of the axis to maxValue
 
-    // Create the axis lines
-    svg.append("line")
-        .attr("x1", centerX)
-        .attr("y1", centerY)
-        .attr("x2", lineCoord.x)
-        .attr("y2", lineCoord.y)
-        .attr("stroke", "#2A2A2A") // Grey color for the lines
-        .attr("stroke-width", 1);
+        // Create the axis lines
+        svg.append("line")
+            .attr("x1", centerX)
+            .attr("y1", centerY)
+            .attr("x2", lineCoord.x)
+            .attr("y2", lineCoord.y)
+            .attr("stroke", "#2A2A2A") // Grey color for the lines
+            .attr("stroke-width", 1);
 
         const labelOffset = ['0-9', '10-15', '16+', '18-29', '30-59', '60-89'].includes(subcat) 
-        ? maxValue + 0.6  // Closer offset for upper categories
-        : maxValue + 0.8; // Further offset for other categories
+            ? maxValue + 0.6  // Closer offset for upper categories
+            : maxValue + 0.8; // Further offset for other categories
 
-    const labelCoord = angleToCoord(angle, labelOffset); // Adjusted label coordinates
+        const labelCoord = angleToCoord(angle, labelOffset); // Adjusted label coordinates
 
-    // Calculate rotation angle
-    const rotationAngle = (angle * 180 / Math.PI) + 90; // Standard rotation for text
+        // Calculate rotation angle
+        const rotationAngle = (angle * 180 / Math.PI) + 90; // Standard rotation for text
 
-    // Create the text element with hover functionality
-    svg.append("text")
-        .attr("x", labelCoord.x)
-        .attr("y", labelCoord.y)
-        .attr("text-anchor", "middle")
-        .attr("font-size", "10px")
-        .attr("fill", colors.subcategoryText) // Set color for the text
-        .attr("transform", `rotate(${rotationAngle}, ${labelCoord.x}, ${labelCoord.y})`) // Apply rotation
-        .text(subcat)
-        .style("cursor", "default") // Set cursor style
-        .on("mouseover", () => {
-            // Fetch actual counts for both datasets
-            const valueDataset1 = radarDataList[0][i].value; // Actual count for dataset1
-            const valueDataset0 = radarDataList[1][i].value; // Actual count for dataset0
-            // Display tooltip with actual counts from both datasets
-            tooltip.style("visibility", "visible")
-                .text(`${subcat}: ${valueDataset1} people (1), ${valueDataset0} people (0)`); // Display actual counts
-        })
-        .on("mousemove", (event) => {
-            tooltip.style("top", (event.pageY + 10) + "px")  // Offset tooltip position from mouse Y
-                   .style("left", (event.pageX + 10) + "px"); // Offset tooltip position from mouse X
-        })
-        .on("mouseout", () => {
-            tooltip.style("visibility", "hidden");  // Hide tooltip when not hovering
-        });
-});
-
+        // Create the text element with hover functionality
+        svg.append("text")
+            .attr("x", labelCoord.x)
+            .attr("y", labelCoord.y)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "10px")
+            .attr("fill", colors.subcategoryText) // Set color for the text
+            .attr("transform", `rotate(${rotationAngle}, ${labelCoord.x}, ${labelCoord.y})`) // Apply rotation
+            .text(subcat)
+            .style("cursor", "default") // Set cursor style
+            .on("mouseover", () => {
+                // Fetch actual counts for both datasets
+                const valueDataset1 = radarDataList[0][i].value; // Actual count for dataset1
+                const valueDataset0 = radarDataList[1][i].value; // Actual count for dataset0
+                // Display tooltip with actual counts from both datasets
+                tooltip.style("visibility", "visible")
+                    .text(`${subcat}: ${valueDataset1} people (1), ${valueDataset0} people (0)`); // Display actual counts
+            })
+            .on("mousemove", (event) => {
+                tooltip.style("top", (event.pageY + 10) + "px")  // Offset tooltip position from mouse Y
+                       .style("left", (event.pageX + 10) + "px"); // Offset tooltip position from mouse X
+            })
+            .on("mouseout", () => {
+                tooltip.style("visibility", "hidden");  // Hide tooltip when not hovering
+            });
+    });
 
 
     // Add main category labels
@@ -266,8 +267,8 @@ subcategories.forEach((subcat, i) => {
     // Sort by area in descending order (largest first)
     coordinatesWithAreas.sort((a, b) => b.area - a.area);
 
-     // Render the paths in order from largest to smallest with animation
-     if (colorMode == 0) {
+    // Render the paths in order from largest to smallest with animation
+    if (colorMode == 0) {
         // Render the two blobs
         coordinatesWithAreas.forEach((item) => {
             const isDataset1 = item.index === 0;
