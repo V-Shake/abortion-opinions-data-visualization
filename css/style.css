@@ -431,31 +431,3 @@ input[type="range"] {
     opacity: 0; /* Fade out the overlay */
 }
 
-.legend-container {
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    max-width: 200px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.legend-list {
-    list-style: none;
-    padding: 0;
-}
-
-.legend-item {
-    cursor: pointer;
-    padding: 8px 10px;
-    transition: background-color 0.3s;
-}
-
-.legend-item:hover {
-    background-color: #e0e0e0;
-}
-
-.active {
-    background-color: #007bff; /* Active color for selected legend item */
-    color: white;
-}

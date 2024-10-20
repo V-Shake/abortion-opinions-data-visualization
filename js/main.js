@@ -425,6 +425,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		document.getElementById("dropdown-container").style.display = "block";
     });
 
+	
     // Create support and against buttons
     const supportButton = document.createElement("div");
     supportButton.classList.add("button-common", "button-support");
@@ -525,3 +526,4 @@ function collectSubcategoryValues(data, year, optionValue, option) {
 		educationCounts
 	};
 } export { collectSubcategoryValues };
+
