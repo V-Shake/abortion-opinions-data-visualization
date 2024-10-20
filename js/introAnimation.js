@@ -79,10 +79,10 @@ function startCircularMotion(
 // Main function to initialize the intro animation
 export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
     return new Promise((resolve) => {
-        // Create a container div
-        const container2 = document.createElement("div");
-        container2.className = "at-container2";
-        document.body.appendChild(container2);
+        // Create an overlay container
+        const overlay = document.createElement("div");
+        overlay.className = "overlay";
+        document.body.appendChild(overlay);
 
         // Create the central dot
         const centerDot = createDot(
@@ -91,15 +91,15 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
             renderer.clientWidth / 2 - 10,
             renderer.clientHeight / 2 - 10
         );
-        container2.appendChild(centerDot);
+        overlay.appendChild(centerDot);
 
         // Create two smaller dots (red and blue) that will fall from the top
         const centerX = renderer.clientWidth / 2; // Calculate the center X position
         const centerY = renderer.clientHeight / 2; // Calculate the center Y position
         const redDot = createDot("red-dot", 3, centerX - 1.5, -30); // Set to size 3
         const blueDot = createDot("blue-dot", 3, centerX - 1.5, -30); // Set to size 3
-        container2.appendChild(redDot);
-        container2.appendChild(blueDot);
+        overlay.appendChild(redDot);
+        overlay.appendChild(blueDot);
 
         // Array to hold all small dots
         const smallDots = [];
@@ -134,7 +134,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
 
             const smallDot = createDot("small-dot", 3, randomX, randomY);
             smallDots.push(smallDot);
-            container2.appendChild(smallDot);
+            overlay.appendChild(smallDot);
         }
 
         // Create outer group of smaller dots
@@ -162,7 +162,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
 
             const smallDot = createDot("small-dot", 3, randomX, randomY);
             smallDots.push(smallDot);
-            container2.appendChild(smallDot);
+            overlay.appendChild(smallDot);
         }
 
         // Set lower opacity for the first 400 small dots
@@ -196,15 +196,13 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
                             setTimeout(() => {
                                 if (index < blueDotsCount) {
                                     gsap.to(dot, {
-                                        backgroundColor: "blue",
-                                        width: "5px",
-                                        height: "5px",
+                                        backgroundColor: "blue", // Use RGB format for blue color
                                         duration: 1,
                                         ease: "power2.inOut",
                                     });
                                 } else {
                                     gsap.to(dot, {
-                                        backgroundColor: "red",
+                                        backgroundColor: "red", // Use RGB format for red color
                                         duration: 1,
                                         ease: "power2.inOut",
                                     });
@@ -283,9 +281,14 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
                                                     if (callback) {
                                                         callback();
                                                     }
-                                                    // Remove the container after the animation is complete
-                                                    document.body.removeChild(container2);
-                                                    resolve();
+                                                    // Fade out the overlay 5 seconds after the animation is done
+                                                    setTimeout(() => {
+                                                        overlay.classList.add("fade-out");
+                                                        setTimeout(() => {
+                                                            document.body.removeChild(overlay);
+                                                            resolve();
+                                                        }, 1000); // Duration of the fade-out transition
+                                                    }, 3000); // 5 seconds delay before fading out
                                                 },
                                             });
                                         },
@@ -296,14 +299,14 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
                     });
                 });
             }, moveUpDelay * 800); // Convert to milliseconds for setTimeout
-        }, 5000); // Total animation duration (initial animation + delay before move)
+        }, 4000); // Total animation duration (initial animation + delay before move)
 
         // Show text after dots have gathered and changed color
         setTimeout(() => {
             const textElement = document.createElement("div");
             textElement.className = "at-item2";
             textElement.innerText =
-                "40% support and 60% oppose abortion for any reason.";
+                "40% of Americans support abortion in all circumstances, while 60% oppose it";
             textElement.style.position = "absolute";
             textElement.style.top = "25%";
             textElement.style.left = "50%";
@@ -311,7 +314,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
             textElement.style.color = "white";
             textElement.style.fontSize = "2em";
             textElement.style.textAlign = "center";
-            container2.appendChild(textElement);
+            overlay.appendChild(textElement);
         }, 3000); // Adjust the delay to match the timing of the color change
     });
 }
