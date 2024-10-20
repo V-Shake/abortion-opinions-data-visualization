@@ -288,7 +288,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
                                                             document.body.removeChild(overlay);
                                                             resolve();
                                                         }, 1000); // Duration of the fade-out transition
-                                                    }, 3000); // 5 seconds delay before fading out
+                                                    }, 1000); // 5 seconds delay before fading out
                                                 },
                                             });
                                         },

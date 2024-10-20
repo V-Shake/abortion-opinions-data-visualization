@@ -324,7 +324,7 @@ input[type="range"] {
 }
 
 .at-item {
-	color: #3079ed;
+	color: #ffffff;
 	font-weight: bold;
 	font-size: 3em;
 	opacity: 0; /* Start with opacity 0 */
@@ -382,7 +382,7 @@ input[type="range"] {
 }
 
 .at-item2 {
-	color: #3079ed;
+	color: #ffffff;
 	font-weight: bold;
 	font-size: 3em;
 	opacity: 0; /* Start with opacity 0 */
@@ -431,3 +431,31 @@ input[type="range"] {
     opacity: 0; /* Fade out the overlay */
 }
 
+.legend-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    max-width: 200px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.legend-list {
+    list-style: none;
+    padding: 0;
+}
+
+.legend-item {
+    cursor: pointer;
+    padding: 8px 10px;
+    transition: background-color 0.3s;
+}
+
+.legend-item:hover {
+    background-color: #e0e0e0;
+}
+
+.active {
+    background-color: #007bff; /* Active color for selected legend item */
+    color: white;
+}
