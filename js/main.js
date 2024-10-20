@@ -420,6 +420,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         buttonViewModeButton.classList.add("active");
         supportButton.classList.remove("active");
         againstButton.classList.remove("active");
+		
+		// Show the dropdown menu
+		document.getElementById("dropdown-container").style.display = "block";
     });
 
     // Create support and against buttons
