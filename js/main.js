@@ -13,7 +13,7 @@ let currentViewMode = "support vs. against";
 // Function to set global option
 function setGlobalOption(selectedOption) {
 	option = selectedOption; // Update the global option variable
-	updateChart(2018, option); // Call updateChart to update the chart immediately
+	updateChart(1977, option); // Call updateChart to update the chart immediately
 }
 
 function preprocessDataForYear(data, year, optionValue, option) {
@@ -401,7 +401,7 @@ function updateChart(year, option, shouldAnimate = true) {
 	renderChart(radarDataList, 0, null, shouldAnimate);
 }
 
-updateChart(2018, option); // Start with the year 2018
+updateChart(1977, option); // Start with the year 1977
 
 document.addEventListener("DOMContentLoaded", async () => {
     const buttonViewModeButton = document.createElement("button-view-mode");
@@ -420,7 +420,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         buttonViewModeButton.classList.add("active");
         supportButton.classList.remove("active");
         againstButton.classList.remove("active");
-		
+
 		// Show the dropdown menu
 		document.getElementById("dropdown-container").style.display = "block";
     });
@@ -470,7 +470,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		// Create the dropdown menu and pass the setGlobalOption function
 		createDropdownMenu(setGlobalOption);
 
-		updateChart(2018, option);
+		updateChart(1977, option);
 	});
 
 

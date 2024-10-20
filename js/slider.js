@@ -17,7 +17,7 @@ export function createAndDesignSlider() {
     selectedYearSpan.id = "selected-year";
     selectedYearSpan.style.display = "none";
     selectedYearSpan.style.fontWeight = "bold";
-    selectedYearSpan.innerText = "2018"; // Initialize selected year
+    selectedYearSpan.innerText = "1977"; // Initialize selected year
     label.innerHTML = ``;
     label.appendChild(selectedYearSpan); // Append span to label
 
@@ -28,7 +28,7 @@ export function createAndDesignSlider() {
     slider.min = "1977";
     slider.max = "2018";
     slider.step = "1";
-    slider.value = "2018";
+    slider.value = "1977";
     slider.style.width = "100%"; // Take full width of the container
     slider.style.marginTop = "1.8em"; // Space between label and slider
     slider.style.appearance = "none"; // Remove default styling
@@ -63,7 +63,7 @@ export function createAndDesignSlider() {
         yearLabel.style.transform = "rotate(-90deg)"; // Rotate counterclockwise
         yearLabel.style.transformOrigin = "left bottom"; // Set origin for rotation
         yearLabel.style.cursor = "pointer"; // Change cursor to pointer for interactivity
-        yearLabel.style.fontWeight = year === 2018 ? "bold" : "normal"; // Set initial weight
+        yearLabel.style.fontWeight = year === 1977 ? "bold" : "normal"; // Set initial weight
         yearLabel.style.color = "white";
 
         // Check if the year is in the no data list
