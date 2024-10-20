@@ -97,14 +97,25 @@ export function createAndDesignSlider() {
     document.body.appendChild(sliderWrapper);
 
     // Add event listener to update selected year when slider value changes
-    slider.addEventListener("input", () => {
-        const selectedYear = slider.value;
-        selectedYearSpan.innerText = selectedYear; // Update the display
-        updateYearLabels(selectedYear); // Update bold label
-        // Call the chart update function here to update the chart plot
-        updateChart(selectedYear, option, false); // Pass false for shouldAnimate
+    slider.addEventListener("input", function (e) {
+        const selectedYear = parseInt(e.target.value);
+        document.getElementById("selected-year").innerText = selectedYear; // Update display
+    
+        // Use the current filter option (support, against, or support vs. against)
+        updateChart(selectedYear, currentFilterOption, false); // Pass the selected year and the current filter option to updateChart
+    
+        // Collect and log subcategory values for both "1" and "0"
+        const optionValues = ["1", "0"];
+        optionValues.forEach(optionValue => {
+            const subcategoryValues = collectSubcategoryValues(data, selectedYear, optionValue, currentFilterOption);
+            console.log(`Year: ${selectedYear}, Option: ${currentFilterOption}, Option Value: ${optionValue}`);
+            console.log(`Age Counts (Year ${selectedYear}, Option ${currentFilterOption}, Option Value ${optionValue}):`, subcategoryValues.ageCounts);
+            console.log(`Gender Counts (Year ${selectedYear}, Option ${currentFilterOption}, Option Value ${optionValue}):`, subcategoryValues.genderCounts);
+            console.log(`Party Counts (Year ${selectedYear}, Option ${currentFilterOption}, Option Value ${optionValue}):`, subcategoryValues.partyCounts);
+            console.log(`Education Counts (Year ${selectedYear}, Option ${currentFilterOption}, Option Value ${optionValue}):`, subcategoryValues.educationCounts);
+        });
     });
-
+    
     // Function to update year labels
     function updateYearLabels(year) {
         const allLabels = yearsContainer.querySelectorAll("span");

@@ -341,7 +341,7 @@ subcategories.forEach((subcat, i) => {
     const angle18_30 = angleSlice * 12; // Angle for "Republican"
     const angle61_89 = angleSlice * 14; // Angle for "Democrat"
 
-    const innerRadius = 295; // Inner radius of the purple band
+    const innerRadius = 299; // Inner radius of the purple band
     const outerRadius = 300; // Outer radius of the purple band
 
     // Define the arcs for the purple band with gaps
