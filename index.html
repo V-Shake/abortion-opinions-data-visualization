@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Abortion Opinions</title>
 	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/toggle.css" />
 </head>
 
 <body>
@@ -17,17 +18,19 @@
 	<!-- Container for the dropdown menu -->
 	</div>
 	<div id="support-against-container">
-        <div class="support">
-            <span class="dot blue"></span> support
-        </div>
-        <div class="against">
-            <span class="dot red"></span> against
-        </div>
-    </div>
+		<div class="support">
+			<span class="dot blue"></span> support
+		</div>
+		<div class="against">
+			<span class="dot red"></span> against
+		</div>
+	</div>
 	<div id="renderer" class="m-5">
 		<div id="renderDots"></div>
 		<div id="renderChart"></div>
+		<!-- <button id="toggle-view-mode">Toggle View Mode</button> -->
 	</div>
+	
 
 	<!-- Place all library scripts here before your custom scripts -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>

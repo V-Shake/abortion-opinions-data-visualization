@@ -322,7 +322,7 @@ function updateChart(year, option, shouldAnimate = true) {
 	const educationCounts1 = groupByEducation(processedData1);
 	const educationCounts0 = groupByEducation(processedData0);
 
-	
+
 	const normalizedAgeCounts1 = normalizeCounts(ageCounts1, ageCounts0);
 	const normalizedAgeCounts0 = normalizeCounts(ageCounts0, ageCounts1);
 	const normalizedGenderCounts1 = normalizeCounts(
@@ -402,11 +402,12 @@ function updateChart(year, option, shouldAnimate = true) {
 updateChart(2018, option); // Start with the year 2018
 
 document.addEventListener("DOMContentLoaded", async () => {
-
-	const toggleViewModeButton = document.createElement("button");
+	const toggleViewModeButton = document.createElement("toggle-view-mode");
 	toggleViewModeButton.id = "toggle-view-mode";
-	toggleViewModeButton.innerText = "view support vs. against";
+	toggleViewModeButton.innerText = "support vs. against";
 	document.body.insertBefore(toggleViewModeButton, document.body.firstChild);
+	// Add the active class to the button
+	toggleViewModeButton.classList.add("active");
 
 	let viewMode = "view support vs. against"; // Initial view mode
 
@@ -415,6 +416,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 		option = "abany"; // Set the option to "abany"
 		document.getElementById("dropdown-container").style.display = "block";
 		updateChart(2018, option); // Update the chart with the default option
+
+		toggleViewModeButton.classList.add("active");
+	});
+
+	// Event listener for support and against elements
+	document.querySelector(".against").addEventListener("click", () => {
+		const currentFilterOption = "against";
+		const selectedYear = parseInt(document.getElementById("year-slider").value);
+		updateChartByCategory(selectedYear, currentFilterOption);
+		document.getElementById("dropdown-container").style.display = "none";
+		toggleViewModeButton.classList.remove("active"); // Remove the active state from the toggle button
+	});
+
+	document.querySelector(".support").addEventListener("click", () => {
+		const currentFilterOption = "support";
+		const selectedYear = parseInt(document.getElementById("year-slider").value);
+		updateChartByCategory(selectedYear, currentFilterOption);
+		document.getElementById("dropdown-container").style.display = "none";
+		toggleViewModeButton.classList.remove("active"); // Remove the active state from the toggle button
 	});
 
 	await startIntroAnimation(); // Start the intro animation
@@ -424,66 +444,52 @@ document.addEventListener("DOMContentLoaded", async () => {
 		renderChart.style.opacity = "1"; // Mache den renderChart sichtbar
 		renderChart.style.display = "flex"; // Stelle sicher, dass es im Flex-Container bleibt
 
-		// Optional: Chart aktualisieren
+		// Create the dropdown menu and pass the setGlobalOption function
+		createDropdownMenu(setGlobalOption);
+
 		updateChart(2018, option);
 	});
 
-	// Create the dropdown menu and pass the setGlobalOption function
-	createDropdownMenu(setGlobalOption);
 
 	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
 	initializePlayButton("year-slider", (year) => updateChart(year, option, false));
 });
 
-// Event listener for support and against elements
-document.querySelector(".against").addEventListener("click", () => {
-    const currentFilterOption = "against";
-    const selectedYear = parseInt(document.getElementById("year-slider").value);
-    updateChartByCategory(selectedYear, currentFilterOption);
-    document.getElementById("dropdown-container").style.display = "none";
-});
-
-document.querySelector(".support").addEventListener("click", () => {
-    const currentFilterOption = "support";
-    const selectedYear = parseInt(document.getElementById("year-slider").value);
-    updateChartByCategory(selectedYear, currentFilterOption);
-    document.getElementById("dropdown-container").style.display = "none";
-});
 
 const slider = createAndDesignSlider();
 
 slider.addEventListener("input", function (e) {
-    const selectedYear = parseInt(e.target.value);
-    document.getElementById("selected-year").innerText = selectedYear; // Update display
-    updateChart(selectedYear, option, false); // Pass the selected year to updateChart
+	const selectedYear = parseInt(e.target.value);
+	document.getElementById("selected-year").innerText = selectedYear; // Update display
+	updateChart(selectedYear, option, false); // Pass the selected year to updateChart
 
-    // Collect and log subcategory values for both "1" and "0"
-    const optionValues = ["1", "0"];
-    optionValues.forEach(optionValue => {
-        const subcategoryValues = collectSubcategoryValues(data, selectedYear, optionValue, option);
-        console.log(`Year: ${selectedYear}, Option: ${option}, Option Value: ${optionValue}`);
-        console.log(`Age Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.ageCounts);
-        console.log(`Gender Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.genderCounts);
-        console.log(`Party Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.partyCounts);
-        console.log(`Education Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.educationCounts);
-    });
+	// Collect and log subcategory values for both "1" and "0"
+	const optionValues = ["1", "0"];
+	optionValues.forEach(optionValue => {
+		const subcategoryValues = collectSubcategoryValues(data, selectedYear, optionValue, option);
+		console.log(`Year: ${selectedYear}, Option: ${option}, Option Value: ${optionValue}`);
+		console.log(`Age Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.ageCounts);
+		console.log(`Gender Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.genderCounts);
+		console.log(`Party Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.partyCounts);
+		console.log(`Education Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.educationCounts);
+	});
 });
 
 function collectSubcategoryValues(data, year, optionValue, option) {
-    // Filter data based on the selected year and option value
-    let filteredData = preprocessDataForYear(data, year, optionValue, option);
+	// Filter data based on the selected year and option value
+	let filteredData = preprocessDataForYear(data, year, optionValue, option);
 
-    // Group the data by subcategories
-    const ageCounts = groupByAge(filteredData);
-    const genderCounts = groupByGender(filteredData);
-    const partyCounts = groupByParty(filteredData);
-    const educationCounts = groupByEducation(filteredData);
+	// Group the data by subcategories
+	const ageCounts = groupByAge(filteredData);
+	const genderCounts = groupByGender(filteredData);
+	const partyCounts = groupByParty(filteredData);
+	const educationCounts = groupByEducation(filteredData);
 
-    // Return the grouped data
-    return {
-        ageCounts,
-        genderCounts,
-        partyCounts,
-        educationCounts
-    };
-}export { collectSubcategoryValues };
+	// Return the grouped data
+	return {
+		ageCounts,
+		genderCounts,
+		partyCounts,
+		educationCounts
+	};
+} export { collectSubcategoryValues };
