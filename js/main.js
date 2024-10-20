@@ -9,11 +9,12 @@ import { startIntroAnimation } from "./Intro.js"; // Import the intro animation 
 let option = "abany";
 let currentFilterOption = "abany";
 let currentViewMode = "support vs. against";
+let initialAnimationDone = false; // Flag to control if the initial animation has been played
 
 // Function to set global option
 function setGlobalOption(selectedOption) {
 	option = selectedOption; // Update the global option variable
-	updateChart(1977, option); // Call updateChart to update the chart immediately
+	updateChart(1977, option, false); // Call updateChart to update the chart immediately without animation
 }
 
 function preprocessDataForYear(data, year, optionValue, option) {
@@ -389,12 +390,7 @@ function updateChart(year, option, shouldAnimate = true) {
 		{ category: "16+", value: normalizedEducationCounts0["16+"] },
 	];
 
-	// Clear previous chart after ... seconds and render the updated chart
-	/*  setTimeout(() => {
-		d3.select("#renderer").select("svg").remove(); // Clear previous chart
-		renderChart(radarData1, radarData0, year); // Pass the new year to chart.js
-	}, 8);*/
-
+	// Clear previous chart and render the updated chart
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
 	const radarDataList = [];
 	radarDataList.push(radarData1, radarData0);
@@ -415,7 +411,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentFilterOption = "abany"; // Set the current filter option to "support vs. against"
         currentViewMode = "support vs. against"; // Update the current view mode
         const selectedYear = parseInt(document.getElementById("year-slider").value);
-        updateChart(selectedYear, currentFilterOption); // Update the chart with the selected year and option
+        updateChart(selectedYear, currentFilterOption, false); // Update the chart with the selected year and option without animation
     
         buttonViewModeButton.classList.add("active");
         supportButton.classList.remove("active");
@@ -425,7 +421,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 		document.getElementById("dropdown-container").style.display = "block";
     });
 
-	
     // Create support and against buttons
     const supportButton = document.createElement("div");
     supportButton.classList.add("button-common", "button-support");
@@ -442,7 +437,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentFilterOption = "against";
         currentViewMode = "against"; // Update the current view mode
         const selectedYear = parseInt(document.getElementById("year-slider").value);
-        updateChartByCategory(selectedYear, currentFilterOption);
+        updateChartByCategory(selectedYear, currentFilterOption, false); // No animation on button click
         document.getElementById("dropdown-container").style.display = "none";
         buttonViewModeButton.classList.remove("active"); // Remove the active state from the button
         supportButton.classList.remove("active");
@@ -453,7 +448,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentFilterOption = "support";
         currentViewMode = "support"; // Update the current view mode
         const selectedYear = parseInt(document.getElementById("year-slider").value);
-        updateChartByCategory(selectedYear, currentFilterOption);
+        updateChartByCategory(selectedYear, currentFilterOption, false); // No animation on button click
         document.getElementById("dropdown-container").style.display = "none";
         buttonViewModeButton.classList.remove("active"); // Remove the active state from the button 
         againstButton.classList.remove("active");
@@ -461,21 +456,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
 
-	await startIntroAnimation(); // Start the intro animation
-	// Initialisiere die Animation
+	// Start the intro animation (with animation)
+	await startIntroAnimation();
+
+	// Initialize the intro animation
 	initIntroAnimation(750, 200, () => {
 		const renderChart = document.getElementById("renderChart");
-		renderChart.style.opacity = "1"; // Mache den renderChart sichtbar
-		renderChart.style.display = "flex"; // Stelle sicher, dass es im Flex-Container bleibt
+		renderChart.style.opacity = "1"; // Make the renderChart visible
+		renderChart.style.display = "flex"; // Ensure it stays in the flex container
 
 		// Create the dropdown menu and pass the setGlobalOption function
 		createDropdownMenu(setGlobalOption);
 
-		updateChart(1977, option);
+		updateChart(1977, option, true); // Call updateChart WITH animation (first time only)
+		initialAnimationDone = true; // Set flag to indicate the animation is done
 	});
 
 
-	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
+	// Initialize the play button with the slider and the updateChart function
 	console.log("Initializing play button");
     initializePlayButton("year-slider", (year) => updateChart(year, currentFilterOption, false));
 
@@ -491,9 +489,9 @@ slider.addEventListener("input", function (e) {
     
     // Check the current view mode and call the appropriate update function
     if (currentViewMode === "support vs. against") {
-        updateChart(selectedYear, option, false);
+        updateChart(selectedYear, option, false); // Disable animation for support vs. against
     } else {
-        updateChartByCategory(selectedYear, currentViewMode, false);
+        updateChartByCategory(selectedYear, currentViewMode, false); // Disable animation for categories
     }
 
     // Collect and log subcategory values for both "1" and "0"
@@ -525,5 +523,5 @@ function collectSubcategoryValues(data, year, optionValue, option) {
 		partyCounts,
 		educationCounts
 	};
-} export { collectSubcategoryValues };
-
+} 
+export { collectSubcategoryValues };

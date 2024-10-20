@@ -93,6 +93,7 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
             .delay((d, i) => i * 200) // Stagger the animation for each circle
             .attr("opacity", 1); // Fade in
     }
+
     const subcategories = radarDataList[0].map(d => d.category);
     const numAxes = subcategories.length;
     const angleSlice = (Math.PI * 2) / numAxes;
@@ -123,28 +124,28 @@ const tooltip = d3.select("body").append("div")
     .style("font-size", "12px")
     .style("visibility", "hidden");  // Initially hidden
 
-// Create axes and subcategory labels
-subcategories.forEach((subcat, i) => {
-    const angle = angleSlice * i - Math.PI / 2; // Calculate angle for the axis
-    const lineCoord = angleToCoord(angle, maxValue); // Full length of the axis to maxValue
+    // Create axes and subcategory labels
+    subcategories.forEach((subcat, i) => {
+        const angle = angleSlice * i - Math.PI / 2; // Calculate angle for the axis
+        const lineCoord = angleToCoord(angle, maxValue); // Full length of the axis to maxValue
 
-    // Create the axis lines
-    svg.append("line")
-        .attr("x1", centerX)
-        .attr("y1", centerY)
-        .attr("x2", lineCoord.x)
-        .attr("y2", lineCoord.y)
-        .attr("stroke", "#2A2A2A") // Grey color for the lines
-        .attr("stroke-width", 1);
+        // Create the axis lines
+        svg.append("line")
+            .attr("x1", centerX)
+            .attr("y1", centerY)
+            .attr("x2", lineCoord.x)
+            .attr("y2", lineCoord.y)
+            .attr("stroke", "#2A2A2A") // Grey color for the lines
+            .attr("stroke-width", 1);
 
     const labelOffset = ['0-9', '10-15', '16+', '18-29', '30-59', '60-89'].includes(subcat) 
-        ? maxValue + 0.6  // Closer offset for upper categories
-        : maxValue + 0.8; // Further offset for other categories
+            ? maxValue + 0.6  // Closer offset for upper categories
+            : maxValue + 0.8; // Further offset for other categories
 
-    const labelCoord = angleToCoord(angle, labelOffset); // Adjusted label coordinates
+        const labelCoord = angleToCoord(angle, labelOffset); // Adjusted label coordinates
 
-    // Calculate rotation angle
-    const rotationAngle = (angle * 180 / Math.PI) + 90; // Standard rotation for text
+        // Calculate rotation angle
+        const rotationAngle = (angle * 180 / Math.PI) + 90; // Standard rotation for text
 
     // Create the text element with hover functionality
     svg.append("text")
@@ -302,8 +303,8 @@ subcategories.forEach((subcat, i) => {
     // Sort by area in descending order (largest first)
     coordinatesWithAreas.sort((a, b) => b.area - a.area);
 
-     // Render the paths in order from largest to smallest with animation
-     if (colorMode == 0) {
+    // Render the paths in order from largest to smallest with animation
+    if (colorMode == 0) {
         // Render the two blobs
         coordinatesWithAreas.forEach((item) => {
             const isDataset1 = item.index === 0;
