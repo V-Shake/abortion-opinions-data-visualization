@@ -369,6 +369,24 @@ input[type="range"] {
 	}
 }
 
+.at-item2 {
+	color: #3079ed;
+	font-weight: bold;
+	font-size: 3em;
+	opacity: 0; /* Start with opacity 0 */
+	filter: blur(10px); /* Start with blur */
+	animation-name: focus-in-contract;
+	animation-duration: 4s;
+	animation-timing-function: linear;
+	animation-delay: 0s;
+	animation-iteration-count: 1;
+	animation-direction: normal;
+	animation-fill-mode: forwards; /* Keep the final state */
+	animation: focus-in-contract 1s linear 0s 1 forwards,
+		fade-out 3s ease 4s 1 forwards; /* Delay fade-out by 1 second */
+	/* First animation: focus-in-contract (3s), then fade-out (4s) */
+}
+
 .scale-up {
 	transform-origin: center center; /* Scale from the center */
 	animation: scale-up-center 1s ease; /* Use 'forwards' to retain the final state */
@@ -386,4 +404,3 @@ input[type="range"] {
 .gridline {
 	transition: opacity 1s linear; /* Smooth opacity transition */
 }
-
