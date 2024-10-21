@@ -12,10 +12,10 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
 
     // Define colors
     const colors = {
-        dataset1: "#00DDFF", // Light blue
-        dataset0: "red",     // Red
-        glowDataset1: "#A0F9FF", // Vivid blue for glow effect
-        glowDataset0: "#FF4500", // Vivid red for glow effect
+        // dataset1: "#41B3FA", // Light blue
+        dataset0: "#E00047",     // Red
+        glowDataset1: "#2CEAFF", // Vivid blue for glow effect
+        glowDataset0: "#FA4172", // Vivid red for glow effect
         subcategoryText: "grey", // Color for subcategory labels
     };
 
@@ -37,8 +37,8 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         .attr("y2", "100%")
         .selectAll("stop")
         .data([
-            { offset: "0%", color: "#003366" }, // Dark blue
-            { offset: "100%", color: "#00DDFF" } // Light blue
+            { offset: "0%", color: "#0CAEFF" }, // Dark blue
+            { offset: "100%", color: "#00BCD4" } // Light blue
         ])
         .enter()
         .append("stop")
@@ -54,8 +54,8 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         .attr("y2", "100%")
         .selectAll("stop")
         .data([
-            { offset: "0%", color: "#660000" }, // Dark red
-            { offset: "100%", color: "#FF4500" } // Light red
+            { offset: "0%", color: "#D40722" }, // Dark red
+            { offset: "100%", color: "#F83166" } // Light red
         ])
         .enter()
         .append("stop")
@@ -317,7 +317,7 @@ const tooltip = d3.select("body").append("div")
                 .attr("d", line([{ x: centerX, y: centerY }])) // Start from center
                 .attr("stroke", glowColor)
                 .attr("fill", `url(#${gradientId})`)
-                .attr("opacity", 0.5)
+                .attr("opacity", 0.15)
                 .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
                 .transition()
                 .delay(shouldAnimate ? 1000 : 0)

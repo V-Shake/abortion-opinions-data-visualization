@@ -1,6 +1,6 @@
 /* Common button styles */
 .button-common {
-    padding: 0.6em 1.6em;
+    padding: 0.6em 0.6em;
     position: absolute;
     top: 40%; /* Center vertically */
     left: 2%; /* Align to the left side */
@@ -80,7 +80,7 @@
 
 .button-against {
     color: rgb(222, 45, 45); /* Red text */
-    top: 90px;
+    top: 50px;
     left: 30px;
     top: 53%; /* Center vertically */
     left: 2%; /* Align to the left side */
