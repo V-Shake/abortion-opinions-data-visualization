@@ -237,21 +237,26 @@ input[type="range"] {
 }
 
 .at-item {
-	color: #ffffff;
-	font-weight: bold;
-	font-size: 3em;
-	opacity: 0; /* Start with opacity 0 */
-	filter: blur(10px); /* Start with blur */
-	animation-name: focus-in-contract;
-	animation-duration: 3s;
-	animation-timing-function: linear;
-	animation-delay: 0s;
-	animation-iteration-count: 1;
-	animation-direction: normal;
-	animation-fill-mode: forwards; /* Keep the final state */
-	animation: focus-in-contract 3s linear 0s 1 forwards,
-		fade-out 3s ease 3s 1 forwards;
-	/* First animation: focus-in-contract (3s), then fade-out (3s) */
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 3em;
+    opacity: 0; /* Start with opacity 0 */
+    filter: blur(10px); /* Start with blur */
+	transition: opacity 1s ease, filter 1s ease; /* Ensure transitions apply to these properties */
+}
+
+.at-item.text-visible {
+    opacity: 1; /* Fade in */
+    filter: blur(0); /* Remove blur */
+}
+
+.at-item.sissy-text {
+    font-size: 18px; /* Specific size for the Sissy text */
+    margin: 0 auto; /* Center the box */
+    width: 80%; /* Set a specific width for the Sissy text box */
+    max-width: 650px; /* Max width to avoid it getting too large */
+    text-align: left; /* Center text within the box */
+	transition: opacity 1s ease, filter 1s ease; /* Ensure transitions apply to these properties */
 }
 
 @keyframes focus-in-contract {
