@@ -404,60 +404,69 @@ function updateChart(year, option, shouldAnimate = true) {
 updateChart(1977, option); // Start with the year 1977
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const buttonViewModeButton = document.createElement("button-view-mode");
-    buttonViewModeButton.id = "button-view-mode";
-    buttonViewModeButton.innerText = "support vs. against";
-    // Add the active class to the button
-    buttonViewModeButton.classList.add("button-common", "active");
-    document.body.insertBefore(buttonViewModeButton, document.body.firstChild);
+	const buttonViewModeButton = document.createElement("button-view-mode");
+	buttonViewModeButton.id = "button-view-mode";
+	buttonViewModeButton.innerText = "support vs. against";
+	// Add the active class to the button
+	buttonViewModeButton.classList.add("button-common", "active");
+	document.body.insertBefore(buttonViewModeButton, document.body.firstChild);
 
-    buttonViewModeButton.addEventListener("click", () => {
-        currentFilterOption = "abany"; // Set the current filter option to "support vs. against"
-        currentViewMode = "support vs. against"; // Update the current view mode
-        const selectedYear = parseInt(document.getElementById("year-slider").value);
-        updateChart(selectedYear, currentFilterOption); // Update the chart with the selected year and option
-    
-        buttonViewModeButton.classList.add("active");
-        supportButton.classList.remove("active");
-        againstButton.classList.remove("active");
+	buttonViewModeButton.addEventListener("click", () => {
+		currentFilterOption = "abany"; // Set the current filter option to "support vs. against"
+		currentViewMode = "support vs. against"; // Update the current view mode
+		const selectedYear = parseInt(document.getElementById("year-slider").value);
+		updateChart(selectedYear, currentFilterOption); // Update the chart with the selected year and option
 
-		// Show the dropdown menu
-		document.getElementById("dropdown-container").style.display = "block";
-    });
+		buttonViewModeButton.classList.add("active");
+		supportButton.classList.remove("active");
+		againstButton.classList.remove("active");
 
-    // Create support and against buttons
-    const supportButton = document.createElement("div");
-    supportButton.classList.add("button-common", "button-support");
-    supportButton.innerText = "support";
-    document.body.appendChild(supportButton);
+		// Set the dropdown menu and subtitle container to full opacity
+        document.getElementById("dropdown-container").style.opacity = "1";
+        document.getElementById("subtitle-container").style.opacity = "1";
+	});
 
-    const againstButton = document.createElement("div");
-    againstButton.classList.add("button-common", "button-against");
-    againstButton.innerText = "against";
-    document.body.appendChild(againstButton);
-    
-    // Event listener for support and against elements
-    againstButton.addEventListener("click", () => {
-        currentFilterOption = "against";
-        currentViewMode = "against"; // Update the current view mode
-        const selectedYear = parseInt(document.getElementById("year-slider").value);
-        updateChartByCategory(selectedYear, currentFilterOption);
-        document.getElementById("dropdown-container").style.display = "none";
-        buttonViewModeButton.classList.remove("active"); // Remove the active state from the button
-        supportButton.classList.remove("active");
-        againstButton.classList.add("active");
-    });
+	// Create support and against buttons
+	const supportButton = document.createElement("div");
+	supportButton.classList.add("button-common", "button-support");
+	supportButton.innerText = "support";
+	document.body.appendChild(supportButton);
 
-    supportButton.addEventListener("click", () => {
-        currentFilterOption = "support";
-        currentViewMode = "support"; // Update the current view mode
-        const selectedYear = parseInt(document.getElementById("year-slider").value);
-        updateChartByCategory(selectedYear, currentFilterOption);
-        document.getElementById("dropdown-container").style.display = "none";
-        buttonViewModeButton.classList.remove("active"); // Remove the active state from the button 
-        againstButton.classList.remove("active");
-        supportButton.classList.add("active");
-    });
+	const againstButton = document.createElement("div");
+	againstButton.classList.add("button-common", "button-against");
+	againstButton.innerText = "against";
+	document.body.appendChild(againstButton);
+
+	// Event listener for support and against elements
+	againstButton.addEventListener("click", () => {
+		currentFilterOption = "against";
+		currentViewMode = "against"; // Update the current view mode
+		const selectedYear = parseInt(document.getElementById("year-slider").value);
+		updateChartByCategory(selectedYear, currentFilterOption);
+
+		// Set the dropdown menu and subtitle container to 5% opacity
+        document.getElementById("dropdown-container").style.opacity = "0.08";
+        document.getElementById("subtitle-container").style.opacity = "0.08";
+
+		buttonViewModeButton.classList.remove("active"); // Remove the active state from the button
+		supportButton.classList.remove("active");
+		againstButton.classList.add("active");
+	});
+
+	supportButton.addEventListener("click", () => {
+		currentFilterOption = "support";
+		currentViewMode = "support"; // Update the current view mode
+		const selectedYear = parseInt(document.getElementById("year-slider").value);
+		updateChartByCategory(selectedYear, currentFilterOption);
+
+		// Set the dropdown menu and subtitle container to 5% opacity
+        document.getElementById("dropdown-container").style.opacity = "0.08";
+        document.getElementById("subtitle-container").style.opacity = "0.08";
+
+		buttonViewModeButton.classList.remove("active"); // Remove the active state from the button 
+		againstButton.classList.remove("active");
+		supportButton.classList.add("active");
+	});
 
 
 	await startIntroAnimation(); // Start the intro animation
@@ -476,35 +485,33 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// Initialisiere den Play-Button mit dem Slider und der updateChart-Funktion
 	console.log("Initializing play button");
-    initializePlayButton("year-slider", (year) => updateChart(year, currentFilterOption, false));
-
-
+	initializePlayButton("year-slider", (year) => updateChart(year, currentFilterOption, false), () => currentFilterOption);
 });
 
 
 const slider = createAndDesignSlider();
 
 slider.addEventListener("input", function (e) {
-    const selectedYear = parseInt(e.target.value);
-    document.getElementById("selected-year").innerText = selectedYear; // Update display
-    
-    // Check the current view mode and call the appropriate update function
-    if (currentViewMode === "support vs. against") {
-        updateChart(selectedYear, option, false);
-    } else {
-        updateChartByCategory(selectedYear, currentViewMode, false);
-    }
+	const selectedYear = parseInt(e.target.value);
+	document.getElementById("selected-year").innerText = selectedYear; // Update display
 
-    // Collect and log subcategory values for both "1" and "0"
-    const optionValues = ["1", "0"];
-    optionValues.forEach(optionValue => {
-        const subcategoryValues = collectSubcategoryValues(data, selectedYear, optionValue, option);
-        console.log(`Year: ${selectedYear}, Option: ${option}, Option Value: ${optionValue}`);
-        console.log(`Age Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.ageCounts);
-        console.log(`Gender Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.genderCounts);
-        console.log(`Party Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.partyCounts);
-        console.log(`Education Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.educationCounts);
-    });
+	// Check the current view mode and call the appropriate update function
+	if (currentViewMode === "support vs. against") {
+		updateChart(selectedYear, option, false);
+	} else {
+		updateChartByCategory(selectedYear, currentViewMode, false);
+	}
+
+	// Collect and log subcategory values for both "1" and "0"
+	const optionValues = ["1", "0"];
+	optionValues.forEach(optionValue => {
+		const subcategoryValues = collectSubcategoryValues(data, selectedYear, optionValue, option);
+		console.log(`Year: ${selectedYear}, Option: ${option}, Option Value: ${optionValue}`);
+		console.log(`Age Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.ageCounts);
+		console.log(`Gender Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.genderCounts);
+		console.log(`Party Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.partyCounts);
+		console.log(`Education Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.educationCounts);
+	});
 });
 
 function collectSubcategoryValues(data, year, optionValue, option) {
