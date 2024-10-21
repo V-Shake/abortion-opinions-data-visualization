@@ -12,7 +12,7 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
 
     // Define colors
     const colors = {
-		dataset1: "#00DDFF", // Light blue
+        dataset1: "#00DDFF", // Light blue
         dataset0: "red",     // Red
         glowDataset1: "#71F6FF", // Vivid blue for glow effect
         glowDataset0: "#FF34C2", // Vivid red for glow effect
@@ -54,7 +54,7 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         .attr("y2", "100%")
         .selectAll("stop")
         .data([
-			{ offset: "0%", color: "#660018" }, // Dark red
+            { offset: "0%", color: "#660018" }, // Dark red
             { offset: "100%", color: "#FF0062" } // Light red
         ])
         .enter()
@@ -110,8 +110,6 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
     // Assuming radarDataList contains the counts for both datasets in the format:
 // radarDataList[0] = [{category: 'Female', value: 60}, {category: 'Male', value: 40}, ...];
 // radarDataList[1] = [{category: 'Female', value: 55}, {category: 'Male', value: 45}, ...];
-    const totalCountDataset1 = radarDataList[0].reduce((sum, d) => sum + d.value, 0); // Total for dataset 1
-    const totalCountDataset0 = radarDataList[1].reduce((sum, d) => sum + d.value, 0); // Total for dataset 0}
 // Create the tooltip
 const tooltip = d3.select("body").append("div")
     .style("position", "absolute")

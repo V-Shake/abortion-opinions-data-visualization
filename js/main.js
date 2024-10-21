@@ -224,7 +224,8 @@ function normalizeCounts(counts1, counts0) {
 	);
 }
 
-function updateChartByCategory(year, opinion, shouldAnimate = true) {
+function updateChartByCategory(year, opinion, shouldAnimate = true, categoryToFilter = null) {
+	console.log(categoryToFilter);
 	// List of categories to process
 	const categories = [
 		"abany",
@@ -242,29 +243,29 @@ function updateChartByCategory(year, opinion, shouldAnimate = true) {
 	const normalizedGenderCountsList = [];
 	const normalizedPartyCountsList = [];
 	const normalizedEducationCountsList = [];
-	// Iterate through each category
-	categories.forEach((category) => {
-		// Preprocess data for both category = "1" and category = "0" for the selected year
-		let processedData;
-		if (opinion == "support") {
-			processedData = preprocessDataForYear(data, year, "1", category);
-		} else {
-			processedData = preprocessDataForYear(data, year, "0", category);
-		}
-		dataList.push(processedData);
-		// Group the data
-		const ageCounts = groupByAge(processedData);
-		console.log(ageCounts);
-		const genderCounts = groupByGender(processedData);
-		const partyCounts = groupByParty(processedData);
-		const educationCounts = groupByEducation(processedData);
+		// Iterate through each category
+		categories.forEach((category) => {
+			// Preprocess data for both category = "1" and category = "0" for the selected year
+			let processedData;
+			if (opinion == "support") {
+				processedData = preprocessDataForYear(data, year, "1", category);
+			} else {
+				processedData = preprocessDataForYear(data, year, "0", category);
+			}
+			dataList.push(processedData);
+			// Group the data
+			const ageCounts = groupByAge(processedData);
+			console.log(ageCounts);
+			const genderCounts = groupByGender(processedData);
+			const partyCounts = groupByParty(processedData);
+			const educationCounts = groupByEducation(processedData);
 
 
-		normalizedAgeCountsList.push(ageCounts);
-		normalizedGenderCountsList.push(genderCounts);
-		normalizedPartyCountsList.push(partyCounts);
-		normalizedEducationCountsList.push(educationCounts);
-	});
+			normalizedAgeCountsList.push(ageCounts);
+			normalizedGenderCountsList.push(genderCounts);
+			normalizedPartyCountsList.push(partyCounts);
+			normalizedEducationCountsList.push(educationCounts);
+		});
 	// Normalize the counts for radar chart
 	const normalizedAgeCounts = normalizeCountsAlt(normalizedAgeCountsList);
 	const normalizedGenderCounts = normalizeCountsAlt(
@@ -302,8 +303,17 @@ function updateChartByCategory(year, opinion, shouldAnimate = true) {
 		];
 
 		// Push both 1 and 0 data for each category
-		radarDataList.push(radarData);
+		if (categoryToFilter){
+			// exists, only push this category
+			if (categories.indexOf(categoryToFilter) == i){
+				radarDataList.push(radarData);
+			}
+		} else {
+			// does not exist, push all data
+			radarDataList.push(radarData);
+		}
 	}
+
 
 	// Clear previous chart and render the updated chart with all category data
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
@@ -488,18 +498,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 		// Event listener for legend items
 		document.querySelectorAll(".legend-item").forEach((item) => {
 			item.addEventListener("click", function () {
+				console.log("legend");
 				const category = this.getAttribute("data-category");
 				const selectedYear = parseInt(
 					document.getElementById("year-slider").value
 				);
 				if (category === "all") {
+					console.log(category);
 					// Make all paths/blobs visible
-					updateChart(selectedYear, currentFilterOption);
+					updateChartByCategory(selectedYear, currentFilterOption);
 				} else {
 					// Update the chart by category
+					console.log(category);
 					updateChartByCategory(
 						selectedYear,
 						currentFilterOption,
+						true,
 						category
 					);
 				}
