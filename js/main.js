@@ -402,7 +402,7 @@ updateChart(1977, option); // Start with the year 1977
 document.addEventListener("DOMContentLoaded", async () => {
 	const buttonViewModeButton = document.createElement("button-view-mode");
 	buttonViewModeButton.id = "button-view-mode";
-	buttonViewModeButton.innerText = "support vs. against";
+	buttonViewModeButton.innerText = "support vs. oppose";
 	// Add the active class to the button
 	buttonViewModeButton.classList.add("button-common", "active");
 	document.body.insertBefore(buttonViewModeButton, document.body.firstChild);
@@ -425,12 +425,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 	// Create support and against buttons
 	const supportButton = document.createElement("div");
 	supportButton.classList.add("button-common", "button-support");
-	supportButton.innerText = "support";
+	supportButton.innerText = "only support";
 	document.body.appendChild(supportButton);
 
 	const againstButton = document.createElement("div");
 	againstButton.classList.add("button-common", "button-against");
-	againstButton.innerText = "against";
+	againstButton.innerText = "only oppose";
 	document.body.appendChild(againstButton);
 
 	// Event listener for support and against elements

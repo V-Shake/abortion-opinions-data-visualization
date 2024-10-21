@@ -314,14 +314,14 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
             textElement.innerText =
                 "In 1977, 38% of Americans supported abortion in all circumstances, while 62% opposed it";
             textElement.style.position = "absolute";
-            textElement.style.top = "25%";
+            textElement.style.top = "20%";
             textElement.style.left = "50%";
             textElement.style.transform = "translate(-50%, -50%)";
             textElement.style.color = "white";
             textElement.style.fontSize = "2em";
             textElement.style.textAlign = "center";
             overlay.appendChild(textElement);
-        }, 3000); // Adjust the delay to match the timing of the color change
+        }, 5000); // Adjust the delay to match the timing of the color change
 
         // Gather blue and red dots to their respective sides while maintaining the circular shape
         setTimeout(() => {
