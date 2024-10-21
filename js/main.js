@@ -11,10 +11,10 @@ let currentFilterOption = "abany";
 let currentViewMode = "support vs. against";
 let initialAnimationDone = false; // Flag to control if the initial animation has been played
 
-// Function to set global option
 function setGlobalOption(selectedOption) {
-	option = selectedOption; // Update the global option variable
-	updateChart(1977, option, false); // Call updateChart to update the chart immediately without animation
+    option = selectedOption; // Update the global option variable
+    currentFilterOption = selectedOption; // Update the current filter option
+    updateChart(1977, option, false); // Call updateChart to update the chart immediately without animation
 }
 
 function preprocessDataForYear(data, year, optionValue, option) {
@@ -310,7 +310,7 @@ function updateChartByCategory(year, opinion, shouldAnimate = true) {
 	renderChart(radarDataList, 1, opinion, shouldAnimate); // Pass the radar data list to render function
 }
 
-function updateChart(year, option, shouldAnimate = true) {
+export function updateChart(year, option, shouldAnimate = true) {
 	// Preprocess data for both abany = "1" and abany = "0" for the selected year
 	const processedData1 = preprocessDataForYear(data, year, "1", option);
 	const processedData0 = preprocessDataForYear(data, year, "0", option);

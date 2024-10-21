@@ -4,7 +4,7 @@ let intervalId; // Variable to store the interval function
 export function initializePlayButton(
     sliderId,
     updateChartFunction,
-	getCurrentFilterOption,
+    getCurrentFilterOption,
     startYear = 1977,
     endYear = 2018
 ) {
@@ -56,7 +56,8 @@ export function initializePlayButton(
                     yearSlider.value = currentYear; // Update the slider value
                     document.getElementById("selected-year").innerText =
                         currentYear; // Update the displayed year
-                    updateChartFunction(currentYear, getCurrentFilterOption(), false); // Call the updateChart function with the current year and current filter option
+                    // Update the chart with the current year and current filter option
+                    updateChartFunction(currentYear, getCurrentFilterOption(), false);
                 }
                 currentYear =
                     availableYears.find((year) => year > currentYear) ||
