@@ -21,7 +21,7 @@ export function renderChart(
 		dataset0: "#E00047", // Red
 		glowDataset1: "#2CEAFF", // Vivid blue for glow effect
 		glowDataset0: "#FA4172", // Vivid red for glow effect
-		subcategoryText: "grey", // Color for subcategory labels
+		subcategoryText: "white", // Color for subcategory labels
 	};
 
 	const svg = d3
@@ -377,14 +377,12 @@ export function renderChart(
 			const gradientId = isDataset1
 				? "gradientDataset1"
 				: "gradientDataset0";
-			const category = data.category;
 
 			const path = svg
 				.append("path")
 				.datum(item.coordinates)
 				.attr("d", line([{ x: centerX, y: centerY }])) // Start from center
 				.attr("stroke", glowColor)
-				.attr("data-category", category)
 				.attr("fill", `url(#${gradientId})`)
 				.attr("opacity", 0.15)
 				.attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating

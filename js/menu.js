@@ -1,3 +1,5 @@
+import { updateChart } from "./main.js";
+
 export function createDropdownMenu(setGlobalOption) {
     const dropdownContainer = document.createElement("div");
     dropdownContainer.className = "menu";
@@ -29,10 +31,11 @@ export function createDropdownMenu(setGlobalOption) {
         const optionLink = document.createElement("a");
         optionLink.href = "#";
         optionLink.className = "submenu-link";
-        optionLink.innerText = element; // Display the option text
+        optionLink.innerText = element;
+
         optionLink.addEventListener("click", (e) => {
             e.preventDefault();
-            let selectedOption; // Renamed from 'option' to 'selectedOption'
+            let selectedOption; 
             switch (element) {
                 case "any reason":
                     selectedOption = "abany";
@@ -58,9 +61,13 @@ export function createDropdownMenu(setGlobalOption) {
                 default:
                     break;
             }
+
             // Update the global option and the dropdown button display
             setGlobalOption(selectedOption);
-            dropdownLink.innerHTML = `${element} <svg viewBox="0 0 360 360" xml:space="preserve"><g id="SVGRepo_iconCarrier"><path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path></g></svg>`; // Update button display
+            dropdownLink.innerHTML = `${element} <svg viewBox="0 0 360 360" xml:space="preserve"><g id="SVGRepo_iconCarrier"><path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path></g></svg>`;
+
+            // Get the selected year from the slider
+            const selectedYear = parseInt(document.getElementById("selected-year").innerText);
             updateChart(selectedYear, selectedOption); // Call updateChart with the new selected option
 
             // Remove 'active' class from all options
@@ -68,7 +75,7 @@ export function createDropdownMenu(setGlobalOption) {
             // Add 'active' class to the clicked option
             optionLink.classList.add('active');
         });
-		
+
         optionElement.appendChild(optionLink);
         dropdownContent.appendChild(optionElement);
     });

@@ -11,16 +11,16 @@ let currentFilterOption = "abany";
 let currentViewMode = "support vs. against";
 let initialAnimationDone = false; // Flag to control if the initial animation has been played
 
-// Function to set global option
 function setGlobalOption(selectedOption) {
 	option = selectedOption; // Update the global option variable
+	currentFilterOption = selectedOption; // Update the current filter option
 	updateChart(1977, option, false); // Call updateChart to update the chart immediately without animation
 }
 
 function preprocessDataForYear(data, year, optionValue, option) {
 	// Filter data based on the selected year and count individuals with specific 'abany' value
 
-	let filteredData;
+	let filteredData = []; // Initialize filteredData as an empty array
 
 	switch (option) {
 		case "abany":
@@ -309,7 +309,7 @@ function updateChartByCategory(year, opinion, shouldAnimate = true) {
 	renderChart(radarDataList, 1, opinion, shouldAnimate); // Pass the radar data list to render function
 }
 
-function updateChart(year, option, shouldAnimate = true) {
+export function updateChart(year, option, shouldAnimate = true) {
 	// Preprocess data for both abany = "1" and abany = "0" for the selected year
 	const processedData1 = preprocessDataForYear(data, year, "1", option);
 	const processedData0 = preprocessDataForYear(data, year, "0", option);
@@ -400,7 +400,7 @@ updateChart(1977, option); // Start with the year 1977
 document.addEventListener("DOMContentLoaded", async () => {
 	const buttonViewModeButton = document.createElement("button-view-mode");
 	buttonViewModeButton.id = "button-view-mode";
-	buttonViewModeButton.innerText = "support vs. against";
+	buttonViewModeButton.innerText = "support vs. oppose";
 	// Add the active class to the button
 	buttonViewModeButton.classList.add("button-common", "active");
 	document.body.insertBefore(buttonViewModeButton, document.body.firstChild);
@@ -425,12 +425,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 	// Create support and against buttons
 	const supportButton = document.createElement("div");
 	supportButton.classList.add("button-common", "button-support");
-	supportButton.innerText = "support";
+	supportButton.innerText = "only support";
 	document.body.appendChild(supportButton);
 
 	const againstButton = document.createElement("div");
 	againstButton.classList.add("button-common", "button-against");
-	againstButton.innerText = "against";
+	againstButton.innerText = "only oppose";
 	document.body.appendChild(againstButton);
 
 	// Event listener for support and against elements
@@ -443,8 +443,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 		updateChartByCategory(selectedYear, currentFilterOption);
 
 		// Set the dropdown menu and subtitle container to 5% opacity
-		document.getElementById("dropdown-container").style.opacity = "0.08";
-		document.getElementById("subtitle-container").style.opacity = "0.08";
+		document.getElementById("dropdown-container").style.opacity = "0.00";
+		document.getElementById("subtitle-container").style.opacity = "0.00";
 
 		buttonViewModeButton.classList.remove("active"); // Remove the active state from the button
 		supportButton.classList.remove("active");

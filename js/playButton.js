@@ -4,11 +4,11 @@ let intervalId; // Variable to store the interval function
 export function initializePlayButton(
     sliderId,
     updateChartFunction,
-	getCurrentFilterOption,
+    getCurrentFilterOption,
     startYear = 1977,
     endYear = 2018
 ) {
-    const playButton = document.getElementById("play-button");
+    const playButton = document.getElementById("play-btn");
     const yearSlider = document.getElementById(sliderId);
 
     if (!playButton) {
@@ -22,7 +22,7 @@ export function initializePlayButton(
     }
 
     // Play/Pause button click event listener
-    playButton.addEventListener("click", function () {
+    playButton.addEventListener("change", function () {
         console.log("Play button clicked");
         if (isPlaying) {
             stopAnimation();
@@ -56,7 +56,9 @@ export function initializePlayButton(
                     yearSlider.value = currentYear; // Update the slider value
                     document.getElementById("selected-year").innerText =
                         currentYear; // Update the displayed year
-                    updateChartFunction(currentYear, getCurrentFilterOption(), false); // Call the updateChart function with the current year and current filter option
+                    const currentOption = getCurrentFilterOption();
+                    console.log(`Updating chart for year: ${currentYear} with option: ${currentOption}`);
+                    updateChartFunction(currentYear, currentOption, false); // Call the updateChart function with the current year and current filter option
                 }
                 currentYear =
                     availableYears.find((year) => year > currentYear) ||
@@ -71,6 +73,6 @@ export function initializePlayButton(
         console.log("Stopping animation");
         isPlaying = false;
         clearInterval(intervalId); // Stop the interval
-        playButton.innerHTML = "▶"; // Change button text to Play symbol
+        // playButton.innerHTML = "▶"; // Change button text to Play symbol
     }
 }
