@@ -76,23 +76,38 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         .range([0, maxRadius]);
 
     // Draw the gridlines (circles) with animation
-    const gridlines = svg.selectAll("circle.gridline")
-        .data(ticks)
-        .join("circle")
-        .attr("class", "gridline") // Add class for potential styling
-        .attr("cx", centerX)
-        .attr("cy", centerY)
-        .attr("fill", "none")
-        .attr("stroke", "#2A2A2A") // Grey
-        .attr("r", d => radialScale(d))  // Map tick values to radial distance
-        .attr("opacity", shouldAnimate ? 0 : 1); // Start hidden if animating
+    // Draw the gridlines (circles) with animation and percentage labels
+// Draw gridlines
+const gridlines = svg.selectAll("circle.gridline")
+    .data(ticks)
+    .join("circle")
+    .attr("class", "gridline") // Add class for potential styling
+    .attr("cx", centerX)
+    .attr("cy", centerY)
+    .attr("fill", "none")
+    .attr("stroke", "#2A2A2A") // Grey
+    .attr("r", d => radialScale(d))  // Map tick values to radial distance
+    .attr("opacity", shouldAnimate ? 0 : 1); // Start hidden if animating
 
-    if (shouldAnimate) {
-        gridlines.transition()
-            .duration(1000) // Animation duration
-            .delay((d, i) => i * 200) // Stagger the animation for each circle
-            .attr("opacity", 1); // Fade in
-    }
+if (shouldAnimate) {
+    gridlines.transition()
+        .duration(1000) // Animation duration
+        .delay((d, i) => i * 200) // Stagger the animation for each circle
+        .attr("opacity", 1); // Fade in
+}
+
+// Draw tick labels (formatted as 20, 40, 60, 80, 100)
+const percentageLabels = svg.selectAll("text.tickLabel")
+    .data(ticks)
+    .join("text")
+    .attr("class", "tickLabel")
+    .attr("x", centerX)  // Start at centerX
+    .attr("y", d => centerY - radialScale(d)) // Move up by the radius of the tick
+    .attr("dy", "-0.5em")  // Offset the label slightly above the tick
+    .attr("text-anchor", "middle")
+    .attr("fill", "grey")
+    .text(d => `${d}`*10)  // Display the tick values directly (20, 40, 60, etc.)
+    .style("font-size", "10px"); // Adjust the font size inline or in CSS
 
     const subcategories = radarDataList ? radarDataList[0].map(d => d.category) : [];
     const numAxes = radarDataList ? subcategories.length : 7;

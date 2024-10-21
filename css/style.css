@@ -374,3 +374,12 @@ input[type="range"] {
 .hidden {
 	display: none !important;
   }
+
+  .tickLabel {
+    font-size: 10px;          /* Smaller font size */
+    text-anchor: middle;      /* Center align the text */
+    fill: grey; 
+	opacity: 0.4;              /* Label color */
+    transform: rotate(-45deg); /* Rotate 30 degrees */
+    transform-origin: center; /* Rotate around the label's center */
+}
