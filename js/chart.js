@@ -12,10 +12,10 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
 
     // Define colors
     const colors = {
-        // dataset1: "#41B3FA", // Light blue
-        dataset0: "#E00047",     // Red
-        glowDataset1: "#2CEAFF", // Vivid blue for glow effect
-        glowDataset0: "#FA4172", // Vivid red for glow effect
+		dataset1: "#00DDFF", // Light blue
+        dataset0: "red",     // Red
+        glowDataset1: "#71F6FF", // Vivid blue for glow effect
+        glowDataset0: "#FF34C2", // Vivid red for glow effect
         subcategoryText: "white", // Color for subcategory labels
     };
 
@@ -37,8 +37,8 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         .attr("y2", "100%")
         .selectAll("stop")
         .data([
-            { offset: "0%", color: "#0CAEFF" }, // Dark blue
-            { offset: "100%", color: "#00BCD4" } // Light blue
+            { offset: "0%", color: "#01368A" }, // Dark blue
+            { offset: "100%", color: "#00FFEA" } // Light blue
         ])
         .enter()
         .append("stop")
@@ -54,8 +54,8 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         .attr("y2", "100%")
         .selectAll("stop")
         .data([
-            { offset: "0%", color: "#D40722" }, // Dark red
-            { offset: "100%", color: "#F83166" } // Light red
+			{ offset: "0%", color: "#660018" }, // Dark red
+            { offset: "100%", color: "#FF0062" } // Light red
         ])
         .enter()
         .append("stop")
@@ -314,7 +314,7 @@ if (colorMode == 0) {
             .attr("d", line([{ x: centerX, y: centerY }])) // Start from center
             .attr("stroke", glowColor)
             .attr("fill", `url(#${gradientId})`)
-            .attr("opacity", 0.15)
+            .attr("opacity", 0.35)
             .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
             .transition()
             .delay(shouldAnimate ? 1000 : 0)
@@ -341,7 +341,7 @@ if (colorMode == 0) {
         if (hideChart) {
             opacity = 0;
         } else {
-            opacity = 0.15;
+            opacity = 0.35;
         }
         const path = svg.append("path")
             .datum(item.coordinates)
