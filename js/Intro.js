@@ -7,7 +7,7 @@ export function startIntroAnimation() {
         // Create item for "Opinions on Abortion"
         const item = document.createElement("div");
         item.className = "at-item";
-        item.innerText = "Opinions on Abortion";
+        item.innerText = "Abortion Opinions in the USA";
 
         container.appendChild(item);
         document.body.appendChild(container);
@@ -48,7 +48,7 @@ export function startIntroAnimation() {
                                 document.body.removeChild(secondContainer);
                                 document.body.removeChild(container);                                
                                 resolve(); // Resolve the promise
-                            }, 1000); // Wait for fade-out effect to finish (1 second)
+                            }, 500); // Wait for fade-out effect to finish (1 second)
                         }, 5000); // Display for 5 seconds
                     }, 100); // Short delay to ensure it's visible before fading in
                 }, 1000); // Wait for 1 second for the first text's fade-out to complete
