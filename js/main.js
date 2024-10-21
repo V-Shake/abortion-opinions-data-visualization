@@ -10,17 +10,18 @@ let option = "abany";
 let currentFilterOption = "abany";
 let currentViewMode = "support vs. against";
 let initialAnimationDone = false; // Flag to control if the initial animation has been played
+let selectedCategory = null;
 
 function setGlobalOption(selectedOption) {
-    option = selectedOption; // Update the global option variable
-    currentFilterOption = selectedOption; // Update the current filter option
-    updateChart(1977, option, false); // Call updateChart to update the chart immediately without animation
+	option = selectedOption; // Update the global option variable
+	currentFilterOption = selectedOption; // Update the current filter option
+	updateChart(1977, option, false); // Call updateChart to update the chart immediately without animation
 }
 
 function preprocessDataForYear(data, year, optionValue, option) {
 	// Filter data based on the selected year and count individuals with specific 'abany' value
 
-    let filteredData = []; // Initialize filteredData as an empty array
+	let filteredData = []; // Initialize filteredData as an empty array
 
 	switch (option) {
 		case "abany":
@@ -224,7 +225,8 @@ function normalizeCounts(counts1, counts0) {
 	);
 }
 
-function updateChartByCategory(year, opinion, shouldAnimate = true) {
+function updateChartByCategory(year, opinion, shouldAnimate = true, categoryToFilter = null) {
+	console.log(categoryToFilter);
 	// List of categories to process
 	const categories = [
 		"abany",
@@ -302,12 +304,30 @@ function updateChartByCategory(year, opinion, shouldAnimate = true) {
 		];
 
 		// Push both 1 and 0 data for each category
-		radarDataList.push(radarData);
+		if (categoryToFilter) {
+			// exists, only push this category
+			if (categories.indexOf(categoryToFilter) == i) {
+				radarDataList.push(radarData);
+			}
+		} else {
+			// does not exist, push all data
+			radarDataList.push(radarData);
+		}
 	}
+
 
 	// Clear previous chart and render the updated chart with all category data
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
-	renderChart(radarDataList, 1, opinion, shouldAnimate); // Pass the radar data list to render function
+	let hideChart = false;
+	if (normalizedGenderCountsList.every(item => item.Female === 0 && item.Male === 0)) {
+		// Execute something here if every element has {Female: 0, Male: 0}
+		console.log("All elements have Female: 0 and Male: 0.");
+		hideChart = true;
+	} else {
+		hideChart = false;
+	}
+	renderChart(radarDataList, 1, opinion, shouldAnimate, hideChart); // Pass the radar data list to render function
+
 }
 
 export function updateChart(year, option, shouldAnimate = true) {
@@ -394,7 +414,19 @@ export function updateChart(year, option, shouldAnimate = true) {
 	d3.select("#renderer").select("svg").remove(); // Clear previous chart
 	const radarDataList = [];
 	radarDataList.push(radarData1, radarData0);
-	renderChart(radarDataList, 0, null, shouldAnimate);
+	let hideChart = false;
+	if (normalizedGenderCounts0["Female"] == 0
+		&& normalizedGenderCounts0["Male"] == 0
+		&& normalizedGenderCounts1["Female"] == 0
+		&& normalizedGenderCounts1["Male"] == 0
+	) {
+		// Execute something here if every element has {Female: 0, Male: 0}
+		console.log("All elements have Female: 0 and Male: 0.");
+		hideChart = true;
+	} else {
+		hideChart = false;
+	}
+	renderChart(radarDataList, 0, null, shouldAnimate, hideChart);
 }
 
 updateChart(1977, option); // Start with the year 1977
@@ -402,35 +434,40 @@ updateChart(1977, option); // Start with the year 1977
 document.addEventListener("DOMContentLoaded", async () => {
 	const buttonViewModeButton = document.createElement("button-view-mode");
 	buttonViewModeButton.id = "button-view-mode";
-	buttonViewModeButton.innerText = "support vs. against";
+	buttonViewModeButton.innerText = "support vs. oppose";
 	// Add the active class to the button
 	buttonViewModeButton.classList.add("button-common", "active");
 	document.body.insertBefore(buttonViewModeButton, document.body.firstChild);
 
-    buttonViewModeButton.addEventListener("click", () => {
-        currentFilterOption = "abany"; // Set the current filter option to "support vs. against"
-        currentViewMode = "support vs. against"; // Update the current view mode
-        const selectedYear = parseInt(document.getElementById("year-slider").value);
-        updateChart(selectedYear, currentFilterOption); // Update the chart with the selected year and option without animation
-    
-        buttonViewModeButton.classList.add("active");
-        supportButton.classList.remove("active");
-        againstButton.classList.remove("active");
+	buttonViewModeButton.addEventListener("click", () => {
+		currentFilterOption = "abany"; // Set the current filter option to "support vs. against"
+		currentViewMode = "support vs. against"; // Update the current view mode
+		const selectedYear = parseInt(document.getElementById("year-slider").value);
+		updateChart(selectedYear, currentFilterOption); // Update the chart with the selected year and option without animation
+
+		buttonViewModeButton.classList.add("active");
+		supportButton.classList.remove("active");
+		againstButton.classList.remove("active");
 
 		// Set the dropdown menu and subtitle container to full opacity
-        document.getElementById("dropdown-container").style.opacity = "1";
-        document.getElementById("subtitle-container").style.opacity = "1";
+		document.getElementById("dropdown-container").style.opacity = "1";
+		document.getElementById("subtitle-container").style.opacity = "1";
+
+		// Hide legend items
+		document.querySelectorAll(".legend-item").forEach((item) => {
+			item.classList.add("hidden");
+		});
 	});
 
 	// Create support and against buttons
 	const supportButton = document.createElement("div");
 	supportButton.classList.add("button-common", "button-support");
-	supportButton.innerText = "support";
+	supportButton.innerText = "only support";
 	document.body.appendChild(supportButton);
 
 	const againstButton = document.createElement("div");
 	againstButton.classList.add("button-common", "button-against");
-	againstButton.innerText = "against";
+	againstButton.innerText = "only oppose";
 	document.body.appendChild(againstButton);
 
 	// Event listener for support and against elements
@@ -441,12 +478,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 		updateChartByCategory(selectedYear, currentFilterOption);
 
 		// Set the dropdown menu and subtitle container to 5% opacity
-        document.getElementById("dropdown-container").style.opacity = "0.00";
-        document.getElementById("subtitle-container").style.opacity = "0.00";
+		document.getElementById("dropdown-container").style.opacity = "0.00";
+		document.getElementById("subtitle-container").style.opacity = "0.00";
 
 		buttonViewModeButton.classList.remove("active"); // Remove the active state from the button
 		supportButton.classList.remove("active");
 		againstButton.classList.add("active");
+
+		// Show legend items
+		document.querySelectorAll(".legend-item").forEach((item) => {
+			item.classList.remove("hidden");
+		});
 	});
 
 	supportButton.addEventListener("click", () => {
@@ -456,12 +498,38 @@ document.addEventListener("DOMContentLoaded", async () => {
 		updateChartByCategory(selectedYear, currentFilterOption);
 
 		// Set the dropdown menu and subtitle container to 5% opacity
-        document.getElementById("dropdown-container").style.opacity = "0.00";
-        document.getElementById("subtitle-container").style.opacity = "0.00";
+		document.getElementById("dropdown-container").style.opacity = "0.00";
+		document.getElementById("subtitle-container").style.opacity = "0.00";
 
 		buttonViewModeButton.classList.remove("active"); // Remove the active state from the button 
 		againstButton.classList.remove("active");
 		supportButton.classList.add("active");
+
+		// Show legend items
+		document.querySelectorAll(".legend-item").forEach((item) => {
+			item.classList.remove("hidden");
+		});
+	});
+
+	// Hide legend items by default
+	document.querySelectorAll(".legend-item").forEach((item) => {
+		item.classList.add("hidden");
+	});
+	
+	// Event listener for legend items
+	document.querySelectorAll(".legend-item").forEach((item) => {
+		item.addEventListener("click", function () {
+			const category = this.getAttribute("data-category");
+			selectedCategory = category === "all" ? null : category; // Update selectedCategory
+			const selectedYear = parseInt(document.getElementById("year-slider").value); // Get the current year from the slider
+
+			// If 'all' is selected, show all categories; otherwise, filter by the selected category
+			if (category === "all") {
+				updateChartByCategory(selectedYear, currentFilterOption, false);
+			} else {
+				updateChartByCategory(selectedYear, currentFilterOption, false, category);
+			}
+		});
 	});
 
 
@@ -491,15 +559,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 const slider = createAndDesignSlider();
 
 slider.addEventListener("input", function (e) {
-    const selectedYear = parseInt(e.target.value);
-    document.getElementById("selected-year").innerText = selectedYear; // Update display
-    
-    // Check the current view mode and call the appropriate update function
-    if (currentViewMode === "support vs. against") {
-        updateChart(selectedYear, option, false); // Disable animation for support vs. against
-    } else {
-        updateChartByCategory(selectedYear, currentViewMode, false); // Disable animation for categories
-    }
+	const selectedYear = parseInt(e.target.value);
+	document.getElementById("selected-year").innerText = selectedYear; // Update display
+
+	// Check the current view mode and call the appropriate update function
+	if (currentViewMode === "support vs. against") {
+		updateChart(selectedYear, option, false); // Disable animation for support vs. against
+	} else {
+		updateChartByCategory(selectedYear, currentViewMode, false); // Disable animation for categories
+	}
 
 	// Collect and log subcategory values for both "1" and "0"
 	const optionValues = ["1", "0"];
@@ -528,7 +596,7 @@ function collectSubcategoryValues(data, year, optionValue, option) {
 		ageCounts,
 		genderCounts,
 		partyCounts,
-		educationCounts
+		educationCounts,
 	};
-} 
+}
 export { collectSubcategoryValues };

@@ -1,6 +1,6 @@
 import { data } from "./data.js"; 
 console.log(data); // Should log your data array
-export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = true) {
+export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = true, hideChart) {
     const width = 900;
     const height = 900;
     const centerX = width / 2;
@@ -12,10 +12,10 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
 
     // Define colors
     const colors = {
-        // dataset1: "#41B3FA", // Light blue
-        dataset0: "#E00047",     // Red
-        glowDataset1: "#2CEAFF", // Vivid blue for glow effect
-        glowDataset0: "#FA4172", // Vivid red for glow effect
+        dataset1: "#00DDFF", // Light blue
+        dataset0: "red",     // Red
+        glowDataset1: "#71F6FF", // Vivid blue for glow effect
+        glowDataset0: "#FF34C2", // Vivid red for glow effect
         subcategoryText: "white", // Color for subcategory labels
     };
 
@@ -37,8 +37,8 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         .attr("y2", "100%")
         .selectAll("stop")
         .data([
-            { offset: "0%", color: "#0CAEFF" }, // Dark blue
-            { offset: "100%", color: "#00BCD4" } // Light blue
+            { offset: "0%", color: "#01368A" }, // Dark blue
+            { offset: "100%", color: "#00FFEA" } // Light blue
         ])
         .enter()
         .append("stop")
@@ -54,8 +54,8 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         .attr("y2", "100%")
         .selectAll("stop")
         .data([
-            { offset: "0%", color: "#D40722" }, // Dark red
-            { offset: "100%", color: "#F83166" } // Light red
+            { offset: "0%", color: "#660018" }, // Dark red
+            { offset: "100%", color: "#FF0062" } // Light red
         ])
         .enter()
         .append("stop")
@@ -94,8 +94,8 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
             .attr("opacity", 1); // Fade in
     }
 
-    const subcategories = radarDataList[0].map(d => d.category);
-    const numAxes = subcategories.length;
+    const subcategories = radarDataList ? radarDataList[0].map(d => d.category) : [];
+    const numAxes = radarDataList ? subcategories.length : 7;
     const angleSlice = (Math.PI * 2) / numAxes;
     
     // Define main categories and their positions
@@ -110,10 +110,6 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
     // Assuming radarDataList contains the counts for both datasets in the format:
 // radarDataList[0] = [{category: 'Female', value: 60}, {category: 'Male', value: 40}, ...];
 // radarDataList[1] = [{category: 'Female', value: 55}, {category: 'Male', value: 45}, ...];
-
-const totalCountDataset1 = radarDataList[0].reduce((sum, d) => sum + d.value, 0); // Total for dataset 1
-const totalCountDataset0 = radarDataList[1].reduce((sum, d) => sum + d.value, 0); // Total for dataset 0
-
 // Create the tooltip
 const tooltip = d3.select("body").append("div")
     .style("position", "absolute")
@@ -160,7 +156,6 @@ const tooltip = d3.select("body").append("div")
         .on("mouseover", () => {
             const valueDataset1 = radarDataList[0][i].value; // Actual count for dataset1
             const valueDataset0 = radarDataList[1][i].value; // Actual count for dataset0
-    
             // Combine the values to get total counts
             const totalCount = valueDataset1 + valueDataset0;
     
@@ -264,7 +259,6 @@ const tooltip = d3.select("body").append("div")
         const coordinates = getCoordinates(radarData);
         coordinatesList.push(coordinates);  // Push the coordinates to the list
     }
-
     const line = d3
         .line()
         .curve(d3.curveCardinalClosed) // Smooth lines with closing curve
@@ -292,14 +286,13 @@ const tooltip = d3.select("body").append("div")
         }
         return Math.abs(area) / 2;
     }
-
+    let coordinatesWithAreas;
     // Calculate areas and store with original index
-    const coordinatesWithAreas = radarDataList.map((radarData, index) => {
+    coordinatesWithAreas = radarDataList.map((radarData, index) => {
         const coordinates = getCoordinates(radarData);
         const area = calculateArea(coordinates);
         return { index, coordinates, area };
     });
-
    // Sort by area in descending order (largest first)
 coordinatesWithAreas.sort((a, b) => b.area - a.area);
 
@@ -319,7 +312,7 @@ if (colorMode == 0) {
             .attr("d", line([{ x: centerX, y: centerY }])) // Start from center
             .attr("stroke", glowColor)
             .attr("fill", `url(#${gradientId})`)
-            .attr("opacity", 0.15)
+            .attr("opacity", 0.35)
             .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
             .transition()
             .delay(shouldAnimate ? 1000 : 0)
@@ -342,13 +335,18 @@ if (colorMode == 0) {
         const gradientId = opinion === "support" ? "gradientDataset1" : "gradientDataset0";
 
         console.log(`Rendering path for category with coordinates:`, item.coordinates);
-
+        let opacity;
+        if (hideChart) {
+            opacity = 0;
+        } else {
+            opacity = 0.35;
+        }
         const path = svg.append("path")
             .datum(item.coordinates)
             .attr("d", line([{ x: centerX, y: centerY }])) // Start from center
             .attr("stroke", glowColor)
             .attr("fill", `url(#${gradientId})`)
-            .attr("opacity", 0.15)
+            .attr("opacity", opacity)
             .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
             .transition()
             .delay(shouldAnimate ? 1000 : 0)
@@ -364,7 +362,6 @@ if (colorMode == 0) {
             });
     });
 }
-
     // Define the radius for calculating pixel-to-radian conversion
     const radius = 255; // Midpoint between the inner and outer radius of the purple band
 

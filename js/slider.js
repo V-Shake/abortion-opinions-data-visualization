@@ -58,7 +58,7 @@ export function createAndDesignSlider() {
         const yearLabel = document.createElement("span");
         yearLabel.innerText = year;
         yearLabel.style.fontSize = "10px";
-        yearLabel.style.fontFamily = 'LTUnivers 330 BasicLight', 'Helvetica'; 
+        yearLabel.style.fontFamily = 'LTUnivers 330 BasicLight', 'Helvetica';
         yearLabel.style.position = "absolute"; // Position absolutely inside the container
         yearLabel.style.transform = "rotate(-90deg)"; // Rotate counterclockwise
         yearLabel.style.transformOrigin = "left bottom"; // Set origin for rotation
@@ -79,12 +79,20 @@ export function createAndDesignSlider() {
         yearLabel.style.left = `calc(${positionPercent}% - ${labelAdjustment}px)`; // Adjust left to center labels
 
         // Add click event listener for interaction
+        // Add click event listener for interaction
         yearLabel.addEventListener("click", () => {
             selectedYearSpan.innerText = year; // Update selected year display
             slider.value = year; // Set the slider value
             slider.dispatchEvent(new Event("input")); // Trigger slider's input event
-            updateChart(year, currentFilterOption, false); // Pass false for shouldAnimate
+
+            // Check if a category is selected; if so, update chart with the category
+            if (selectedCategory) {
+                updateChartByCategory(year, currentFilterOption, false, selectedCategory); // Pass false for shouldAnimate
+            } else {
+                updateChart(year, currentFilterOption, false); // Pass false for shouldAnimate
+            }
         });
+
 
         yearsContainer.appendChild(yearLabel);
     }
@@ -99,19 +107,22 @@ export function createAndDesignSlider() {
     slider.addEventListener("input", function (e) {
         const selectedYear = parseInt(e.target.value);
         document.getElementById("selected-year").innerText = selectedYear; // Update display
-    
-        // Use the current filter option (support, against, or support vs. against)
-        updateChart(selectedYear, currentFilterOption, false); // Pass the selected year and the current filter option to updateChart
-    
+
+        if (selectedCategory) {
+            updateChartByCategory(selectedYear, currentFilterOption, false, selectedCategory); // Disable animation for categories
+        } else {
+            updateChart(selectedYear, currentFilterOption, false); // Disable animation for support vs. against
+        }
+
         // Collect and log subcategory values for both "1" and "0"
         const optionValues = ["1", "0"];
         optionValues.forEach(optionValue => {
-            const subcategoryValues = collectSubcategoryValues(data, selectedYear, optionValue, currentFilterOption);
-            console.log(`Year: ${selectedYear}, Option: ${currentFilterOption}, Option Value: ${optionValue}`);
-            console.log(`Age Counts (Year ${selectedYear}, Option ${currentFilterOption}, Option Value ${optionValue}):`, subcategoryValues.ageCounts);
-            console.log(`Gender Counts (Year ${selectedYear}, Option ${currentFilterOption}, Option Value ${optionValue}):`, subcategoryValues.genderCounts);
-            console.log(`Party Counts (Year ${selectedYear}, Option ${currentFilterOption}, Option Value ${optionValue}):`, subcategoryValues.partyCounts);
-            console.log(`Education Counts (Year ${selectedYear}, Option ${currentFilterOption}, Option Value ${optionValue}):`, subcategoryValues.educationCounts);
+            const subcategoryValues = collectSubcategoryValues(data, selectedYear, optionValue, option);
+            console.log(`Year: ${selectedYear}, Option: ${option}, Option Value: ${optionValue}`);
+            console.log(`Age Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.ageCounts);
+            console.log(`Gender Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.genderCounts);
+            console.log(`Party Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.partyCounts);
+            console.log(`Education Counts (Year ${selectedYear}, Option ${option}, Option Value ${optionValue}):`, subcategoryValues.educationCounts);
         });
     });
 
