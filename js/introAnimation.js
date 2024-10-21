@@ -106,7 +106,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
 
 		// Create inner group of smaller dots
 		const totalDots = 100;
-		const blueDotsCount = Math.floor(innerGroupCount * 0.4);
+		const blueDotsCount = Math.floor(innerGroupCount * 0.38);
 		const redDotsCount = innerGroupCount - blueDotsCount;
 
 		// Create inner group of smaller dots
@@ -165,55 +165,56 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
 			overlay.appendChild(smallDot);
 		}
 
-		// Set lower opacity for the first 400 small dots
-		smallDots.slice(0, 400).forEach((dot) => {
-			dot.style.opacity = 0.2; // Set lower opacity (adjust as needed)
-		});
+		// Set lower opacity for the first 50 small dots initially
+smallDots.slice(0, 400).forEach((dot) => {
+    dot.style.opacity = 0.2; // Set initial lower opacity
+});
 
-		// Move small dots to surround the center dot initially
-		gsap.delayedCall(2, () => {
-			// Move dots to the center without changing color
-			smallDots.forEach((dot, index) => {
-				const angle = Math.random() * Math.PI * 2;
+// Move small dots to surround the center dot initially
+gsap.delayedCall(2, () => {
+    // Move dots to the center without changing color
+    smallDots.forEach((dot, index) => {
+        const angle = Math.random() * Math.PI * 2;
 
-				let radius;
-				if (index < innerGroupCount) {
-					radius = 10 + Math.random() * 85; // Inner group with smaller radius
-				} else {
-					radius = 110 + Math.random() * 20; // Outer group with slightly varied radius (110 to 130)
-				}
+        let radius;
+        if (index < innerGroupCount) {
+            radius = 10 + Math.random() * 85; // Inner group with smaller radius
+        } else {
+            radius = 110 + Math.random() * 20; // Outer group with slightly varied radius (110 to 130)
+        }
 
-				const targetX = centerX + radius * Math.cos(angle) - 2.5; // Adjust for the small dot size
-				const targetY = centerY + radius * Math.sin(angle) - 2.5;
+        const targetX = centerX + radius * Math.cos(angle) - 2.5; // Adjust for the small dot size
+        const targetY = centerY + radius * Math.sin(angle) - 2.5;
 
-				gsap.to(dot, {
-					x: targetX - parseFloat(dot.style.left),
-					y: targetY - parseFloat(dot.style.top),
-					duration: 3,
-					onComplete: () => {
-						// Smoothly transition colors to 40% blue and 60% red for inner group only after they have gathered
-						if (index < innerGroupCount) {
-							setTimeout(() => {
-								if (index < blueDotsCount) {
-									gsap.to(dot, {
-										backgroundColor: "blue", // Use RGB format for blue color
-										duration: 1,
-										ease: "power2.inOut",
-										opacity: 0.5,
-									});
-								} else {
-									gsap.to(dot, {
-										backgroundColor: "red", // Use RGB format for red color
-										duration: 1,
-										ease: "power2.inOut",
-									});
-								}
-							}, 1000); // Delay the color change by 1 second
-						}
-					},
-				});
-			});
-		});
+        gsap.to(dot, {
+            x: targetX - parseFloat(dot.style.left),
+            y: targetY - parseFloat(dot.style.top),
+            duration: 3,
+            onComplete: () => {
+                // Smoothly transition colors to 40% blue and 60% red for inner group only after they have gathered
+                if (index < innerGroupCount) {
+                    setTimeout(() => {
+                        if (index < blueDotsCount) {
+                            gsap.to(dot, {
+                                backgroundColor: "#00ddff", // Blue color
+                                duration: 1,
+                                ease: "power2.inOut",
+                                opacity: 0.5 // Maintain opacity at 0.5 for blue dots
+                            });
+                        } else {
+                            gsap.to(dot, {
+                                backgroundColor: "red", // Red color
+                                duration: 1,
+                                ease: "power2.inOut",
+                                opacity: 0.5 // Maintain opacity at 0.5 for red dots
+                            });
+                        }
+                    }, 1000); // Delay the color change by 1 second
+                }
+            },
+        });
+    });
+});
 
 		// Set a delay before moving up the center dot and small dots
 		setTimeout(() => {
@@ -311,7 +312,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
 			const textElement = document.createElement("div");
 			textElement.className = "at-item2";
 			textElement.innerText =
-				"40% of Americans support abortion in all circumstances, while 60% oppose it";
+				"In 1977, 38% of Americans supported abortion in all circumstances, while 62% opposed it";
 			textElement.style.position = "absolute";
 			textElement.style.top = "25%";
 			textElement.style.left = "50%";
