@@ -56,8 +56,9 @@ export function initializePlayButton(
                     yearSlider.value = currentYear; // Update the slider value
                     document.getElementById("selected-year").innerText =
                         currentYear; // Update the displayed year
-                    // Update the chart with the current year and current filter option
-                    updateChartFunction(currentYear, getCurrentFilterOption(), false);
+                    const currentOption = getCurrentFilterOption();
+                    console.log(`Updating chart for year: ${currentYear} with option: ${currentOption}`);
+                    updateChartFunction(currentYear, currentOption, false); // Call the updateChart function with the current year and current filter option
                 }
                 currentYear =
                     availableYears.find((year) => year > currentYear) ||
