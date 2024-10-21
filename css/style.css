@@ -235,6 +235,10 @@ input[type="range"] {
 		/* Middle glow */ 0px 0px 2rem 1px rgba(0, 221, 255, 0.5),
 		/* Increased outer glow */ 0px 0px 3rem 1px rgba(0, 221, 255, 0.3); /* Additional outer glow */
 }
+.blue-dots {
+	background-color:  rgba(0, 221, 255, 1);
+	
+}
 
 .center-dot {
 	background-color: white;
@@ -256,7 +260,7 @@ input[type="range"] {
 }
 
 .at-item {
-	color: #3079ed;
+	color: #ffffff;
 	font-weight: bold;
 	font-size: 3em;
 	opacity: 0; /* Start with opacity 0 */
@@ -314,7 +318,7 @@ input[type="range"] {
 }
 
 .at-item2 {
-	color: #3079ed;
+	color: #ffffff;
 	font-weight: bold;
 	font-size: 3em;
 	opacity: 0; /* Start with opacity 0 */
@@ -348,18 +352,19 @@ input[type="range"] {
 .gridline {
 	transition: opacity 1s linear; /* Smooth opacity transition */
 }
-.at-container2 {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100vh; /* Full viewport height */
-	width: 100vw; /* Full viewport width */
-	position: fixed; /* Fix the position to cover the entire screen */
-	top: 0;
-	left: 0;
-	background-color: rgb(11, 10, 14);
-	z-index: 1000; /* Ensure it appears above other elements */
-	animation: background-fade-out 18s ease 20s forwards,
-		remove-background 20s ease 25s forwards; /* Fade out the background and then remove it */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(11, 10, 14);
+    z-index: 1000; /* Ensure it sits on top */
+    transition: opacity 1s ease-in-out; /* Add transition for fade-out effect */
 }
+
+.overlay.fade-out {
+    opacity: 0; /* Fade out the overlay */
+}
+
 

@@ -5,7 +5,7 @@ export function startIntroAnimation() {
 
 		const item = document.createElement("div");
 		item.className = "at-item";
-		item.innerText = "Animation";
+		item.innerText = "Opinions on Abortion";
 
 		container.appendChild(item);
 		document.body.appendChild(container);
@@ -17,6 +17,6 @@ export function startIntroAnimation() {
 		setTimeout(() => {
 			document.body.removeChild(container);
 			resolve();
-		}, 6000); // 1 second for animation + 3 seconds wait time
+		}, 5900); // 1 second for animation + 3 seconds wait time
 	});
 }

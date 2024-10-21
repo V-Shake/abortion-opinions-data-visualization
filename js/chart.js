@@ -1,4 +1,5 @@
-import { collectSubcategoryValues } from './main.js'; // Ensure this import is correct
+import { data } from "./data.js"; 
+console.log(data); // Should log your data array
 export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = true) {
     const width = 900;
     const height = 900;
@@ -7,6 +8,7 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
     const maxRadius = 250; // Maximum radius for the chart
     const maxValue = 9.6;  // Maximum value for data points
     const ticks = [2, 4, 6, 8, 10]; // Tick values for the circles
+    const totalCount = radarDataList[0].reduce((sum, d) => sum + d.value, 0); // Assuming radarDataList[0] has the counts for dataset 1
 
     // Define colors
     const colors = {
@@ -91,6 +93,7 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
             .delay((d, i) => i * 200) // Stagger the animation for each circle
             .attr("opacity", 1); // Fade in
     }
+
     const subcategories = radarDataList[0].map(d => d.category);
     const numAxes = subcategories.length;
     const angleSlice = (Math.PI * 2) / numAxes;
@@ -104,37 +107,45 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         'Education': [9, 10, 11] // 0-9, 10-15, 16+
     };
 
-    const tooltip = d3.select("body").append("div")
+    // Assuming radarDataList contains the counts for both datasets in the format:
+// radarDataList[0] = [{category: 'Female', value: 60}, {category: 'Male', value: 40}, ...];
+// radarDataList[1] = [{category: 'Female', value: 55}, {category: 'Male', value: 45}, ...];
+
+const totalCountDataset1 = radarDataList[0].reduce((sum, d) => sum + d.value, 0); // Total for dataset 1
+const totalCountDataset0 = radarDataList[1].reduce((sum, d) => sum + d.value, 0); // Total for dataset 0
+
+// Create the tooltip
+const tooltip = d3.select("body").append("div")
     .style("position", "absolute")
-    .style("background-color", "rgba(128, 128, 128, 0.8)") // Slightly transparent grey
+    .style("background-color", "#353738") // Slightly transparent grey
     .style("color", "white")
     .style("padding", "5px")
     .style("border-radius", "5px")
     .style("font-size", "12px")
     .style("visibility", "hidden");  // Initially hidden
 
-// Create axes and subcategory labels
-subcategories.forEach((subcat, i) => {
-    const angle = angleSlice * i - Math.PI / 2; // Calculate angle for the axis
-    const lineCoord = angleToCoord(angle, maxValue); // Full length of the axis to maxValue
+    // Create axes and subcategory labels
+    subcategories.forEach((subcat, i) => {
+        const angle = angleSlice * i - Math.PI / 2; // Calculate angle for the axis
+        const lineCoord = angleToCoord(angle, maxValue); // Full length of the axis to maxValue
 
-    // Create the axis lines
-    svg.append("line")
-        .attr("x1", centerX)
-        .attr("y1", centerY)
-        .attr("x2", lineCoord.x)
-        .attr("y2", lineCoord.y)
-        .attr("stroke", "#2A2A2A") // Grey color for the lines
-        .attr("stroke-width", 1);
+        // Create the axis lines
+        svg.append("line")
+            .attr("x1", centerX)
+            .attr("y1", centerY)
+            .attr("x2", lineCoord.x)
+            .attr("y2", lineCoord.y)
+            .attr("stroke", "#2A2A2A") // Grey color for the lines
+            .attr("stroke-width", 1);
 
-        const labelOffset = ['0-9', '10-15', '16+', '18-29', '30-59', '60-89'].includes(subcat) 
-        ? maxValue + 0.6  // Closer offset for upper categories
-        : maxValue + 0.8; // Further offset for other categories
+    const labelOffset = ['0-9', '10-15', '16+', '18-29', '30-59', '60-89'].includes(subcat) 
+            ? maxValue + 0.6  // Closer offset for upper categories
+            : maxValue + 0.8; // Further offset for other categories
 
-    const labelCoord = angleToCoord(angle, labelOffset); // Adjusted label coordinates
+        const labelCoord = angleToCoord(angle, labelOffset); // Adjusted label coordinates
 
-    // Calculate rotation angle
-    const rotationAngle = (angle * 180 / Math.PI) + 90; // Standard rotation for text
+        // Calculate rotation angle
+        const rotationAngle = (angle * 180 / Math.PI) + 90; // Standard rotation for text
 
     // Create the text element with hover functionality
     svg.append("text")
@@ -147,16 +158,42 @@ subcategories.forEach((subcat, i) => {
         .text(subcat)
         .style("cursor", "default") // Set cursor style
         .on("mouseover", () => {
-            // Fetch actual counts for both datasets
             const valueDataset1 = radarDataList[0][i].value; // Actual count for dataset1
             const valueDataset0 = radarDataList[1][i].value; // Actual count for dataset0
-            // Display tooltip with actual counts from both datasets
-            tooltip.style("visibility", "visible")
-                .text(`${subcat}: ${valueDataset1} people (1), ${valueDataset0} people (0)`); // Display actual counts
+    
+            // Combine the values to get total counts
+            const totalCount = valueDataset1 + valueDataset0;
+    
+            // Calculate the percentages based on the combined total
+            const percentage1 = totalCount > 0 ? ((valueDataset1 / totalCount) * 100).toFixed(0) : 0; // Calculate percentage for dataset1
+            const percentage0 = totalCount > 0 ? ((valueDataset0 / totalCount) * 100).toFixed(0) : 0; // Calculate percentage for dataset0
+    
+            // Assuming 'subcat' represents the educational years category (0-9, 10-15, 16+)
+            const category = subcat; // You might adjust this based on your logic
+    
+            tooltip.style("visibility", "visible");
+            if (category === "0-9" || category === "10-15" || category === "16+") {
+                tooltip.html( // Use .html() for line breaks
+                    `Individuals with ${category} years in education:<br>` +
+                    `${percentage1}% support, ${percentage0}% oppose`
+                ); // Detailed tooltip for education categories
+            } else if (category === "18-29" || category === "30-59" || category === "60-89") {
+                tooltip.html(`${subcat} year olds:<br>${percentage1}% support, ${percentage0}% oppose`); // Tooltip for age categories
+            } else {
+                tooltip.html(`${subcat}s:<br>${percentage1}% support, ${percentage0}% oppose`); // Simpler tooltip for other categories
+            }
         })
         .on("mousemove", (event) => {
-            tooltip.style("top", (event.pageY + 10) + "px")  // Offset tooltip position from mouse Y
-                   .style("left", (event.pageX + 10) + "px"); // Offset tooltip position from mouse X
+            const category = subcat; // Get the current category
+
+            // Position tooltip based on category
+            if (category === "0-9" || category === "10-15" || category === "16+" || category === "Independent" || category === "Other") {
+                tooltip.style("top", (event.pageY + 10) + "px")  // Keep the vertical position the same
+                       .style("left", (event.pageX - tooltip.node().getBoundingClientRect().width - 10) + "px"); // Position tooltip to the left
+            } else {
+                tooltip.style("top", (event.pageY + 10) + "px")  // Offset tooltip position from mouse Y
+                       .style("left", (event.pageX + 10) + "px"); // Offset tooltip position from mouse X
+            }
         })
         .on("mouseout", () => {
             tooltip.style("visibility", "hidden");  // Hide tooltip when not hovering
@@ -266,8 +303,8 @@ subcategories.forEach((subcat, i) => {
     // Sort by area in descending order (largest first)
     coordinatesWithAreas.sort((a, b) => b.area - a.area);
 
-     // Render the paths in order from largest to smallest with animation
-     if (colorMode == 0) {
+    // Render the paths in order from largest to smallest with animation
+    if (colorMode == 0) {
         // Render the two blobs
         coordinatesWithAreas.forEach((item) => {
             const isDataset1 = item.index === 0;
