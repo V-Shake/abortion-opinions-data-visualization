@@ -441,8 +441,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 		updateChartByCategory(selectedYear, currentFilterOption);
 
 		// Set the dropdown menu and subtitle container to 5% opacity
-        document.getElementById("dropdown-container").style.opacity = "0.08";
-        document.getElementById("subtitle-container").style.opacity = "0.08";
+        document.getElementById("dropdown-container").style.opacity = "0.00";
+        document.getElementById("subtitle-container").style.opacity = "0.00";
 
 		buttonViewModeButton.classList.remove("active"); // Remove the active state from the button
 		supportButton.classList.remove("active");
@@ -456,8 +456,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 		updateChartByCategory(selectedYear, currentFilterOption);
 
 		// Set the dropdown menu and subtitle container to 5% opacity
-        document.getElementById("dropdown-container").style.opacity = "0.08";
-        document.getElementById("subtitle-container").style.opacity = "0.08";
+        document.getElementById("dropdown-container").style.opacity = "0.00";
+        document.getElementById("subtitle-container").style.opacity = "0.00";
 
 		buttonViewModeButton.classList.remove("active"); // Remove the active state from the button 
 		againstButton.classList.remove("active");
