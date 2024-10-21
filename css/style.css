@@ -105,29 +105,6 @@ h2{
 	margin: 0 auto;
 } */
 
-#play-button {
-	position: absolute;
-	bottom: 23px; /* Distance from the top of the page */
-	left: 190px; /* Distance from the right side of the page */
-	background-color: #353738;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 15px;
-	font-weight: bold;
-	z-index: 1000; /* Ensure the button appears above other elements */
-	width: 27px;
-	height: 27px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-#play-button:hover {
-	background-color: rgb(122, 122, 122);
-}
-
 input[type="range"]::-webkit-slider-thumb {
 	appearance: none; /* Remove default styling */
 	width: 0.3vw; /* Thumb width */

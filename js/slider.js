@@ -16,7 +16,7 @@ export function createAndDesignSlider() {
     const selectedYearSpan = document.createElement("span");
     selectedYearSpan.id = "selected-year";
     selectedYearSpan.style.display = "none";
-    selectedYearSpan.style.fontWeight = "bold";
+    // selectedYearSpan.style.fontWeight = "bold";
     selectedYearSpan.innerText = "1977"; // Initialize selected year
     label.innerHTML = ``;
     label.appendChild(selectedYearSpan); // Append span to label
@@ -63,7 +63,7 @@ export function createAndDesignSlider() {
         yearLabel.style.transform = "rotate(-90deg)"; // Rotate counterclockwise
         yearLabel.style.transformOrigin = "left bottom"; // Set origin for rotation
         yearLabel.style.cursor = "pointer"; // Change cursor to pointer for interactivity
-        yearLabel.style.fontWeight = year === 1977 ? "bold" : "normal"; // Set initial weight
+        // yearLabel.style.fontWeight = year === 1977 ? "bold" : "normal"; // Set initial weight
         yearLabel.style.color = "white";
 
         // Check if the year is in the no data list
@@ -79,13 +79,12 @@ export function createAndDesignSlider() {
         yearLabel.style.left = `calc(${positionPercent}% - ${labelAdjustment}px)`; // Adjust left to center labels
 
         // Add click event listener for interaction
-		yearLabel.addEventListener("click", () => {
-			selectedYearSpan.innerText = year; // Update selected year display
-			slider.value = year; // Set the slider value
-			updateYearLabels(year); // Update bold label
-			slider.dispatchEvent(new Event("input")); // Trigger slider's input event
-			updateChart(year, currentFilterOption, false); // Pass false for shouldAnimate
-		});
+        yearLabel.addEventListener("click", () => {
+            selectedYearSpan.innerText = year; // Update selected year display
+            slider.value = year; // Set the slider value
+            slider.dispatchEvent(new Event("input")); // Trigger slider's input event
+            updateChart(year, currentFilterOption, false); // Pass false for shouldAnimate
+        });
 
         yearsContainer.appendChild(yearLabel);
     }
@@ -115,17 +114,6 @@ export function createAndDesignSlider() {
             console.log(`Education Counts (Year ${selectedYear}, Option ${currentFilterOption}, Option Value ${optionValue}):`, subcategoryValues.educationCounts);
         });
     });
-    
-    // Function to update year labels
-    function updateYearLabels(year) {
-        const allLabels = yearsContainer.querySelectorAll("span");
-        allLabels.forEach((label) => {
-            label.style.fontWeight = "normal"; // Reset font weight
-            if (label.innerText === year) {
-                label.style.fontWeight = "bold"; // Make the corresponding label bold
-            }
-        });
-    }
 
     // Return the slider element
     return slider;
