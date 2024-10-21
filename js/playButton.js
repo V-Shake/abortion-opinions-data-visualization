@@ -8,7 +8,7 @@ export function initializePlayButton(
     startYear = 1977,
     endYear = 2018
 ) {
-    const playButton = document.getElementById("play-button");
+    const playButton = document.getElementById("play-btn");
     const yearSlider = document.getElementById(sliderId);
 
     if (!playButton) {
@@ -22,7 +22,7 @@ export function initializePlayButton(
     }
 
     // Play/Pause button click event listener
-    playButton.addEventListener("click", function () {
+    playButton.addEventListener("change", function () {
         console.log("Play button clicked");
         if (isPlaying) {
             stopAnimation();
@@ -72,6 +72,6 @@ export function initializePlayButton(
         console.log("Stopping animation");
         isPlaying = false;
         clearInterval(intervalId); // Stop the interval
-        playButton.innerHTML = "▶"; // Change button text to Play symbol
+        // playButton.innerHTML = "▶"; // Change button text to Play symbol
     }
 }
