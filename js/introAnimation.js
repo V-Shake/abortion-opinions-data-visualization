@@ -199,6 +199,7 @@ export function initIntroAnimation(innerGroupCount, outerGroupCount, callback) {
 										backgroundColor: "blue", // Use RGB format for blue color
 										duration: 1,
 										ease: "power2.inOut",
+										opacity: 0.5,
 									});
 								} else {
 									gsap.to(dot, {
