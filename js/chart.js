@@ -16,7 +16,7 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         dataset0: "#E00047",     // Red
         glowDataset1: "#2CEAFF", // Vivid blue for glow effect
         glowDataset0: "#FA4172", // Vivid red for glow effect
-        subcategoryText: "grey", // Color for subcategory labels
+        subcategoryText: "white", // Color for subcategory labels
     };
 
     const svg = d3
@@ -231,7 +231,7 @@ const tooltip = d3.select("body").append("div")
             .attr("y", labelCoord.y)
             .attr("text-anchor", "middle")
             .attr("font-size", "14px") // Adjust font size as needed
-            .attr("fill", "white")
+            .attr("fill", "grey")
             .attr("transform", `rotate(${rotationAngle}, ${labelCoord.x}, ${labelCoord.y})`) // Apply rotation
             .text(category);
     });
@@ -408,22 +408,22 @@ const tooltip = d3.select("body").append("div")
 
     svg.append("path")
         .attr("d", purpleArcForGender())
-        .attr("fill", "white")
+        .attr("fill", "grey")
         .attr("transform", `translate(${centerX}, ${centerY})`); // Move the arc to the center
 
     svg.append("path")
         .attr("d", purpleArcForParty())
-        .attr("fill", "white")
+        .attr("fill", "grey")
         .attr("transform", `translate(${centerX}, ${centerY})`); // Move the arc to the center
 
     svg.append("path")
         .attr("d", purpleArcForEducation())
-        .attr("fill", "white")
+        .attr("fill", "grey")
         .attr("transform", `translate(${centerX}, ${centerY})`); // Move the arc to the center
 
     svg.append("path")
         .attr("d", purpleArcForAge())
-        .attr("fill", "white")
+        .attr("fill", "grey")
         .attr("transform", `translate(${centerX}, ${centerY})`); // Move the arc to the center
 
     const genderLabelCoord = angleToCoord((angleFemale + angleMale) / 2, maxValue + 4); // Midpoint for Gender arc
@@ -432,7 +432,7 @@ const tooltip = d3.select("body").append("div")
         .attr("y", genderLabelCoord.y)
         .attr("text-anchor", "middle")
         .attr("font-size", "14px") // Adjust font size as needed
-        .attr("fill", "white")
+        .attr("fill", "grey")
 
     const partyLabelCoord = angleToCoord((angleRepublican + angleOther) / 2, maxValue + 4); // Midpoint for Party arc
     svg.append("text")
@@ -440,7 +440,7 @@ const tooltip = d3.select("body").append("div")
         .attr("y", partyLabelCoord.y)
         .attr("text-anchor", "middle")
         .attr("font-size", "14px") // Adjust font size as needed
-        .attr("fill", "white")
+        .attr("fill", "grey")
 
 
     const educationLabelCoord = angleToCoord((angle0_9 + angle16) / 2, maxValue + 4); // Midpoint for Party arc
@@ -449,7 +449,7 @@ const tooltip = d3.select("body").append("div")
         .attr("y", educationLabelCoord.y)
         .attr("text-anchor", "middle")
         .attr("font-size", "14px") // Adjust font size as needed
-        .attr("fill", "white")
+        .attr("fill", "grey")
 
     const ageLabelCoord = angleToCoord((angle18_30 + angle61_89) / 2, maxValue + 4); // Midpoint for Party arc
     svg.append("text")
@@ -457,5 +457,5 @@ const tooltip = d3.select("body").append("div")
         .attr("y", ageLabelCoord.y)
         .attr("text-anchor", "middle")
         .attr("font-size", "14px") // Adjust font size as needed
-        .attr("fill", "white")
+        .attr("fill", "grey")
 }
