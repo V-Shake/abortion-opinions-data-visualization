@@ -20,7 +20,7 @@ function setGlobalOption(selectedOption) {
 function preprocessDataForYear(data, year, optionValue, option) {
 	// Filter data based on the selected year and count individuals with specific 'abany' value
 
-	let filteredData;
+    let filteredData = []; // Initialize filteredData as an empty array
 
 	switch (option) {
 		case "abany":

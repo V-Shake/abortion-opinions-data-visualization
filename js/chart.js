@@ -300,67 +300,70 @@ const tooltip = d3.select("body").append("div")
         return { index, coordinates, area };
     });
 
-    // Sort by area in descending order (largest first)
-    coordinatesWithAreas.sort((a, b) => b.area - a.area);
+   // Sort by area in descending order (largest first)
+coordinatesWithAreas.sort((a, b) => b.area - a.area);
 
-    // Render the paths in order from largest to smallest with animation
-    if (colorMode == 0) {
-        // Render the two blobs
-        coordinatesWithAreas.forEach((item) => {
-            const isDataset1 = item.index === 0;
-            const color = isDataset1 ? colors.dataset1 : colors.dataset0;
-            const glowColor = isDataset1 ? colors.glowDataset1 : colors.glowDataset0;
-            const gradientId = isDataset1 ? "gradientDataset1" : "gradientDataset0";
+// Render the paths in order from largest to smallest with animation
+if (colorMode == 0) {
+    // Render the two blobs
+    coordinatesWithAreas.forEach((item) => {
+        const isDataset1 = item.index === 0;
+        const color = isDataset1 ? colors.dataset1 : colors.dataset0;
+        const glowColor = isDataset1 ? colors.glowDataset1 : colors.glowDataset0;
+        const gradientId = isDataset1 ? "gradientDataset1" : "gradientDataset0";
 
-            const path = svg.append("path")
-                .datum(item.coordinates)
-                .attr("d", line([{ x: centerX, y: centerY }])) // Start from center
-                .attr("stroke", glowColor)
-                .attr("fill", `url(#${gradientId})`)
-                .attr("opacity", 0.15)
-                .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
-                .transition()
-                .delay(shouldAnimate ? 1000 : 0)
-                .duration(shouldAnimate ? 2000 : 0) // Animation duration in milliseconds
-                .attrTween("d", function () {
-                    return function (t) {
-                        const interpolatedCoordinates = item.coordinates.map(coord => ({
-                            x: (coord.x - centerX) * t + centerX,
-                            y: (coord.y - centerY) * t + centerY
-                        }));
-                        return line(interpolatedCoordinates); // Remove the additional parentheses
-                    };
-                });
-        });
-    } else {
-        // Render all categories
-        coordinatesWithAreas.forEach((item) => {
-            const color = opinion === "support" ? colors.dataset1 : colors.dataset0;
-            const glowColor = opinion === "support" ? colors.glowDataset1 : colors.glowDataset0;
-            const gradientId = opinion === "support" ? "gradientDataset1" : "gradientDataset0";
+        console.log(`Rendering path for dataset ${isDataset1 ? 1 : 0} with coordinates:`, item.coordinates);
 
-            const path = svg.append("path")
-                .datum(item.coordinates)
-                .attr("d", line([{ x: centerX, y: centerY }])) // Start from center
-                .attr("stroke", glowColor)
-                .attr("fill", `url(#${gradientId})`)
-                .attr("opacity", 0.15)
-                .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
-                .transition()
-                .delay(shouldAnimate ? 1000 : 0)
-                .duration(shouldAnimate ? 2000 : 0) // Animation duration in milliseconds
-                .attrTween("d", function () {
-                    return function (t) {
-                        const interpolatedCoordinates = item.coordinates.map(coord => ({
-                            x: (coord.x - centerX) * t + centerX,
-                            y: (coord.y - centerY) * t + centerY
-                        }));
-                        return line(interpolatedCoordinates); // Remove the additional parentheses
-                    };
-                });
-        });
-    }
+        const path = svg.append("path")
+            .datum(item.coordinates)
+            .attr("d", line([{ x: centerX, y: centerY }])) // Start from center
+            .attr("stroke", glowColor)
+            .attr("fill", `url(#${gradientId})`)
+            .attr("opacity", 0.15)
+            .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
+            .transition()
+            .delay(shouldAnimate ? 1000 : 0)
+            .duration(shouldAnimate ? 2000 : 0) // Animation duration in milliseconds
+            .attrTween("d", function () {
+                return function (t) {
+                    const interpolatedCoordinates = item.coordinates.map(coord => ({
+                        x: (coord.x - centerX) * t + centerX,
+                        y: (coord.y - centerY) * t + centerY
+                    }));
+                    return line(interpolatedCoordinates); // Remove the additional parentheses
+                };
+            });
+    });
+} else {
+    // Render all categories
+    coordinatesWithAreas.forEach((item) => {
+        const color = opinion === "support" ? colors.dataset1 : colors.dataset0;
+        const glowColor = opinion === "support" ? colors.glowDataset1 : colors.glowDataset0;
+        const gradientId = opinion === "support" ? "gradientDataset1" : "gradientDataset0";
 
+        console.log(`Rendering path for category with coordinates:`, item.coordinates);
+
+        const path = svg.append("path")
+            .datum(item.coordinates)
+            .attr("d", line([{ x: centerX, y: centerY }])) // Start from center
+            .attr("stroke", glowColor)
+            .attr("fill", `url(#${gradientId})`)
+            .attr("opacity", 0.15)
+            .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
+            .transition()
+            .delay(shouldAnimate ? 1000 : 0)
+            .duration(shouldAnimate ? 2000 : 0) // Animation duration in milliseconds
+            .attrTween("d", function () {
+                return function (t) {
+                    const interpolatedCoordinates = item.coordinates.map(coord => ({
+                        x: (coord.x - centerX) * t + centerX,
+                        y: (coord.y - centerY) * t + centerY
+                    }));
+                    return line(interpolatedCoordinates); // Remove the additional parentheses
+                };
+            });
+    });
+}
 
     // Define the radius for calculating pixel-to-radian conversion
     const radius = 255; // Midpoint between the inner and outer radius of the purple band
