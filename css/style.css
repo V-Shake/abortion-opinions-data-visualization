@@ -349,27 +349,34 @@ input[type="range"] {
 }
 
 #legend-container {
-	position: absolute;
-	top: 35%;
-	right: 10%;
-	/* background-color: rgba(255, 255, 255, 0.8); */
-	padding: 10px;
-	border-radius: 5px;
-	color: white;
-	font-size: 11px;
-	/* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    position: absolute;
+    top: 35%;
+    right: 10%;
+    color: white;  /* Text and bullet color remains white */
+    font-size: 11px;
+    padding: 10px;
 }
 
 .legend-item {
-	margin: 5px 0;
-	cursor: pointer;
-	padding: 5px;
-	border-radius: 3px;
+    margin: 5px 0;
+    padding: 5px;
+    display: flex; /* Ensure bullets and text are aligned in a row */
+    align-items: center; /* Align bullet and text vertically */
+    cursor: pointer;
 }
 
 .legend-item:hover {
+    font-weight: bold;
+}
+
+.legend-item.active {
 	font-weight: bold;
-	color:white;
+}
+
+.bullet {
+    font-size: 10px;
+    color: white; /* Keep bullets white */
+    margin-right: 15px; /* Space between bullet and text */
 }
 
 .hidden {

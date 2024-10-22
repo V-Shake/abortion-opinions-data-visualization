@@ -515,13 +515,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.querySelectorAll(".legend-item").forEach((item) => {
 		item.classList.add("hidden");
 	});
-	
+
 	// Event listener for legend items
 	document.querySelectorAll(".legend-item").forEach((item) => {
 		item.addEventListener("click", function () {
 			const category = this.getAttribute("data-category");
 			selectedCategory = category === "all" ? null : category; // Update selectedCategory
 			const selectedYear = parseInt(document.getElementById("year-slider").value); // Get the current year from the slider
+
+			// Remove active class from all legend items
+			document.querySelectorAll(".legend-item").forEach((item) => {
+				item.classList.remove("active");
+			});
+
+			// Add active class to the clicked legend item
+			this.classList.add("active");
 
 			// If 'all' is selected, show all categories; otherwise, filter by the selected category
 			if (category === "all") {
