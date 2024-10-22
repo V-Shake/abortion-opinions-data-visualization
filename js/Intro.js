@@ -29,7 +29,7 @@ export function startIntroAnimation() {
                     const secondItem = document.createElement("div");
                     secondItem.className = "at-item sissy-text"; // Class for sissy text
                     secondItem.innerText =
-"On September 10, 1977, Frances 'Sissy' Farenthold delivered a powerful speech on abortion, emphasizing women's control over their bodies as vital for equality."                    
+"On September 10th 1977, Frances 'Sissy' Farenthold delivered a powerful speech on abortion, emphasizing women's control over their bodies as vital for equality."                    
                     secondContainer.appendChild(secondItem);
                     document.body.appendChild(secondContainer);
 
