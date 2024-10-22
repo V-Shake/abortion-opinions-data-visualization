@@ -328,7 +328,7 @@ if (colorMode == 0) {
             .attr("d", line([{ x: centerX, y: centerY }])) // Start from center
             .attr("stroke", glowColor)
             .attr("fill", `url(#${gradientId})`)
-            .attr("opacity", 0.35)
+            .attr("opacity", 0.4)
             .attr("class", shouldAnimate ? "scale-up" : "") // Add CSS class for scaling if animating
             .transition()
             .delay(shouldAnimate ? 1000 : 0)
