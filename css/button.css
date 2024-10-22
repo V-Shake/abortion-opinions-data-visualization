@@ -79,7 +79,7 @@
 }
 
 .button-against {
-    color: rgb(255, 31, 117); /* Red text */
+    color: rgb(222, 45, 45); /* Red text */
     top: 50px;
     left: 30px;
     top: 53%; /* Center vertically */
@@ -88,15 +88,15 @@
 }
 
 .button-against::before {
-    background: rgb(255, 31, 117); /* Red background */
+    background: rgb(222, 45, 45); /* Red background */
 }
 
 .button-against.active::before {
-    background: rgb(255, 31, 117); /* Red background */
+    background: rgb(222, 45, 45); /* Red background */
 }
 
 .button-against.active:hover::before {
-    background: rgb(255, 31, 117, 0.7); /* Red background on hover */
+    background: rgb(222, 45, 45, 0.7); /* Red background on hover */
 }
 
 /* Remove unnecessary styles */

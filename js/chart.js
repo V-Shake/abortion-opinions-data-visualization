@@ -15,7 +15,7 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         dataset1: "#00DDFF", // Light blue
         dataset0: "red",     // Red
         glowDataset1: "#71F6FF", // Vivid blue for glow effect
-        glowDataset0: "#FF34C2", // Vivid red for glow effect
+        glowDataset0: "#FF4500", // Vivid red for glow effect
         subcategoryText: "white", // Color for subcategory labels
     };
 
@@ -54,8 +54,8 @@ export function renderChart(radarDataList, colorMode, opinion, shouldAnimate = t
         .attr("y2", "100%")
         .selectAll("stop")
         .data([
-            { offset: "0%", color: "#660018" }, // Dark red
-            { offset: "100%", color: "#FF0062" } // Light red
+            { offset: "0%", color: "#660000" }, // Dark red
+            { offset: "100%", color: "#FF4500" } // Light red
         ])
         .enter()
         .append("stop")
