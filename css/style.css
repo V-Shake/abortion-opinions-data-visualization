@@ -388,6 +388,7 @@ input[type="range"] {
     text-anchor: middle;      /* Center align the text */
     fill: grey; 
 	opacity: 0.4;              /* Label color */
-    transform: rotate(-45deg); /* Rotate 30 degrees */
+    transform: rotate(10deg); /* Rotate 30 degrees */
     transform-origin: center; /* Rotate around the label's center */
+	z-index: 9999;
 }
