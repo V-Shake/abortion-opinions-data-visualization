@@ -106,7 +106,7 @@ const percentageLabels = svg.selectAll("text.tickLabel")
     .attr("dy", "-0.5em")  // Offset the label slightly above the tick
     .attr("text-anchor", "middle")
     .attr("fill", "grey")
-    .text(d => `${d}`*10 +"%")  // Display the tick values directly (20, 40, 60, etc.)
+    .text(d => `${d}`*10 +" %")  // Display the tick values directly (20, 40, 60, etc.)
     .style("font-size", "10px"); // Adjust the font size inline or in CSS
 
     const subcategories = radarDataList ? radarDataList[0].map(d => d.category) : [];
