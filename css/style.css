@@ -350,12 +350,13 @@ input[type="range"] {
 
 #legend-container {
 	position: absolute;
-	top: 200px;
-	right: 150px;
+	top: 35%;
+	right: 10%;
 	/* background-color: rgba(255, 255, 255, 0.8); */
 	padding: 10px;
 	border-radius: 5px;
 	color: white;
+	font-size: 11px;
 	/* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
 }
 
@@ -367,8 +368,8 @@ input[type="range"] {
 }
 
 .legend-item:hover {
-	background-color: rgb(255, 255, 255);
-	color:black;
+	font-weight: bold;
+	color:white;
 }
 
 .hidden {
