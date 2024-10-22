@@ -114,11 +114,11 @@ const percentageLabels = svg.selectAll("text.tickLabel")
     const angleSlice = (Math.PI * 2) / numAxes;
     
     // Define main categories and their positions
-    const mainCategories = ['Age', 'Gender', 'Party', 'Education'];
+    const mainCategories = ['Age', 'Gender', 'Political Party', 'Education'];
     const mainCategoryPositions = {
         'Age': [0, 1, 2], // 18-30, 31-60, 61-89
         'Gender': [3, 4], // Female, Male
-        'Party': [5, 6, 7, 8], // Republican, Democrat, Independent, Other
+        'Political Party': [5, 6, 7, 8], // Republican, Democrat, Independent, Other
         'Education': [9, 10, 11] // 0-9, 10-15, 16+
     };
 
@@ -182,15 +182,16 @@ const tooltip = d3.select("body").append("div")
             const category = subcat; // You might adjust this based on your logic
     
             tooltip.style("visibility", "visible");
-            if (category === "0-9" || category === "10-15" || category === "16+") {
-                tooltip.html( // Use .html() for line breaks
-                    `Individuals with ${category} years in education:<br>` +
-                    `${percentage1}% support, ${percentage0}% oppose`
-                ); // Detailed tooltip for education categories
+            if (category === "Other") {
+                tooltip.html(`Other Political Parties:<br>${percentage1}% support, ${percentage0}% oppose`); // Custom label for "Other"
+            } else if (category === "Independent") {
+                tooltip.html(`Independent:<br>${percentage1}% support, ${percentage0}% oppose`); // Custom label for "Independent"
+            } else if (category === "0-9" || category === "10-15" || category === "16+") {
+                tooltip.html(`Individuals with ${category} years in education:<br>${percentage1}% support, ${percentage0}% oppose`); // Tooltip for education categories
             } else if (category === "18-29" || category === "30-59" || category === "60-89") {
                 tooltip.html(`${subcat} year olds:<br>${percentage1}% support, ${percentage0}% oppose`); // Tooltip for age categories
             } else {
-                tooltip.html(`${subcat}s:<br>${percentage1}% support, ${percentage0}% oppose`); // Simpler tooltip for other categories
+                tooltip.html(`${subcat}s:<br>${percentage1}% support, ${percentage0}% oppose`); // Default tooltip for other categories
             }
         })
         .on("mousemove", (event) => {
